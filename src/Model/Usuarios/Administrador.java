@@ -8,11 +8,13 @@ import java.util.List;
 
 
 public class Administrador extends Bibliotecario{
-    private AdministradorDAO administradorDAO;
+    private final AdministradorDAO administradorDAO;
+    private boolean cadastroRealizado;
 
     public Administrador(String nome, String cpf, String senha) throws Excecao {
         super(nome, cpf, senha);
         super.setCargo("Administrador");
+        this.cadastroRealizado = true;
         this.administradorDAO = new AdministradorDAO();
     }
 
@@ -43,8 +45,8 @@ public class Administrador extends Bibliotecario{
     public void desbloquerBibliotecario(Bibliotecario bibliotecario){
         bibliotecario.desbloquearConta();
     }
-    public void cadastrarBibliotecario(Bibliotecario bibliotecario) {
-        administradorDAO.registraBibliotecario(bibliotecario);
+    public void cadastrarBibliotecario(String nome, String cpf, String senha) throws Excecao {
+        Bibliotecario bibliotecario = new Bibliotecario(nome, cpf, senha);
     }
     public void removerBibliotecario(Bibliotecario bibliotecario) {
         administradorDAO.removeBibliotecario(bibliotecario);
@@ -59,10 +61,11 @@ public class Administrador extends Bibliotecario{
     }
 
     public String toString() {
-        return ("---------------------------------------------------------------------------------------------\n" +
-                "Administrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        if (cadastroRealizado) {
+            return ("---------------------------------------------------------------------------------------------\n" +
+                    "Administrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        }
+        return ("Administrador(a) não cadastrado");
     }
-
-
 
 }

@@ -1,10 +1,11 @@
 package Model.Usuarios;
 
 public class Endereco {
-    private String rua;
-    private String numero;
-    private String cidade;
-    private String estado;
+    private final String rua;
+    private final String numero;
+    private final String cidade;
+    private final String estado;
+
     public Endereco(String rua, String numero, String cidade, String estado){
         this.rua = rua;
         this.numero = numero;
@@ -13,7 +14,7 @@ public class Endereco {
     }
 
     public String toString() {
-        return ("Endereço: " + rua + " , " + numero +"\nCidade: " + cidade + " - " + estado + "");
+        return ("Endereço: " + rua + " , " + numero +"\nCidade: " + cidade + " - " + estado + ".");
     }
 
 }

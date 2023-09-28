@@ -3,6 +3,10 @@ import DAO.LivroDAO;
 import Excecoes.Excecao;
 import Model.Usuarios.Leitor;
 
+import java.util.List;
+import java.util.Queue;
+
+
 public class Livro {
     private String titulo;
     private String autor;
@@ -11,9 +15,10 @@ public class Livro {
     private String anoPublicacao;
     private String editora;
     private boolean disponibilidade;
-    private LivroDAO livroDAO;
+    private final LivroDAO livroDAO;
+    private boolean livroCadastrado = false;
 
-    public Livro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora) throws Excecao{
+    public Livro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora) {
         this.livroDAO = new LivroDAO();
         try {
             livroEstaCadastrado(isbn);
@@ -24,6 +29,7 @@ public class Livro {
             this.anoPublicacao = anoPublicacao;
             this.editora = editora;
             this.disponibilidade = true;
+            this.livroCadastrado = true;
             livroDAO.adiciona(this);
             System.out.println( titulo + " - registro efetuado com sucesso!");
         }
@@ -74,7 +80,6 @@ public class Livro {
     public boolean isDisponibilidade(){
         return disponibilidade;
     }
-
     public void livroEstaCadastrado(String isbn) throws Excecao {
         if (livroDAO.get() != null) {
             for (Livro livro : livroDAO.get()) {
@@ -107,12 +112,37 @@ public class Livro {
     public void atualizarAnoPublicacao(String anoPublicacao) {
         livroDAO.atualizarAnoPublicacaoLivro(this, anoPublicacao);
     }
+    public Queue<Leitor> reservasLivroPorTitulo(String titulo){
+        return livroDAO.getReservasPorTitulo(titulo);
+    }
+    public List<Livro> buscarLivroPorTitulo(String titulo){
+        return livroDAO.buscarLivroPorTitulo(titulo);
+    }
+    public void adicionarLeitorNaFilaDeReserva(Queue<Leitor> leitoresNaFila){
+        livroDAO.setLeitoresReservasPorTitulo(titulo, leitoresNaFila);
+    }
+
+    public Leitor verificaPrimeiroDaFila(String titulo){
+        return livroDAO.verificaPrimeiroDaFila(titulo);
+    }
+
+    public int qtdLeitoresNaFila(String titulo){
+        return livroDAO.qtdLeitoresNaFila(titulo);
+    }
+
+    public void removeLeitorDaFila(String titulo){
+        livroDAO.removePrimeiroDafila(titulo);
+    }
+
 
     public String toString() {
-        return ("---------------------------------------------------------------------------------------------\n"
-                + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
-                + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ."+
-                "\n---------------------------------------------------------------------------------------------");
+        if (livroCadastrado) {
+            return ("---------------------------------------------------------------------------------------------\n"
+                    + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
+                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ." +
+                    "\n---------------------------------------------------------------------------------------------");
+        }
+        return ("Livro não cadastrado");
     }
 
 }

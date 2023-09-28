@@ -8,9 +8,7 @@ public class Usuario {
     private boolean statusAcessoUsuario; // true = ativo, false = bloqueado
 
     Usuario() {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.statusAcessoUsuario = true;
+
     }
 
     // Getters e Setters
@@ -74,8 +72,7 @@ public class Usuario {
 
         if (segundoDigito >= 10)
             segundoDigito = 0;
-        boolean valido = (Character.getNumericValue(cpf.charAt(10)) == segundoDigito);
 
-        return valido;
+        return (Character.getNumericValue(cpf.charAt(10)) == segundoDigito);
     }
 }

@@ -4,7 +4,6 @@ import DAO.BibliotecarioDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bibliotecario extends Usuario {
@@ -17,20 +16,23 @@ public class Bibliotecario extends Usuario {
 
     private String cargo = "Bibliotecario";
     private String senha;
-    private BibliotecarioDAO bibliotecarioDAO;
+    private final BibliotecarioDAO bibliotecarioDAO;
+    private boolean cadastroRealizado = false;
 
-    public Bibliotecario(String nome, String cpf, String senha) throws Excecao {
+    public Bibliotecario(String nome, String cpf, String senha) {
         this.bibliotecarioDAO = new BibliotecarioDAO();
         try{
             cpfOperadorEstaCadastrado(cpf);
             super.setNome(nome);
             super.setCpf(cpf);
+            super.desbloquearConta();
             this.senha = senha;
+            this.cadastroRealizado = true;
             bibliotecarioDAO.adiciona(this);
             System.out.println( nome + " - Cadastro efetuado com sucesso!");
         }
-        catch (Excecao excecao) {
-            System.out.println(excecao.getMessage());
+        catch (Excecao e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -135,7 +137,10 @@ public class Bibliotecario extends Usuario {
     }
 
     public String toString() {
-        return ("---------------------------------------------------------------------------------------------\n" +
-                "Bibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        if (cadastroRealizado){
+            return ("---------------------------------------------------------------------------------------------\n" +
+                    "Bibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        }
+        return ("Bibliotecario(a) não cadastrado");
     }
 }

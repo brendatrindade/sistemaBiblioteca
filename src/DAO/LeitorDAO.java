@@ -6,9 +6,9 @@ import Model.Usuarios.Leitor;
 import Model.Operacoes.Emprestimo;
 import java.util.ArrayList;
 import java.util.List;
+import DAO.LivroDAO;
 
 public class LeitorDAO implements CRUD<Leitor> {
-
     private static List<Leitor> leitores = new ArrayList<>();
     private List<Emprestimo> historicoEmprestimos = new ArrayList<>();
 
@@ -75,5 +75,6 @@ public class LeitorDAO implements CRUD<Leitor> {
         }
         return ativos;
     }
+
 
 }

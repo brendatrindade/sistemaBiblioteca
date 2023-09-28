@@ -9,7 +9,6 @@ public class BibliotecarioDAO implements CRUD<Bibliotecario> {
     private static List<Bibliotecario> operadores = new ArrayList<>();
     private static List<Administrador> administradores = new ArrayList<>();
     private static List<Bibliotecario> bibliotecarios = new ArrayList<>();
-    private static List<Bibliotecario> bibliotecariosCadastrados = new ArrayList<>();
 
     public void setAdministrador(Administrador administrador) {
         administradores.add(administrador);
@@ -41,16 +40,6 @@ public class BibliotecarioDAO implements CRUD<Bibliotecario> {
             System.out.println("O sistema não possui Bibliotecarios cadastrados.");
             return null;}
         return bibliotecarios;
-    }
-
-    public List<Bibliotecario> getBibliotecariosCadastrados() {
-        return bibliotecariosCadastrados;
-    }
-    public void registrarBibliotecario(Bibliotecario bibliotecario){
-        bibliotecariosCadastrados.add(bibliotecario);
-    }
-    public void removerBibliotecario(Bibliotecario bibliotecario){
-        bibliotecariosCadastrados.remove(bibliotecario);
     }
 
     /**
@@ -90,7 +79,14 @@ public class BibliotecarioDAO implements CRUD<Bibliotecario> {
     public void remove(Bibliotecario bibliotecario) {
         operadores.remove(bibliotecario);
     }
-
+    /**
+     * Deleta um Objeto
+     *
+     * @param administrador
+     */
+    public void removeAdministrador(Administrador administrador) {
+        administradores.remove(administrador);
+    }
     /**
      * Deleta todos os dados
      */
@@ -99,9 +95,9 @@ public class BibliotecarioDAO implements CRUD<Bibliotecario> {
         operadores = new ArrayList<>();
     }
 
-
-
-
+    public void removerBibliotecario(Bibliotecario bibliotecario){
+        bibliotecarios.remove(bibliotecario);
+    }
 
 
 

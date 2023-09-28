@@ -1,7 +1,10 @@
 package Model.Usuarios;
+
 import Model.Operacoes.Emprestimo;
 import DAO.LeitorDAO;
 import Excecoes.Excecao;
+
+import Model.Operacoes.Reserva;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,21 +19,24 @@ public class Leitor extends Usuario {
     private long periodoBloqueioTotal;
     private Endereco endereco;
     private String telefone;
-    private LeitorDAO leitorDAO;
+    private final LeitorDAO leitorDAO;
+    private boolean cadastroRealizado = false;
 
-    public Leitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+    public Leitor(String nome, String cpf, Endereco endereco, String telefone) {
         this.leitorDAO = new LeitorDAO();
         try {
             cpfLeitorEstaCadastrado(cpf);
             super.setCpf(cpf);
             super.setNome(nome);
+            super.desbloquearConta();
             this.telefone = telefone;
             this.endereco = endereco;
+            this.cadastroRealizado = true;
             leitorDAO.adiciona(this);
             System.out.println(nome + " - Cadastro efetuado com sucesso!");
         }
-        catch (Excecao excecao) {
-            System.out.println(excecao.getMessage());
+        catch (Excecao e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -44,7 +50,6 @@ public class Leitor extends Usuario {
         else //Se a data atual for igual ou posterior a data de desbloqueio => desbloquear Leitor
             this.desbloquearConta();
     }
-
     //Getters e Setters
     public Endereco getEndereco() {
         return endereco;
@@ -78,12 +83,20 @@ public class Leitor extends Usuario {
         return ativos;
     }
 
-    /*
-    public boolean solicitarReserva( String titulo) {
-        Boolean seTiverDisponivel = acervo.reservarLivro(titulo, this);
-        return seTiverDisponivel;
-    } */
+    public int qtdEmprestimosAtivos() {
+        List<Emprestimo> ativos = new ArrayList<>();
+        if (leitorDAO.getHistoricoEmprestimos() != null) {
+            for (Emprestimo emprestimo : leitorDAO.getHistoricoEmprestimos()) {
+                if (!emprestimo.isstatusEmprestimoFinalizado())
+                    ativos.add(emprestimo);
+            }
+        }
+        return ativos.size(); //numero de emprestimos ativos
+    }
 
+    public void solicitarReserva(String titulo) throws Excecao {
+        Reserva reserva = new Reserva(this, titulo);
+    }
 
     //Verificar se o CPF já possui cadastro como Leitor
     public void cpfLeitorEstaCadastrado(String cpf) throws Excecao {
@@ -95,10 +108,13 @@ public class Leitor extends Usuario {
         }
     }
 
-    public String toString() {
-        return ("---------------------------------------------------------------------------------------------\n" +
-                "Leitor(a): " + super.getNome() + " - CPF: " + super.getCpf() + "\nTelefone: " + telefone + "\n" + endereco + " .\n");
-    }
 
+    public String toString() {
+        if (cadastroRealizado) {
+            return ("---------------------------------------------------------------------------------------------\n" +
+                    "Leitor(a): " + super.getNome() + " - CPF: " + super.getCpf() + "\nTelefone: " + telefone + "\n" + endereco + " .\n");
+        }
+        return ("Leitor não cadastrado.");
+    }
 
 }

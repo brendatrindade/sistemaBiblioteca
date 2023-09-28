@@ -5,13 +5,12 @@ import Model.Usuarios.Bibliotecario;
 
 import java.util.List;
 
-public class AdministradorDAO implements CRUD<AdministradorDAO> {
+public class AdministradorDAO implements CRUD<Administrador> {
     BibliotecarioDAO bibliotecarioDAO = new BibliotecarioDAO();
 
     public void setAdministradores(Administrador administrador) {
         bibliotecarioDAO.setAdministrador(administrador);
     }
-
     public List<Administrador> getAdministradores(){
         return bibliotecarioDAO.getAdministradores();
     }
@@ -19,40 +18,39 @@ public class AdministradorDAO implements CRUD<AdministradorDAO> {
     /**
      * Adiciona novo Objeto
      *
-     * @param administradorDAO
+     * @param administrador
      */
     @Override
-    public void adiciona(AdministradorDAO administradorDAO) {
-
+    public void adiciona(Administrador administrador) {
+        bibliotecarioDAO.setAdministrador(administrador);
     }
 
     /**
      * Lê todos os Objetos
      */
     @Override
-    public List<AdministradorDAO> get() {
-        return null;
+    public List<Administrador> get() {
+        return bibliotecarioDAO.getAdministradores();
     }
 
     /**
-     * Atualiza um Objeto
+     * Atualiza um Objeto - nome
      *
-     * @param administradorDAO
+     * @param administrador
      * @param novoDado
      */
     @Override
-    public void altera(AdministradorDAO administradorDAO, String novoDado) {
-
+    public void altera(Administrador administrador, String novoDado) {
+        administrador.setNome(novoDado);
     }
-
     /**
      * Deleta um Objeto
      *
-     * @param administradorDAO
+     * @param administrador
      */
     @Override
-    public void remove(AdministradorDAO administradorDAO) {
-
+    public void remove(Administrador administrador) {
+        bibliotecarioDAO.removeAdministrador(administrador);
     }
 
     /**
@@ -61,11 +59,6 @@ public class AdministradorDAO implements CRUD<AdministradorDAO> {
     @Override
     public void removeTodos() {
 
-    }
-
-
-    public void registraBibliotecario(Bibliotecario bibliotecario){
-        bibliotecarioDAO.registrarBibliotecario(bibliotecario);
     }
 
     public void removeBibliotecario(Bibliotecario bibliotecario){
