@@ -1,6 +1,5 @@
 package Model.Usuarios;
 
-import DAO.AdministradorDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
 
@@ -8,15 +7,45 @@ import java.util.List;
 
 
 public class Administrador extends Bibliotecario{
-    private final AdministradorDAO administradorDAO;
     private boolean cadastroRealizado;
 
     public Administrador(String nome, String cpf, String senha) throws Excecao {
         super(nome, cpf, senha);
         super.setCargo("Administrador");
         this.cadastroRealizado = true;
-        this.administradorDAO = new AdministradorDAO();
+
     }
+
+    //gerenciar Leitores
+    public void bloquearLeitor(Leitor leitor) {
+        leitor.bloquearConta();
+    }
+    public void desbloquearLeitor(Leitor leitor) {
+        leitor.desbloquearConta();
+    }
+
+
+    //gerenciar Bibliotecarios
+    public void bloquearBibliotecario(Bibliotecario bibliotecario) {
+        bibliotecario.bloquearConta();
+    }
+    public void desbloquerBibliotecario(Bibliotecario bibliotecario){
+        bibliotecario.desbloquearConta();
+    }
+
+
+
+    public String toString() {
+        if (cadastroRealizado) {
+            return ("---------------------------------------------------------------------------------------------\n" +
+                    "Administrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        }
+        return ("Administrador(a) não cadastrado");
+    }
+
+}
+
+/*
 
     //GETTERS E SETTERS
     public List<Administrador> getAdministradores() {
@@ -60,12 +89,4 @@ public class Administrador extends Bibliotecario{
             System.out.println("Ops! " + super.getNome() + " nao possui permissao para realizar esta operacao, verifique seu cadastro e tente novamente :)");
     }
 
-    public String toString() {
-        if (cadastroRealizado) {
-            return ("---------------------------------------------------------------------------------------------\n" +
-                    "Administrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
-        }
-        return ("Administrador(a) não cadastrado");
-    }
-
-}
+ */

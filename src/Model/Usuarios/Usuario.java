@@ -17,7 +17,7 @@ public class Usuario {
     }
     public void setCpf(String cpf) throws Excecao {
         if (validaCPF(cpf)) {
-            this.cpf = cpf;
+            this.cpf = cpf.replaceAll("[^0-9]", "");
         }
         else {
             throw new Excecao("CPF inválido");

@@ -1,14 +1,11 @@
 package Model.Usuarios;
 
-import Model.Operacoes.Emprestimo;
-import DAO.LeitorDAO;
 import Excecoes.Excecao;
 
 import Model.Operacoes.Reserva;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 public class Leitor extends Usuario {
@@ -19,25 +16,28 @@ public class Leitor extends Usuario {
     private long periodoBloqueioTotal;
     private Endereco endereco;
     private String telefone;
-    private final LeitorDAO leitorDAO;
     private boolean cadastroRealizado = false;
 
-    public Leitor(String nome, String cpf, Endereco endereco, String telefone) {
-        this.leitorDAO = new LeitorDAO();
-        try {
-            cpfLeitorEstaCadastrado(cpf);
-            super.setCpf(cpf);
-            super.setNome(nome);
-            super.desbloquearConta();
-            this.telefone = telefone;
-            this.endereco = endereco;
-            this.cadastroRealizado = true;
-            leitorDAO.adiciona(this);
-            System.out.println(nome + " - Cadastro efetuado com sucesso!");
-        }
-        catch (Excecao e) {
-            System.out.println(e.getMessage());
-        }
+    public Leitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+        super.setCpf(cpf);
+        super.setNome(nome);
+        super.desbloquearConta();
+        this.telefone = telefone;
+        this.endereco = endereco;
+        this.cadastroRealizado = true;
+        System.out.println(nome + " - Cadastro efetuado com sucesso!");
+    }
+
+    //Getters e Setters
+    public Endereco getEndereco() {
+        return endereco;
+    }
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void solicitarReserva(String titulo) throws Excecao {
+        Reserva reserva = new Reserva(this, titulo);
     }
 
     //Se o Leitor devolver um livro em atraso o metodo multar será chamado para suspender seu acesso
@@ -49,63 +49,6 @@ public class Leitor extends Usuario {
             this.bloquearConta();
         else //Se a data atual for igual ou posterior a data de desbloqueio => desbloquear Leitor
             this.desbloquearConta();
-    }
-    //Getters e Setters
-    public Endereco getEndereco() {
-        return endereco;
-    }
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void adicionarLeitor(){
-        leitorDAO.adiciona(this);
-    }
-    public void removerLeitor(){
-        leitorDAO.remove(this);
-    }
-
-    public void setHistoricoEmprestimos(Emprestimo meuEmprestimo) {
-        leitorDAO.adicionaHistoricoEmprestimos(meuEmprestimo);
-    }
-    public List<Emprestimo> getHistoricoEmprestimos() {
-        return leitorDAO.getHistoricoEmprestimos();
-    }
-
-    public List<Emprestimo> getEmprestimosAtivos() {
-        List<Emprestimo> ativos = new ArrayList<>();
-        if (leitorDAO.getHistoricoEmprestimos() != null) {
-            for (Emprestimo emprestimo : leitorDAO.getHistoricoEmprestimos()) {
-                if (!emprestimo.isstatusEmprestimoFinalizado())
-                    ativos.add(emprestimo);
-            }
-        }
-        return ativos;
-    }
-
-    public int qtdEmprestimosAtivos() {
-        List<Emprestimo> ativos = new ArrayList<>();
-        if (leitorDAO.getHistoricoEmprestimos() != null) {
-            for (Emprestimo emprestimo : leitorDAO.getHistoricoEmprestimos()) {
-                if (!emprestimo.isstatusEmprestimoFinalizado())
-                    ativos.add(emprestimo);
-            }
-        }
-        return ativos.size(); //numero de emprestimos ativos
-    }
-
-    public void solicitarReserva(String titulo) throws Excecao {
-        Reserva reserva = new Reserva(this, titulo);
-    }
-
-    //Verificar se o CPF já possui cadastro como Leitor
-    public void cpfLeitorEstaCadastrado(String cpf) throws Excecao {
-        if (leitorDAO.get() != null) {
-            for (Leitor leitor : leitorDAO.get()) {
-                if (leitor.getCpf().equals(cpf)){
-                    throw new Excecao(leitor.getNome() + ", o CPF informado ja possui cadastro. \n");}
-            }
-        }
     }
 
 

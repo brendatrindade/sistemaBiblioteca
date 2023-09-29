@@ -1,10 +1,8 @@
 package Model.Usuarios;
 
-import DAO.BibliotecarioDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.*;
 
-import java.util.List;
 
 public class Bibliotecario extends Usuario {
 
@@ -16,24 +14,14 @@ public class Bibliotecario extends Usuario {
 
     private String cargo = "Bibliotecario";
     private String senha;
-    private final BibliotecarioDAO bibliotecarioDAO;
     private boolean cadastroRealizado = false;
 
-    public Bibliotecario(String nome, String cpf, String senha) {
-        this.bibliotecarioDAO = new BibliotecarioDAO();
-        try{
-            cpfOperadorEstaCadastrado(cpf);
+    public Bibliotecario(String nome, String cpf, String senha) throws Excecao {
             super.setNome(nome);
             super.setCpf(cpf);
             super.desbloquearConta();
             this.senha = senha;
             this.cadastroRealizado = true;
-            bibliotecarioDAO.adiciona(this);
-            System.out.println( nome + " - Cadastro efetuado com sucesso!");
-        }
-        catch (Excecao e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public void setCargo(String cargo) {
@@ -45,9 +33,6 @@ public class Bibliotecario extends Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    public List<Bibliotecario> getBibliotecarios() {
-        return bibliotecarioDAO.getBibliotecarios();
-    }
 
     //#2 Emprestimo e Devolução
     public void emprestarLivro(Livro livro, Leitor leitor) throws Excecao {
@@ -56,7 +41,19 @@ public class Bibliotecario extends Usuario {
         }
         else System.out.println("Nao foi possivel realizar o emprestimo");
     }
-    public void devolverLivro(Livro livro, Leitor leitor){
+
+
+    public String toString() {
+        if (cadastroRealizado){
+            return ("---------------------------------------------------------------------------------------------\n" +
+                    "Bibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+        }
+        return ("Bibliotecario(a) não cadastrado");
+    }
+}
+
+/*
+public void devolverLivro(Livro livro, Leitor leitor){
         if(this.isStatusAcessoUsuario()) {
             for (Emprestimo emprestimo : leitor.getEmprestimosAtivos()){
                 if ( emprestimo.getLivro() == livro){
@@ -125,22 +122,4 @@ public class Bibliotecario extends Usuario {
         else
             System.out.println("Ops! " + super.getNome() + " nao possui permissao para realizar esta operacao, verifique seu cadastro e tente novamente :)");
     }
-
-    //Verificação para controle de cadastro
-    public void cpfOperadorEstaCadastrado(String cpf) throws Excecao {
-        if (bibliotecarioDAO.get() != null){
-            for (Bibliotecario operador : bibliotecarioDAO.get()) {
-                if (operador.getCpf().equals(cpf))
-                    throw new Excecao(operador.getNome() + ", o CPF informado ja esta cadastrado como operador do sistema.");
-            }
-        }
-    }
-
-    public String toString() {
-        if (cadastroRealizado){
-            return ("---------------------------------------------------------------------------------------------\n" +
-                    "Bibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
-        }
-        return ("Bibliotecario(a) não cadastrado");
-    }
-}
+ */

@@ -1,11 +1,4 @@
 package Model.Operacoes;
-import DAO.LivroDAO;
-import Excecoes.Excecao;
-import Model.Usuarios.Leitor;
-
-import java.util.List;
-import java.util.Queue;
-
 
 public class Livro {
     private String titulo;
@@ -15,27 +8,18 @@ public class Livro {
     private String anoPublicacao;
     private String editora;
     private boolean disponibilidade;
-    private final LivroDAO livroDAO;
     private boolean livroCadastrado = false;
 
     public Livro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora) {
-        this.livroDAO = new LivroDAO();
-        try {
-            livroEstaCadastrado(isbn);
-            this.titulo = titulo;
-            this.autor = autor;
-            this.isbn = isbn;
-            this.categoria = categoria;
-            this.anoPublicacao = anoPublicacao;
-            this.editora = editora;
-            this.disponibilidade = true;
-            this.livroCadastrado = true;
-            livroDAO.adiciona(this);
-            System.out.println( titulo + " - registro efetuado com sucesso!");
-        }
-        catch (Excecao excecao) {
-            System.out.println(excecao.getMessage());
-        }
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.categoria = categoria;
+        this.anoPublicacao = anoPublicacao;
+        this.editora = editora;
+        this.disponibilidade = true;
+        this.livroCadastrado = true;
+        System.out.println( titulo + " - registro efetuado com sucesso!");
     }
 
     public String getAutor() {
@@ -80,14 +64,20 @@ public class Livro {
     public boolean isDisponibilidade(){
         return disponibilidade;
     }
-    public void livroEstaCadastrado(String isbn) throws Excecao {
-        if (livroDAO.get() != null) {
-            for (Livro livro : livroDAO.get()) {
-                if (livro.getIsbn().equalsIgnoreCase(isbn)){
-                    throw new Excecao(livro.getTitulo() +" - o exemplar ISBN: " +livro.getIsbn()+ " ja possui cadastro.\n");}
-            }
+
+    public String toString() {
+        if (livroCadastrado) {
+            return ("---------------------------------------------------------------------------------------------\n"
+                    + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
+                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ." +
+                    "\n---------------------------------------------------------------------------------------------");
         }
+        return ("Livro não cadastrado");
     }
+
+}
+
+    /*
     public void adicionaAoAcervo(){
         livroDAO.adiciona(this);
     }
@@ -133,16 +123,4 @@ public class Livro {
     public void removeLeitorDaFila(String titulo){
         livroDAO.removePrimeiroDafila(titulo);
     }
-
-
-    public String toString() {
-        if (livroCadastrado) {
-            return ("---------------------------------------------------------------------------------------------\n"
-                    + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
-                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ." +
-                    "\n---------------------------------------------------------------------------------------------");
-        }
-        return ("Livro não cadastrado");
-    }
-
-}
+    */

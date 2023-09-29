@@ -1,35 +1,44 @@
 package DAO;
+import Excecoes.Excecao;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BibliotecarioDAO implements CRUD<Bibliotecario> {
+public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> {
     private static List<Bibliotecario> operadores = new ArrayList<>();
-    private static List<Administrador> administradores = new ArrayList<>();
     private static List<Bibliotecario> bibliotecarios = new ArrayList<>();
 
-    public void setAdministrador(Administrador administrador) {
-        administradores.add(administrador);
-    }
-    public void setBibliotecario(Bibliotecario bibliotecario){
-        bibliotecarios.add(bibliotecario);
+    public static List<Bibliotecario> getOperadores(){
+        return operadores;
     }
 
-
-    public List<Administrador> getAdministradores(){
-        for (Bibliotecario operador : operadores) {
-            if (operador instanceof Administrador) {
-                Administrador administrador = (Administrador) operador;
-                administradores.add(administrador);
+    @Override
+    public void salvar(Bibliotecario c) {
+        bibliotecarios.add(c);
+    }
+    @Override
+    public void deletar(Bibliotecario c) {
+        bibliotecarios.remove(c);
+    }
+    @Override
+    public void deletarTodos() {
+        bibliotecarios = new ArrayList<>();
+    }
+    @Override
+    public Bibliotecario buscarPorId(String id) {
+        if(bibliotecarios != null){
+            for(Bibliotecario bibliotecario : bibliotecarios){
+                if(bibliotecario.getCpf().equals(id))
+                    return bibliotecario;
             }
         }
-        if(administradores.isEmpty()){
-            System.out.println("O sistema não possui Administradores cadastrados.");
-            return null;}
-        return administradores;
+        return null;
     }
+    /**
+     * Retorna todos os Bibliotecarios
+     */
     public List<Bibliotecario> getBibliotecarios(){
         for (Bibliotecario bibliotecario : operadores) {
             if (!(bibliotecario instanceof Administrador)){
@@ -42,67 +51,14 @@ public class BibliotecarioDAO implements CRUD<Bibliotecario> {
         return bibliotecarios;
     }
 
-    /**
-     * Adiciona novo Objeto
-     *
-     * @param bibliotecario
-     */
-    @Override
-    public void adiciona(Bibliotecario bibliotecario) {
-        operadores.add(bibliotecario);
+    //Verificação para controle de cadastro
+    public boolean cpfOperadorEstaCadastrado(String cpf) throws Excecao {
+        if (bibliotecarios != null){
+            for (Bibliotecario operador : bibliotecarios) {
+                if (operador.getCpf().equals(cpf))
+                    throw new Excecao(operador.getNome() + ", o CPF informado ja esta cadastrado como operador do sistema.");
+            }
+        } return false;
     }
-    /**
-     * Lê todos os Objetos
-     */
-    @Override
-    public List<Bibliotecario> get() {
-        return operadores;
-    }
-
-    /**
-     * Atualiza um Objeto - Nome
-     *
-     * @param bibliotecario
-     * @param novoDado
-     */
-    @Override
-    public void altera(Bibliotecario bibliotecario, String novoDado) {
-        bibliotecario.setNome(novoDado);
-    }
-
-    /**
-     * Deleta um Objeto
-     *
-     * @param bibliotecario
-     */
-    @Override
-    public void remove(Bibliotecario bibliotecario) {
-        operadores.remove(bibliotecario);
-    }
-    /**
-     * Deleta um Objeto
-     *
-     * @param administrador
-     */
-    public void removeAdministrador(Administrador administrador) {
-        administradores.remove(administrador);
-    }
-    /**
-     * Deleta todos os dados
-     */
-    @Override
-    public void removeTodos() {
-        operadores = new ArrayList<>();
-    }
-
-    public void removerBibliotecario(Bibliotecario bibliotecario){
-        bibliotecarios.remove(bibliotecario);
-    }
-
-
-
-
-
-
 
 }
