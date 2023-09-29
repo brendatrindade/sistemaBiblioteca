@@ -6,13 +6,15 @@ import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 import Model.Usuarios.Leitor;
 import Servico.AdministradorServico;
+import Servico.BibliotecarioServico;
 
 import java.util.List;
 
-public class AdministradorControle {
+public class AdministradorControle extends BibliotecarioControle {
     private AdministradorServico administradorServico;
 
-    public AdministradorControle(AdministradorServico administradorServico) {
+    public AdministradorControle(AdministradorServico administradorServico, BibliotecarioServico bibliotecarioServico) {
+        super(bibliotecarioServico);
         this.administradorServico = administradorServico;
     }
     public void criarAdministrador(String nome, String cpf, String senha) throws Excecao {

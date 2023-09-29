@@ -37,8 +37,7 @@ public class Administrador extends Bibliotecario{
 
     public String toString() {
         if (cadastroRealizado) {
-            return ("---------------------------------------------------------------------------------------------\n" +
-                    "Administrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+            return ("\nAdministrador(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
         }
         return ("Administrador(a) não cadastrado");
     }

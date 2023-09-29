@@ -11,4 +11,5 @@ public interface DAOgenerico <Classe> {
     Classe buscarPorId(String id);
 
 
+
 }

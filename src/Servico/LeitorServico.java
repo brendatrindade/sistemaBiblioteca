@@ -1,18 +1,23 @@
 package Servico;
 
 import DAO.LeitorDAO;
+import DAO.LivroDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Emprestimo;
+import Model.Operacoes.Livro;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 
 import java.util.List;
+import java.util.Map;
 
 public class LeitorServico {
     private LeitorDAO leitorDAO;
+    private LivroDAO livroDAO;
 
-    public LeitorServico(LeitorDAO leitorDAO) {
+    public LeitorServico(LeitorDAO leitorDAO, LivroDAO livroDAO) {
         this.leitorDAO = leitorDAO;
+        this.livroDAO = livroDAO;
     }
 
     public Leitor criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
@@ -39,18 +44,24 @@ public class LeitorServico {
         return leitorDAO.getListaLeitores();
     }
 
-    public void adicionaHistoricoEmprestimos(Emprestimo novoEmprestimo) {
-       leitorDAO.adicionaHistoricoEmprestimos(novoEmprestimo);
+    public void adicionaHistoricoEmprestimos(Leitor leitor, Emprestimo novoEmprestimo) {
+       leitorDAO.adicionaHistoricoEmprestimos(leitor, novoEmprestimo);
     }
-    public List<Emprestimo> getHistoricoEmprestimos() {
-        return leitorDAO.getHistoricoEmprestimos();
+
+    public List<Emprestimo> getHistoricoEmprestimos(Leitor leitor) {
+        return leitorDAO.getHistoricoEmprestimos(leitor);
     }
-    public List<Emprestimo> getEmprestimosAtivos() {
-        return leitorDAO.getEmprestimosAtivos();
+    public List<Emprestimo> getEmprestimosAtivos(Leitor leitor) {
+        return leitorDAO.getEmprestimosAtivos(leitor);
     }
-    public int qtdEmprestimosAtivos(){
-        return leitorDAO.qtdEmprestimosAtivos();
+    public int qtdEmprestimosAtivos(Leitor leitor){
+        return leitorDAO.qtdEmprestimosAtivos(leitor);
     }
+
+    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+        return livroDAO.pesquisarLivros(texto);
+    }
+
     public boolean cpfLeitorEstaCadastrado(String cpf) throws Excecao {
         return leitorDAO.cpfLeitorEstaCadastrado(cpf);
     }

@@ -39,10 +39,13 @@ public class LivroDAO implements DAOgenerico<Livro>{
     public void deletarTodos() {
         acervo = new ArrayList<>();
     }
+
+    //Livro possui metodos de busca especificos para seus atributos
     @Override
     public Livro buscarPorId(String id) {
         return null;
     }
+
     /**
      * Retorna todos os Livros do acervo
      */
@@ -124,6 +127,39 @@ public class LivroDAO implements DAOgenerico<Livro>{
             }
         }
         return livroPorEditora;
+    }
+
+    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+        Map <String, List<Livro>> resultados = new HashMap<>();
+        List<Livro> titulos = new ArrayList<>();
+        List<Livro> autores = new ArrayList<>();
+        List<Livro> isbnes = new ArrayList<>();
+        List<Livro> categorias = new ArrayList<>();
+        List<Livro> anoPubli = new ArrayList<>();
+
+        for (Livro livroSistema : acervo){
+            if (livroSistema.getTitulo().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ){
+                titulos.add(livroSistema);
+                resultados.put("\nTitulos: ", titulos);
+            }
+            if( livroSistema.getAutor().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ){
+                autores.add(livroSistema);
+                resultados.put("\nAutoria: ", autores);
+            }
+            if( livroSistema.getIsbn().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ) {
+                isbnes.add(livroSistema);
+                resultados.put("\nISBN: ", isbnes);
+            }
+            if( livroSistema.getCategoria().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ) {
+                categorias.add(livroSistema);
+                resultados.put("\nCategorias: ", categorias);
+            }
+            if (livroSistema.getAnoPublicacao().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ) {
+                anoPubli.add(livroSistema);
+                resultados.put("\nAno de Publicação: ", anoPubli);
+            }
+        }
+        return resultados;
     }
 
     // Verificar se o acervo possui um livro - (Objeto livro)

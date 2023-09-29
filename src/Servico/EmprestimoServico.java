@@ -18,11 +18,11 @@ public class EmprestimoServico {
     public Emprestimo criarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
         if (leitor.isStatusAcessoUsuario()) {
             if (livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == leitor || livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == null) {
-                if (leitorServico.qtdEmprestimosAtivos() < Emprestimo.limiteEmprestimosPorLeitor) {
+                if (leitorServico.qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
                     if (livro.isDisponibilidade()) {
                         livroServico.removePrimeiroDafila(livro.getTitulo());
                         Emprestimo emprestimo = new Emprestimo(livro, leitor);
-                        leitorServico.adicionaHistoricoEmprestimos(emprestimo);
+                        leitorServico.adicionaHistoricoEmprestimos(leitor, emprestimo);
                         return emprestimo;
                     } else throw new Excecao("Livro:" + livro.getTitulo() + " indiponível para emprestimo no momento");
 
@@ -32,6 +32,7 @@ public class EmprestimoServico {
 
         } else throw new Excecao("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
     }
+
 
 
 }

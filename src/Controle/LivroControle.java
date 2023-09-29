@@ -15,7 +15,6 @@ public class LivroControle {
     }
     public void criarLivro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora){
         Livro livro = livroServico.criarLivro(titulo, autor, isbn, categoria, anoPublicacao, editora);
-        System.out.println(livro.getTitulo() + " - Cadastro efetuado com sucesso!");
     }
     public void deleteLivro(Livro livro) {
         livroServico.deletarLivro(livro);

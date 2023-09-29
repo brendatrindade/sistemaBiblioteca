@@ -42,11 +42,9 @@ public class Bibliotecario extends Usuario {
         else System.out.println("Nao foi possivel realizar o emprestimo");
     }
 
-
     public String toString() {
         if (cadastroRealizado){
-            return ("---------------------------------------------------------------------------------------------\n" +
-                    "Bibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
+            return ("\nBibliotecario(a): " + getNome() + " - CPF: " + getCpf() + " .\n");
         }
         return ("Bibliotecario(a) não cadastrado");
     }
@@ -122,4 +120,5 @@ public void devolverLivro(Livro livro, Leitor leitor){
         else
             System.out.println("Ops! " + super.getNome() + " nao possui permissao para realizar esta operacao, verifique seu cadastro e tente novamente :)");
     }
+
  */

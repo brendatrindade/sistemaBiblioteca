@@ -1,12 +1,13 @@
 package Model.Operacoes;
 
-import Excecoes.Excecao;
 import Model.Usuarios.Leitor;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class Emprestimo {
     public static int limiteEmprestimosPorLeitor = 3;
+    private long periodoBloqueadoTotal;
     private Livro livro;
     private Leitor leitor;
     private LocalDate dataEmprestimo;
@@ -56,10 +57,22 @@ public class Emprestimo {
             livro.setDisponibilidade(true);
             System.out.println("Devolução concluída com sucesso!");
             if (emAtraso()){
-                leitor.multar(periodoDeSuspensao());
+                multar(leitor, periodoDeSuspensao());
             }
         }
     }
+
+    //Se o Leitor devolver um livro em atraso o metodo multar será chamado para suspender seu acesso
+    public void multar(Leitor leitor, long periodoDeBloqueio) {
+        this.periodoBloqueadoTotal += periodoDeBloqueio; //Se o Leitor atrasar mais de uma devolução, o periodo de suspensão será a soma de dias de todos os seus atrasos
+        LocalDateTime dataBloqueio = LocalDateTime.now();
+        LocalDateTime dataDesbloqueio = dataBloqueio.plusDays(periodoBloqueadoTotal);
+        if(LocalDateTime.now().isBefore(dataDesbloqueio)) //Se a data atual for anterior a data de desbloqueio => bloquear Leitor
+            leitor.bloquearConta();
+        else //Se a data atual for igual ou posterior a data de desbloqueio => desbloquear Leitor
+            leitor.desbloquearConta();
+    }
+    
     // Verifica se há atraso no empréstimo
     public boolean emAtraso() { // true = atrasado, // false = em dias
         if (statusEmprestimoFinalizado)
@@ -79,10 +92,9 @@ public class Emprestimo {
 
     public String toString() {
         if (emprestimoRealizado) {
-            return ("---------------------------------------------------------------------------------------------\n" +
-                    leitor + livro + "\nLivro Disponivel? " + livro.isDisponibilidade() +
-                    "\nEmprestado: " + dataEmprestimo + " - Devolucao esperada: " + dataEsperadaDev + " - Devolvido: " + dataRealizadaDev +
-                    "\nEm atraso:" + emAtraso() + " - Finalizado? " + isstatusEmprestimoFinalizado() + ".\n");
+            return ("\n" + leitor + livro + "\nLivro Disponivel: " + livro.isDisponibilidade() +
+                "\nEmprestado: " + dataEmprestimo + " - Devolucao esperada: " + dataEsperadaDev + " - Devolvido: " + dataRealizadaDev +
+                "\nEm atraso:" + emAtraso() + " - Finalizado: " + isstatusEmprestimoFinalizado() + ".\n");
         }
         return ("Emprestimo não realizado.");
     }

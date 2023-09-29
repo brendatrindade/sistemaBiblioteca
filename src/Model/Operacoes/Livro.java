@@ -19,7 +19,6 @@ public class Livro {
         this.editora = editora;
         this.disponibilidade = true;
         this.livroCadastrado = true;
-        System.out.println( titulo + " - registro efetuado com sucesso!");
     }
 
     public String getAutor() {
@@ -67,10 +66,10 @@ public class Livro {
 
     public String toString() {
         if (livroCadastrado) {
-            return ("---------------------------------------------------------------------------------------------\n"
+            return ("\n"
                     + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
                     + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ." +
-                    "\n---------------------------------------------------------------------------------------------");
+                    "\n");
         }
         return ("Livro não cadastrado");
     }
@@ -123,4 +122,5 @@ public class Livro {
     public void removeLeitorDaFila(String titulo){
         livroDAO.removePrimeiroDafila(titulo);
     }
+
     */
