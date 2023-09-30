@@ -16,7 +16,6 @@ public class Sistema {
         LivroDAO livroDAO = new LivroDAO();
         BibliotecarioDAO bibliotecarioDAO = new BibliotecarioDAO();
         AdministradorDAO administradorDAO = new AdministradorDAO();
-        EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 
         LeitorServico leitorServico = new LeitorServico(leitorDAO, livroDAO);
         LivroServico livroServico = new LivroServico(livroDAO);

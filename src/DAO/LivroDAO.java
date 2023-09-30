@@ -16,11 +16,9 @@ public class LivroDAO implements DAOgenerico<Livro>{
      */
     @Override
     public void salvar(Livro c) {
-        if (!acervo.contains(c)){
+        if (!acervo.contains(c)) {
             acervo.add(c);
-            System.out.println("Livro " + c.getTitulo() + " adicionado com sucesso!");}
-        else
-            System.out.println("Ops! Este exemplar de " + c.getTitulo() + " já faz parte do acervo");
+        }
     }
     /**
      * Deleta um Livro
@@ -30,7 +28,6 @@ public class LivroDAO implements DAOgenerico<Livro>{
     @Override
     public void deletar(Livro c) {
         acervo.remove(c);
-        System.out.println("Livro " + c.getTitulo() + " removido com sucesso!");
     }
     /**
      * Deleta todos os Livros
@@ -40,9 +37,9 @@ public class LivroDAO implements DAOgenerico<Livro>{
         acervo = new ArrayList<>();
     }
 
-    //Livro possui metodos de busca especificos para seus atributos
     @Override
     public Livro buscarPorId(String id) {
+        //Livro possui metodos de busca especificos para seus atributos
         return null;
     }
 
@@ -201,4 +198,5 @@ public class LivroDAO implements DAOgenerico<Livro>{
             Leitor primeiro = reservasPorTitulo.get(titulo).poll();
         }
     }
+
 }

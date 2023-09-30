@@ -49,13 +49,13 @@ public class Emprestimo {
 
     // Registrar a devolução do livro
     public void registrarDevolucao() {
-        if (this.isstatusEmprestimoFinalizado())
-            System.out.println("Este empréstimo já foi concluído.");
+        if (this.isstatusEmprestimoFinalizado()){
+            return;
+        }
         else {
             this.dataRealizadaDev = LocalDate.now();
             this.statusEmprestimoFinalizado = true;
             livro.setDisponibilidade(true);
-            System.out.println("Devolução concluída com sucesso!");
             if (emAtraso()){
                 multar(leitor, periodoDeSuspensao());
             }
@@ -69,8 +69,6 @@ public class Emprestimo {
         LocalDateTime dataDesbloqueio = dataBloqueio.plusDays(periodoBloqueadoTotal);
         if(LocalDateTime.now().isBefore(dataDesbloqueio)) //Se a data atual for anterior a data de desbloqueio => bloquear Leitor
             leitor.bloquearConta();
-        else //Se a data atual for igual ou posterior a data de desbloqueio => desbloquear Leitor
-            leitor.desbloquearConta();
     }
     
     // Verifica se há atraso no empréstimo

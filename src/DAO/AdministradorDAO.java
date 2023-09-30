@@ -36,9 +36,7 @@ public class AdministradorDAO extends BibliotecarioDAO{
                 administradores.add(administrador);
             }
         }
-        if(administradores.isEmpty()){
-            System.out.println("O sistema não possui Administradores cadastrados.");
-            return null;}
+
         return administradores;
     }
 

@@ -4,9 +4,6 @@ import Excecoes.Excecao;
 
 import Model.Operacoes.Reserva;
 
-import java.time.LocalDateTime;
-
-
 
 public class Leitor extends Usuario {
     //Herda de Usuário
@@ -24,7 +21,6 @@ public class Leitor extends Usuario {
         this.telefone = telefone;
         this.endereco = endereco;
         this.cadastroRealizado = true;
-        System.out.println(nome + " - Cadastro efetuado com sucesso!");
     }
 
     //Getters e Setters
@@ -35,10 +31,10 @@ public class Leitor extends Usuario {
         return telefone;
     }
 
-    public void solicitarReserva(String titulo) throws Excecao {
+    public boolean solicitarReserva(String titulo) {
         Reserva reserva = new Reserva(this, titulo);
+        return reserva.isReservaConcluida();
     }
-
 
     public String toString() {
         if (cadastroRealizado) {

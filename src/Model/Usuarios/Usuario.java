@@ -1,18 +1,13 @@
 package Model.Usuarios;
 
-import Controle.LivroControle;
 import Excecoes.Excecao;
-import Model.Operacoes.Livro;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Usuario {
     private String cpf; // id do usuário
     private String nome;
     private boolean statusAcessoUsuario; // true = ativo, false = bloqueado
 
-    Usuario() {
+    public Usuario() {
 
     }
 

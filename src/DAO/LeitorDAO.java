@@ -55,11 +55,9 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
 
         if (emprestimosDoLeitor == null) {
             emprestimosDoLeitor = new ArrayList<>();
-            emprestimosDoLeitor.add(novoEmprestimo);
-            historicoEmprestimos.put(leitor, emprestimosDoLeitor);
         }
         emprestimosDoLeitor.add(novoEmprestimo);
-
+        historicoEmprestimos.put(leitor, emprestimosDoLeitor);
     }
     public List<Emprestimo> getHistoricoEmprestimos(Leitor leitor) {
         return historicoEmprestimos.get(leitor);
@@ -68,7 +66,7 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
     public List<Emprestimo> getEmprestimosAtivos(Leitor leitor) {
         List<Emprestimo> emprestimosAtivos = new ArrayList<>();
         List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
-        if (emprestimosDoLeitor == null) {
+        if (emprestimosDoLeitor != null) {
             for (Emprestimo emprestimo : emprestimosDoLeitor) {
                 if (!emprestimo.isstatusEmprestimoFinalizado())
                     emprestimosAtivos.add(emprestimo);
@@ -78,15 +76,7 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
     }
 
     public int qtdEmprestimosAtivos(Leitor leitor) {
-        List<Emprestimo> emprestimosAtivos = new ArrayList<>();
-        List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
-        if (emprestimosDoLeitor == null) {
-            for (Emprestimo emprestimo : emprestimosDoLeitor) {
-                if (!emprestimo.isstatusEmprestimoFinalizado())
-                    emprestimosAtivos.add(emprestimo);
-            }
-        }
-        return emprestimosAtivos.size(); //numero de emprestimos ativos
+        return getEmprestimosAtivos(leitor).size(); //numero de emprestimos ativos
     }
 
     //Verificar se o CPF já possui cadastro como Leitor

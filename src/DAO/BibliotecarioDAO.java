@@ -45,9 +45,7 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> {
                 bibliotecarios.add(bibliotecario);
             }
         }
-        if(bibliotecarios.isEmpty()){
-            System.out.println("O sistema não possui Bibliotecarios cadastrados.");
-            return null;}
+
         return bibliotecarios;
     }
 

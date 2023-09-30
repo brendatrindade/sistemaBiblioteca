@@ -10,7 +10,7 @@ import java.util.Queue;
 public class Reserva {
     private final LivroDAO livroDAO;
     private final String titulo;
-    private boolean reservaConcluida;
+    private boolean reservaConcluida = false;
 
     public Reserva(Leitor leitor, String titulo) {
         this.livroDAO = new LivroDAO();
@@ -20,15 +20,12 @@ public class Reserva {
 
     public void reservarLivro(String titulo, Leitor leitor) {
         List<Livro> livrosPorTitulo = livroDAO.buscarLivroPorTitulo(titulo);
-
         if (livrosPorTitulo.isEmpty()) {
-            System.out.println("Titulo não localizado, não foi possível concluir a reserva");
             reservaConcluida = false;
             return;
         }
         for (Livro livro : livrosPorTitulo) {
             if (livro.isDisponibilidade()) {
-                System.out.println("O livro " + livro.getTitulo() + " ISBN: " + livro.getIsbn() + " está disponivel para emprestimo.");
                 reservaConcluida = false;
                 return;
             }
@@ -41,7 +38,10 @@ public class Reserva {
         leitoresNaFila.add(leitor);
         livroDAO.setLeitoresReservasPorTitulo(titulo, leitoresNaFila);
         reservaConcluida = true;
-        System.out.println(leitor.getNome() + ", reserva foi realizada com sucesso!");
+    }
+
+    public boolean isReservaConcluida() {
+        return reservaConcluida;
     }
 
     public String toString() {
