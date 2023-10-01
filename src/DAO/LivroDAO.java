@@ -161,8 +161,7 @@ public class LivroDAO implements DAOgenerico<Livro>{
 
     // Verificar se o acervo possui um livro - (Objeto livro)
     public boolean possuiLivro(Livro livro) {
-        boolean possui = acervo.contains(livro);
-        return possui;
+        return acervo.contains(livro);
     }
 
     public Queue<Leitor> getReservasPorTitulo(String titulo) {

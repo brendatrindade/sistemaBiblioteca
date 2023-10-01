@@ -1,20 +1,30 @@
 package Model.Usuarios;
-
 import Excecoes.Excecao;
-
+/**
+ * Superclasse Classe Usuario: Generalização de um usuário no sistema de biblioteca.
+ */
 public class Usuario {
-    private String cpf; // id do usuário
+    private String cpf; // --> id do usuário
     private String nome;
-    private boolean statusAcessoUsuario; // true = ativo, false = bloqueado
-
+    private boolean statusAcessoUsuario; // --> true = Acesso ativo | false = Acesso bloqueado
+    /**
+     * O construtor da classe Usuario é padrão.
+     */
     public Usuario() {
 
     }
-
-    // Getters e Setters
+    /**
+     * Retorna o CPF do usuário.
+     * @return String que representa o CPF (Id) do usuário.
+     */
     public String getCpf() {
         return cpf;
     }
+    /**
+     * Define o CPF do usuário.
+     * @param cpf String - CPF do usuário.
+     * @throws Excecao Se o CPF fornecido for inválido.
+     */
     public void setCpf(String cpf) throws Excecao {
         if (validaCPF(cpf)) {
             this.cpf = cpf.replaceAll("[^0-9]", "");
@@ -23,27 +33,47 @@ public class Usuario {
             throw new Excecao("CPF inválido");
         }
     }
+    /**
+     * Retorna o nome do usuário.
+     * @return String - nome do usuário.
+     */
     public String getNome() {
         return nome;
     }
+    /**
+     * Define o nome do usuário.
+     * @param nome String - nome do usuário.
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
+    /**
+     * Retorna o status do acesso do usuário.
+     * @return Booleano - indica se o usuário possui acesso
+     * true = ativo
+     * false = bloqueado.
+     */
     public boolean isStatusAcessoUsuario(){
         return statusAcessoUsuario;
     }
-
-    // Método para bloquear a conta do leitor
+    /**
+     * Bloqueia a conta do usuário.
+     */
     public void bloquearConta() {
         this.statusAcessoUsuario = false;
     }
-
-    // Método para desbloquear a conta do leitor
+    /**
+     * Desbloqueia a conta do usuário.
+     */
     public void desbloquearConta() {
         this.statusAcessoUsuario = true;
     }
 
-    // Método para validar CPF
+    /**
+     * Valida um CPF fornecido.
+     * @param cpf String - CPF a ser validado.
+     * @return Booleano - indica se o CPF é válido (true) ou inválido (false).
+     */
     private boolean validaCPF(String cpf) {
         cpf = cpf.replaceAll("[^0-9]", ""); //todos caracteres não correspondentes a um numero serao removidos
         if (cpf.length() != 11)
