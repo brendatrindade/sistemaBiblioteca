@@ -20,7 +20,7 @@ public class ReservaTeste {
     private Livro livro;
 
     @After
-    void testReservarLivro() throws Excecao {
+    void testReservarLivro() throws Excecao {;
         reserva = reservaServico.criarReserva(leitor, "Jogos Vorazes");
         boolean reservado = reserva.isReservaConcluida();
         assertTrue(reservado);
@@ -31,7 +31,7 @@ public class ReservaTeste {
         assertThrows(Excecao.class, () -> reservaServico.criarReserva(leitor, "Esse Livro Nao Existe"));
     }
 
-    @Test
+    @After
     void cancelarReserva() throws Excecao {
         reserva = reservaServico.criarReserva(leitor, "Jogos Vorazes");
         boolean cancelado = reservaServico.cancelarReserva(leitor, "Jogos Vorazes");
@@ -41,13 +41,13 @@ public class ReservaTeste {
     @BeforeEach
     void testCriaInstancias() throws Excecao {
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-        leitor = new Leitor("Brenda", "786.424.865-97", endereco, "74999823548");
-        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
-        livro.setDisponibilidade(false);
+        this.leitor = new Leitor("Brenda", "786.424.865-97", endereco, "74999823548");
         LivroDAO livroDAO = new LivroDAO();
+        this.livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
+        this.livro.setDisponibilidade(false);
         livroDAO.salvar(livro);
         LivroServico livroServico = new LivroServico(livroDAO);
-        reservaServico = new ReservaServico(livroServico);
+        this.reservaServico = new ReservaServico(livroServico);
     }
 }
 
