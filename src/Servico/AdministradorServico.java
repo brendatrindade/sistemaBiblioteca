@@ -7,6 +7,7 @@ import Excecoes.Excecao;
 import Model.Operacoes.Livro;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
+import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class AdministradorServico extends BibliotecarioServico {
     private LeitorServico leitorServico;
     private LivroServico livroServico;
 
-    public AdministradorServico(AdministradorDAO administradorDAO, BibliotecarioDAO bibliotecarioDAO, LeitorServico leitorServico, LivroServico livroServico) {
-        super(bibliotecarioDAO, leitorServico, livroServico);
+    public AdministradorServico(AdministradorDAO administradorDAO, BibliotecarioDAO bibliotecarioDAO, LeitorServico leitorServico, LivroServico livroServico, EmprestimoServico emprestimoServico) {
+        super(bibliotecarioDAO, leitorServico, livroServico, emprestimoServico);
         this.administradorDAO = administradorDAO;
         this.leitorServico = leitorServico;
         this.livroServico = livroServico;
@@ -55,14 +56,11 @@ public class AdministradorServico extends BibliotecarioServico {
         return administradorDAO.cpfOperadorEstaCadastrado(cpf);
     }
 
-    public void adicionarLeitor(Leitor leitor) {
-        leitorServico.salvarLeitor(leitor);
+    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+        leitorServico.criarLeitor(nome, cpf, endereco, telefone);
     }
     public void removerLeitor(Leitor leitor) {
         leitorServico.deletarLeitor(leitor);
-    }
-    public void cadastrarBibliotecario(String nome, String cpf, String senha) throws Excecao {
-
     }
     public void removerBibliotecario(Bibliotecario bibliotecario) {
         administradorDAO.deletar(bibliotecario);

@@ -13,11 +13,13 @@ import java.util.Map;
 
 public class LeitorServico {
     private LeitorDAO leitorDAO;
+    private EmprestimoServico emprestimoServico;
     private LivroDAO livroDAO;
 
-    public LeitorServico(LeitorDAO leitorDAO, LivroDAO livroDAO) {
+    public LeitorServico(LeitorDAO leitorDAO, LivroDAO livroDAO, EmprestimoServico emprestimoServico) {
         this.leitorDAO = leitorDAO;
         this.livroDAO = livroDAO;
+        this.emprestimoServico = emprestimoServico;
     }
 
     public Leitor criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
@@ -47,7 +49,9 @@ public class LeitorServico {
     public void adicionaHistoricoEmprestimos(Leitor leitor, Emprestimo novoEmprestimo) {
        leitorDAO.adicionaHistoricoEmprestimos(leitor, novoEmprestimo);
     }
-
+    public boolean solicitarRenovacaoEmprestimo(String titulo, Leitor leitor){
+        return emprestimoServico.renovarEmprestimo(titulo, leitor);
+    }
     public List<Emprestimo> getHistoricoEmprestimos(Leitor leitor) {
         return leitorDAO.getHistoricoEmprestimos(leitor);
     }

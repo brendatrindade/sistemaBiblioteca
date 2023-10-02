@@ -1,10 +1,16 @@
 package Model.Operacoes;
-
+/**
+ * Classe Localizacao: Representa a localização de um livro na biblioteca.
+ */
 public class Localizacao {
     private String prateleira;
     private String posicao;
 
-    // Construtor
+    /**
+     * Construtor da classe Localizacao.
+     * @param prateleira - String prateleira onde o livro está localizado.
+     * @param posicao - String posição do livro na prateleira.
+     */
     public Localizacao(String prateleira, String posicao) {
         this.prateleira = prateleira;
         this.posicao = posicao;
@@ -31,6 +37,5 @@ public class Localizacao {
     public String toString() {
         return ("\nLocalizacao: Prateleira " + prateleira + " - Posicao " + posicao + ".");
     }
-
 }
 

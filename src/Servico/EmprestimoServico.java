@@ -1,28 +1,31 @@
 package Servico;
 
+import DAO.LeitorDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
 import Model.Usuarios.Leitor;
 
+import java.util.List;
+
 
 public class EmprestimoServico {
     private LivroServico livroServico;
-    private LeitorServico leitorServico;
+    private LeitorDAO leitorDAO;
 
-    public EmprestimoServico(LivroServico livroServico, LeitorServico leitorServico) {
+    public EmprestimoServico(LivroServico livroServico, LeitorDAO leitorDAO) {
         this.livroServico = livroServico;
-        this.leitorServico = leitorServico;
+        this.leitorDAO = leitorDAO;
     }
 
     public Emprestimo criarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
         if (leitor.isStatusAcessoUsuario()) {
             if (livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == leitor || livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == null) {
-                if (leitorServico.qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
+                if (leitorDAO.qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
                     if (livro.isDisponibilidade()) {
                         livroServico.removePrimeiroDafila(livro.getTitulo());
                         Emprestimo emprestimo = new Emprestimo(livro, leitor);
-                        leitorServico.adicionaHistoricoEmprestimos(leitor, emprestimo);
+                        leitorDAO.adicionaHistoricoEmprestimos(leitor, emprestimo);
                         return emprestimo;
                     } else throw new Excecao("Livro:" + livro.getTitulo() + " indiponível para emprestimo no momento");
 
@@ -33,6 +36,18 @@ public class EmprestimoServico {
         } else throw new Excecao("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
     }
 
-
+    public boolean renovarEmprestimo(String titulo, Leitor leitor) {
+        List<Emprestimo> emprestimosAtivosLeitor = leitorDAO.getEmprestimosAtivos(leitor);
+        if (emprestimosAtivosLeitor != null) {
+            for (Emprestimo emprestimo : emprestimosAtivosLeitor) {
+                if (emprestimo.getLivro().getTitulo().equalsIgnoreCase(titulo)) {
+                    if (leitor.isStatusAcessoUsuario()) {
+                        return emprestimo.solicitarRenovacao(emprestimo);
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 }

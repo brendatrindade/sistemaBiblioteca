@@ -1,6 +1,7 @@
 package Controle;
 
 import Excecoes.Excecao;
+import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
 import Model.Operacoes.Localizacao;
 import Model.Usuarios.Bibliotecario;
@@ -24,6 +25,10 @@ public class BibliotecarioControle {
         } catch (Excecao e) {
             System.out.println(e.getMessage());
         }
+    }
+    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+        Emprestimo novoEmprestimo = bibliotecarioServico.registrarEmprestimo(livro, leitor);
+        return novoEmprestimo;
     }
 
     public void registrarNovoLivro(String titulo, String autor,String isbn,String categoria, String anoPublicacao, String editora, Localizacao localizacao){

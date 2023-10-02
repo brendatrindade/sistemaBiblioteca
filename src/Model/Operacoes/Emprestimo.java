@@ -9,6 +9,10 @@ import java.time.temporal.ChronoUnit;
  */
 public class Emprestimo {
     public static int limiteEmprestimosPorLeitor = 3;
+    public static int limiteRenovacoesPorEmprestimo = 2;
+    private int numeroDeRenovacoes = 0;
+    private LocalDate dataRenovacao1;
+    private LocalDate dataRenovacao2;
     private long periodoBloqueadoTotal;
     private Livro livro;
     private Leitor leitor;
@@ -63,10 +67,31 @@ public class Emprestimo {
     }
     /**
      * Retorna a data real de devolução do livro e finalização do empréstimo.
-     * @return LocalDate - a data real de devolução do livro.
+     * @return LocalDate - data real de devolução do livro.
      */
     public LocalDate getDataRealizadaDev() {
         return dataRealizadaDev;
+    }
+    /**
+     * Retorna a data realizada da primeira renovação do emprestimo.
+     * @return LocalDate - data da primeira renovação.
+     */
+    public LocalDate getDataRenovacao1() {
+        return dataRenovacao1;
+    }
+    /**
+     * Retorna a data realizada da segunda renovação do emprestimo.
+     * @return LocalDate - data da segunda renovação.
+     */
+    public LocalDate getDataRenovacao2() {
+        return dataRenovacao2;
+    }
+    /**
+     * Retorna a quantidade de renovações realizadas do emprestimo.
+     * @return LocalDate - quantidade de renovações.
+     */
+    public int getNumeroDeRenovacoes() {
+        return numeroDeRenovacoes;
     }
     /**
      * Verifica se o empréstimo foi finalizado.
@@ -92,6 +117,24 @@ public class Emprestimo {
         }
     }
     /**
+     * Solicita a renovação de um empréstimo.
+     * @return boolean - indica se a renovação foi concluída (true) ou nao (false).
+     */
+    public boolean solicitarRenovacao(Emprestimo emprestimo) {
+        if(!emAtraso()){
+            if (emprestimo.numeroDeRenovacoes < Emprestimo.limiteRenovacoesPorEmprestimo) {
+                emprestimo.numeroDeRenovacoes++;
+                emprestimo.dataEsperadaDev = emprestimo.dataEsperadaDev.plusDays(3); //Adiciona 3 dias no prazo de devolução
+                if (numeroDeRenovacoes == 1)
+                    emprestimo.dataRenovacao1 = LocalDate.now();
+                if (numeroDeRenovacoes == 2)
+                    emprestimo.dataRenovacao2 = LocalDate.now();
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
      * Se o Leitor devolver um livro em atraso o metodo multar será chamado para suspender seu acesso
      * @param leitor objeto Leitor - leitor que está devolvendo o livro.
      * @param periodoDeBloqueio long - período de bloqueio para o leitor.
@@ -106,7 +149,8 @@ public class Emprestimo {
     /**
      * Verifica se há atraso no empréstimo.
      * @return boolean - indica se o empréstimo está em atraso (true) ou não (false).
-     */    public boolean emAtraso() {
+     */
+    public boolean emAtraso() {
         if (statusEmprestimoFinalizado)
             return dataRealizadaDev.isAfter(dataEsperadaDev);
         else
@@ -132,7 +176,8 @@ public class Emprestimo {
         if (emprestimoRealizado) {
             return ("\n" + leitor + livro + "\nLivro Disponivel: " + livro.isDisponibilidade() +
                 "\nEmprestado: " + dataEmprestimo + " - Devolucao esperada: " + dataEsperadaDev + " - Devolvido: " + dataRealizadaDev +
-                "\nEm atraso:" + emAtraso() + " - Finalizado: " + isstatusEmprestimoFinalizado() + ".\n");
+                "\nEm atraso:" + emAtraso() + " - Finalizado: " + isstatusEmprestimoFinalizado() +
+                "\nRenovacoes: " + numeroDeRenovacoes);
         }
         return ("Emprestimo não realizado.");
     }

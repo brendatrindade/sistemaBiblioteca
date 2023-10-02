@@ -20,11 +20,12 @@ public class Sistema {
         BibliotecarioDAO bibliotecarioDAO = new BibliotecarioDAO();
         AdministradorDAO administradorDAO = new AdministradorDAO();
 
-        LeitorServico leitorServico = new LeitorServico(leitorDAO, livroDAO);
         LivroServico livroServico = new LivroServico(livroDAO);
-        BibliotecarioServico bibliotecarioServico = new BibliotecarioServico(bibliotecarioDAO,leitorServico, livroServico);
-        AdministradorServico administradorServico = new AdministradorServico(administradorDAO, bibliotecarioDAO, leitorServico,livroServico);
-        EmprestimoServico emprestimoServico = new EmprestimoServico(livroServico, leitorServico);
+        EmprestimoServico emprestimoServico = new EmprestimoServico(livroServico, leitorDAO);
+        LeitorServico leitorServico = new LeitorServico(leitorDAO, livroDAO, emprestimoServico);
+
+        BibliotecarioServico bibliotecarioServico = new BibliotecarioServico(bibliotecarioDAO,leitorServico, livroServico, emprestimoServico);
+        AdministradorServico administradorServico = new AdministradorServico(administradorDAO, bibliotecarioDAO, leitorServico,livroServico, emprestimoServico);
 
         LeitorControle leitorControle = new LeitorControle(leitorServico);
         BibliotecarioControle bibliotecarioControle = new BibliotecarioControle(bibliotecarioServico);

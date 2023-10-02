@@ -10,6 +10,7 @@ import java.util.*;
  */
 public class LivroDAO implements DAOgenerico<Livro>{
     private static List<Livro> acervo = new ArrayList<>();
+    private static Map<Leitor, Integer> renovacoesDoLeitor = new HashMap<>();
     private static Map<String, Queue<Leitor>> reservasPorTitulo = new HashMap<>();
     /**
      * Adiciona um novo livro ao acervo.
@@ -237,5 +238,10 @@ public class LivroDAO implements DAOgenerico<Livro>{
         if (reservasPorTitulo.get(titulo) != null) {
             Leitor primeiro = reservasPorTitulo.get(titulo).poll();
         }
+    }
+
+    public static void setRenovacoesDoLeitor(String titulo, Queue<Leitor> leitoresNaFila) {
+
+        LivroDAO.renovacoesDoLeitor = renovacoesDoLeitor;
     }
 }

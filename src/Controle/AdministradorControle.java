@@ -4,6 +4,7 @@ import Excecoes.Excecao;
 import Model.Operacoes.Livro;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
+import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 import Servico.AdministradorServico;
 import Servico.BibliotecarioServico;
@@ -45,14 +46,15 @@ public class AdministradorControle extends BibliotecarioControle {
         return administradorServico.cpfOperadorEstaCadastrado(cpf);
     }
 
-    public void adicionarLeitor(Leitor leitor) {
-        administradorServico.adicionarLeitor(leitor);
+    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+        administradorServico.cadastrarLeitor(nome, cpf, endereco, telefone);
     }
     public void removerLeitor(Leitor leitor) {
         administradorServico.removerLeitor(leitor);
     }
+
     public void cadastrarBibliotecario(String nome, String cpf, String senha) throws Excecao {
-        administradorServico.cadastrarBibliotecario(nome, cpf, senha);
+        administradorServico.registrarNovoBibliotecario(nome, cpf, senha);
     }
     public void removerBibliotecario(Bibliotecario bibliotecario) {
         administradorServico.removerBibliotecario(bibliotecario);

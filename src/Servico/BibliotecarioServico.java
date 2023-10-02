@@ -14,13 +14,15 @@ import java.util.Map;
 
 public class BibliotecarioServico {
     private BibliotecarioDAO bibliotecarioDAO;
+    private EmprestimoServico emprestimoServico;
     private LeitorServico leitorServico;
     private LivroServico livroServico;
 
-    public BibliotecarioServico (BibliotecarioDAO bibliotecarioDAO, LeitorServico leitorServico, LivroServico livroServico) {
+    public BibliotecarioServico (BibliotecarioDAO bibliotecarioDAO, LeitorServico leitorServico, LivroServico livroServico, EmprestimoServico emprestimoServico) {
         this.bibliotecarioDAO = bibliotecarioDAO;
         this.leitorServico = leitorServico;
         this.livroServico = livroServico;
+        this.emprestimoServico = emprestimoServico;
     }
 
     public BibliotecarioServico getBibliotecarioServico(){
@@ -56,6 +58,11 @@ public class BibliotecarioServico {
 
     public List<Bibliotecario> getBibliotecarios() {
         return bibliotecarioDAO.getBibliotecarios();
+    }
+
+    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+        Emprestimo novoEmprestimo = emprestimoServico.criarEmprestimo(livro, leitor);
+        return novoEmprestimo;
     }
 
     public void devolverLivro(Livro livro, Leitor leitor) {

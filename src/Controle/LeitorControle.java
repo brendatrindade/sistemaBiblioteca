@@ -6,6 +6,7 @@ import Model.Operacoes.Livro;
 import Model.Operacoes.Reserva;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
+import Servico.EmprestimoServico;
 import Servico.LeitorServico;
 import Servico.ReservaServico;
 
@@ -18,6 +19,7 @@ public class LeitorControle {
     public LeitorControle(LeitorServico leitorServico) {
         this.leitorServico = leitorServico;
     }
+
     public void criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
         try {
             Leitor leitor = leitorServico.criarLeitor(nome, cpf, endereco, telefone);
@@ -26,7 +28,6 @@ public class LeitorControle {
             System.out.println(e.getMessage());
         }
     }
-
     /**
      * Solicita ao sistema uma reserva para um livro.
      * @param titulo String - título do livro a ser reservado.
@@ -35,6 +36,9 @@ public class LeitorControle {
     public boolean solicitarReserva(ReservaServico reservaServico, Leitor leitor, String titulo) throws Excecao {
         Reserva reserva = reservaServico.criarReserva(leitor, titulo);
         return reserva.isReservaConcluida();
+    }
+    public boolean solicitarRenovacaoEmprestimo(String titulo, Leitor leitor){
+        return leitorServico.solicitarRenovacaoEmprestimo(titulo, leitor);
     }
     public void deletarLeitor(Leitor leitor){
         leitorServico.deletarLeitor(leitor);

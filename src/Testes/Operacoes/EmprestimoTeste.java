@@ -9,6 +9,8 @@ import Model.Usuarios.Leitor;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.Assert.*;
 public class EmprestimoTeste {
 
@@ -26,7 +28,6 @@ public class EmprestimoTeste {
     }
     @Test
     public void verificarDadosDoEmprestimo(){
-
         assertEquals(livro, emprestimo.getLivro());
         assertEquals(leitor ,emprestimo.getLeitor());
         assertFalse(emprestimo.isstatusEmprestimoFinalizado());
@@ -36,6 +37,50 @@ public class EmprestimoTeste {
         emprestimo.registrarDevolucao();
         assertTrue(emprestimo.isstatusEmprestimoFinalizado());
         assertTrue(livro.isDisponibilidade());
+    }
+    @Test
+    public void testRenovarEmprestimo() {
+        LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
+        boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
+        LocalDate dataEsperadaPosRenovacao = emprestimo.getDataEsperadaDev();
+
+        assertTrue(renovado);
+        assertEquals(LocalDate.now(), emprestimo.getDataRenovacao1());
+        assertEquals(1, emprestimo.getNumeroDeRenovacoes());
+        assertEquals(dataEsperadaAnterior.plusDays(3), dataEsperadaPosRenovacao);
+    }
+
+    @Test
+    public void testRenovarSegundaVezEmprestimo() {
+        boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
+        LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
+        boolean renovado2 = emprestimo.solicitarRenovacao(emprestimo);
+
+        LocalDate dataEsperadaPosRenovacao = emprestimo.getDataEsperadaDev();
+
+        assertTrue(renovado);
+        assertTrue(renovado2);
+        assertEquals(LocalDate.now(), emprestimo.getDataRenovacao1());
+        assertEquals(LocalDate.now(), emprestimo.getDataRenovacao2());
+        assertEquals(2, emprestimo.getNumeroDeRenovacoes());
+        assertEquals(dataEsperadaAnterior.plusDays(3), dataEsperadaPosRenovacao);
+    }
+
+    @Test
+    public void testRenovarTerceiraVezEmprestimo() {
+        boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
+        LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
+        boolean renovado2 = emprestimo.solicitarRenovacao(emprestimo);
+        boolean renovado3 = emprestimo.solicitarRenovacao(emprestimo);
+        LocalDate dataEsperadaPosRenovacao = emprestimo.getDataEsperadaDev();
+
+        assertTrue(renovado);
+        assertTrue(renovado2);
+        assertFalse(renovado3);
+        assertEquals(LocalDate.now(), emprestimo.getDataRenovacao1());
+        assertEquals(LocalDate.now(), emprestimo.getDataRenovacao2());
+        assertEquals(2, emprestimo.getNumeroDeRenovacoes());
+        assertEquals(dataEsperadaAnterior.plusDays(3), dataEsperadaPosRenovacao);
     }
 
 }
