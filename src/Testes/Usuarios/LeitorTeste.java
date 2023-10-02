@@ -26,10 +26,13 @@ public class LeitorTeste {
     public void CpfInvalido() {
         assertThrows(Excecao.class, () -> new Leitor("Brenda", "12365425807", endereco, "74999823548"));
     }
+
     @Test
-    public void SolicitarReserva() {
-        Boolean reserva = leitor.solicitarReserva("Titulo Inexistente");
-        assertFalse(reserva);
+    void alterarEndereco() {
+        Endereco novoEndereco = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
+        leitor.alterarEndereco("Nova Rua", "1001", "Fortaleza", "Ceara");
+        assertEquals(novoEndereco.toString(), leitor.getEndereco().toString());
     }
 }
+
 

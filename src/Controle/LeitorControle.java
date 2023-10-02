@@ -3,9 +3,11 @@ package Controle;
 import Excecoes.Excecao;
 import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Reserva;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 import Servico.LeitorServico;
+import Servico.ReservaServico;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,15 @@ public class LeitorControle {
         }
     }
 
+    /**
+     * Solicita ao sistema uma reserva para um livro.
+     * @param titulo String - título do livro a ser reservado.
+     * @return Booleano - indica se a reserva foi concluída (true) ou não (false).
+     */
+    public boolean solicitarReserva(ReservaServico reservaServico, Leitor leitor, String titulo) throws Excecao {
+        Reserva reserva = reservaServico.criarReserva(leitor, titulo);
+        return reserva.isReservaConcluida();
+    }
     public void deletarLeitor(Leitor leitor){
         leitorServico.deletarLeitor(leitor);
     }

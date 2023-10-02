@@ -52,7 +52,6 @@ public class BibliotecarioControle {
     public void devolverLivroPorTitulo(String titulo, Leitor leitor) {
         bibliotecarioServico.devolverLivroPorTitulo(titulo, leitor);
     }
-
     public Map<String, List<Livro>> pesquisarLivros(String texto) {
         return bibliotecarioServico.pesquisarLivros(texto);
     }

@@ -13,8 +13,13 @@ public class ReservaControle {
         this.reservaServico = new ReservaServico(livroServico);
     }
 
-    public Reserva criarReserva(Leitor leitor, String titulo) throws Excecao {
-        return reservaServico.criarReserva(leitor, titulo);
+    public void criarReserva(Leitor leitor, String titulo) throws Excecao {
+        try {
+            reservaServico.criarReserva(leitor, titulo);
+        }
+        catch (Excecao e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void cancelarReserva(Leitor leitor, String titulo) throws Excecao{

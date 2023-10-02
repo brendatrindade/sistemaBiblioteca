@@ -41,18 +41,19 @@ public class ReservaServico {
         else throw new Excecao("Ops! " + leitor.getNome() + " nao pode reservar livros no momento.");
     }
 
-    public void cancelarReserva(Leitor leitor, String titulo) throws Excecao{
+    public boolean cancelarReserva(Leitor leitor, String titulo) throws Excecao{
         Queue<Leitor> leitoresNaFila = livroServico.getReservasPorTitulo(titulo);
         if (leitoresNaFila != null) {
             for (Leitor leitorNaFila : leitoresNaFila) {
                 if (leitorNaFila == leitor) {
                     leitoresNaFila.remove(leitor);
                     livroServico.setLeitoresReservasPorTitulo(titulo, leitoresNaFila);
-                    return;
+                    return true;
                 }
             }
         }
-        else throw new Excecao("Ops! " + leitor.getNome() + " esta na fila de reserva do Livro " + titulo + ".");
+        else throw new Excecao("Ops! " + leitor.getNome() + " nao esta na fila de reserva do Livro " + titulo + ".");
+        return false;
     }
 
     public int getNumeroDeLeitoresNaFila(String titulo) {

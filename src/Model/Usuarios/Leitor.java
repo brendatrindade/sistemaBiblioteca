@@ -54,15 +54,6 @@ public class Leitor extends Usuario {
         this.endereco.setEstado(estado);
     }
     /**
-     * Solicita ao sistema uma reserva para um livro.
-     * @param titulo String - título do livro a ser reservado.
-     * @return Booleano - indica se a reserva foi concluída (true) ou não (false).
-     */
-    public boolean solicitarReserva(String titulo) {
-        Reserva reserva = new Reserva(this, titulo);
-        return reserva.isReservaConcluida();
-    }
-    /**
      * Retorna a representação em String do objeto Leitor.
      * @return String - representa o leitor.
      */
