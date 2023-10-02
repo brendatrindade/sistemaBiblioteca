@@ -1,37 +1,46 @@
 package DAO;
 
 import Excecoes.Excecao;
-import Model.Usuarios.Bibliotecario;
 import Model.Usuarios.Leitor;
 import Model.Operacoes.Emprestimo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
+/**
+ * Classe LeitorDAO: implementa DAOgenerico para o objeto Leitor.
+ * Ela contém métodos para gerenciamento dos leitores cadastrados na biblioteca.
+ */
 public class LeitorDAO implements DAOgenerico<Leitor> {
     private static List<Leitor> leitores = new ArrayList<>();
     private static Map<Leitor,List<Emprestimo> > historicoEmprestimos = new HashMap<>();
-
+    /**
+     * Salva um novo leitor na lista de leitores.
+     * @param c - leitor a ser salvo.
+     */
     @Override
     public void salvar(Leitor c) {
         leitores.add(c);
     }
-
     /**
-     * Deleta um Leitor
-     * @param leitor
+     * Deleta um leitor da lista de leitores.
+     * @param leitor - leitor a ser deletado.
      */
     public void deletar(Leitor leitor) {
         leitores.remove(leitor);
     }
-
+    /**
+     * Deleta todos os leitores da lista de leitores.
+     */
     @Override
     public void deletarTodos() {
         leitores = new ArrayList<>();
     }
-
+    /**
+     * Este método busca um leitor pelo id - CPF.
+     * @param id - CPF do leitor a ser buscado.
+     * @return O leitor encontrado ou null se o CPF não possuir cadastro.
+     */
     @Override
     public Leitor buscarPorId(String id) {
         if(leitores != null){
@@ -42,14 +51,18 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
         }
         return null;
     }
-
     /**
-     * Retorna todos os Leitores
+     * Retorna todos os Leitores cadastrados.
+     * @return Lista com todos os leitores.
      */
     public List<Leitor> getListaLeitores() {
         return leitores;
     }
-
+    /**
+     * Adiciona um empréstimo ao histórico de empréstimos de um leitor.
+     * @param leitor - leitor que fez o empréstimo.
+     * @param novoEmprestimo - empréstimo a ser adicionado ao seu histórico.
+     */
     public void adicionaHistoricoEmprestimos(Leitor leitor, Emprestimo novoEmprestimo) {
         List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
 
@@ -59,10 +72,19 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
         emprestimosDoLeitor.add(novoEmprestimo);
         historicoEmprestimos.put(leitor, emprestimosDoLeitor);
     }
+    /**
+     * Retorna o histórico de empréstimos realizados por um leitor.
+     * @param leitor - leitor cujo histórico de empréstimos será retornado.
+     * @return Lista de empréstimos feitos pelo leitor.
+     */
     public List<Emprestimo> getHistoricoEmprestimos(Leitor leitor) {
         return historicoEmprestimos.get(leitor);
     }
-
+    /**
+     * Retorna os empréstimos ativos de um leitor.
+     * @param leitor - leitor cujos empréstimos ativos serão retornados.
+     * @return Lista de empréstimos ativos feitos pelo leitor.
+     */
     public List<Emprestimo> getEmprestimosAtivos(Leitor leitor) {
         List<Emprestimo> emprestimosAtivos = new ArrayList<>();
         List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
@@ -74,12 +96,20 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
         }
         return emprestimosAtivos;
     }
-
+    /**
+     * Retorna a quantidade de empréstimos ativos de um leitor.
+     * @param leitor - leitor cuja quantidade de empréstimos ativos será retornada.
+     * @return Número de empréstimos ativos do leitor.
+     */
     public int qtdEmprestimosAtivos(Leitor leitor) {
         return getEmprestimosAtivos(leitor).size(); //numero de emprestimos ativos
     }
-
-    //Verificar se o CPF já possui cadastro como Leitor
+    /**
+     * Verifica se o CPF de um leitor já está cadastrado.
+     * @param cpf - CPF a ser verificado.
+     * @return true se o CPF já estiver cadastrado, false caso contrário.
+     * @throws Excecao Se o CPF já estiver cadastrado, a exceção é lançada.
+     */
     public boolean cpfLeitorEstaCadastrado(String cpf) throws Excecao {
         if (leitores != null) {
             for (Leitor leitor : leitores) {
@@ -88,5 +118,4 @@ public class LeitorDAO implements DAOgenerico<Leitor> {
             }
         } return false;
     }
-
 }

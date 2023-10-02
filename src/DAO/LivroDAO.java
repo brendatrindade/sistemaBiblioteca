@@ -4,15 +4,16 @@ import Model.Operacoes.Livro;
 import Model.Usuarios.Leitor;
 
 import java.util.*;
-
+/**
+ * Classe LivroDAO: implementa a interface DAOgenerico para o objeto Livro.
+ * Contém métodos para gerenciamento dos livros no acervo da biblioteca.
+ */
 public class LivroDAO implements DAOgenerico<Livro>{
     private static List<Livro> acervo = new ArrayList<>();
     private static Map<String, Queue<Leitor>> reservasPorTitulo = new HashMap<>();
-
     /**
-     * Adiciona novo Livro ao acervo
-     *
-     * @param c
+     * Adiciona um novo livro ao acervo.
+     * @param c - livro a ser adicionado.
      */
     @Override
     public void salvar(Livro c) {
@@ -21,9 +22,8 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
     }
     /**
-     * Deleta um Livro
-     *
-     * @param c
+     * Deleta um livro do acervo.
+     * @param c - livro a ser deletado.
      */
     @Override
     public void deletar(Livro c) {
@@ -36,21 +36,23 @@ public class LivroDAO implements DAOgenerico<Livro>{
     public void deletarTodos() {
         acervo = new ArrayList<>();
     }
-
     @Override
     public Livro buscarPorId(String id) {
         //Livro possui metodos de busca especificos para seus atributos
         return null;
     }
-
     /**
-     * Retorna todos os Livros do acervo
+     * Retorna todos os livros do acervo.
+     * @return Lista contendo todos os livros do acervo.
      */
     public List<Livro> getAcervo() {
         return acervo;
     }
-
-    //Metodos para atualizar informações do livro
+    /**
+     * Métodos para atualizar um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param. novoDado - String como o dado a ser alterado no livro
+     */
     public void atualizarTituloLivro(Livro livro, String novoTitulo) {
         livro.setTitulo(novoTitulo);
     }
@@ -70,7 +72,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         livro.setAnoPublicacao(anoPublicacao);
     }
 
-    //Metodos para pesquisar livros no acervo
+    /**
+     * Métodos para atualizar um livro do acervo.
+     * @param. dado de busca - String a ser utilizada na indentificação dos livros para busca
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorTitulo(String titulo){
         List<Livro> livroPorTitulo = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -125,7 +131,12 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorEditora;
     }
-
+    /**
+     * Este método pesquisa livros no acervo com base em um texto fornecido.
+     * A pesquisa é realizada nos campos de título, autor, ISBN, categoria e ano de publicação.
+     * @param texto O texto a ser usado na pesquisa.
+     * @return Um mapa contendo listas de livros que correspondem ao texto em seus respectivos campos.
+     */
     public Map<String, List<Livro>> pesquisarLivros(String texto) {
         Map <String, List<Livro>> resultados = new HashMap<>();
         List<Livro> titulos = new ArrayList<>();
@@ -158,26 +169,48 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return resultados;
     }
-
-    // Verificar se o acervo possui um livro - (Objeto livro)
+    /**
+     * Verifica se um livro específico está no acervo.
+     * @param livro - Livro a ser verificado.
+     * @return true se o livro estiver no acervo, false caso contrário.
+     */
     public boolean possuiLivro(Livro livro) {
         return acervo.contains(livro);
     }
-
+    /**
+     * Este método retorna a fila de reservas para um livro específico.
+     * @param titulo O título do livro.
+     * @return A fila de leitores que reservaram o livro.
+     */
     public Queue<Leitor> getReservasPorTitulo(String titulo) {
         titulo = titulo.toLowerCase();
         return reservasPorTitulo.get(titulo);
     }
+    /**
+     * Define a fila de reservas para um titulo de livro específico.
+     * @param titulo - título do livro.
+     * @param leitoresNaFila A fila de leitores que reservaram o livro.
+     */
     public void setLeitoresReservasPorTitulo(String titulo, Queue<Leitor> leitoresNaFila) {
         titulo = titulo.toLowerCase();
         reservasPorTitulo.put(titulo, leitoresNaFila);
     }
+    /**
+     * Verifica quem é o primeiro leitor da fila de reserva de um titulo de livro específico.
+     * @param titulo - título do livro.
+     * @return O leitor que está no início da fila.
+     */
     public Leitor verificaPrimeiroDaFila(String titulo){
         titulo = titulo.toLowerCase();
         if(reservasPorTitulo.get(titulo) != null)
             return reservasPorTitulo.get(titulo).peek();
         return null;
     }
+    /**
+     * Retorna os nomes dos leitores na fila de reserva de um titulo de livro específico.
+     * @param titulo - título do livro.
+     * @return Uma lista com os nomes dos leitores na fila.
+     */
     public List<String> nomesNaFila(String titulo){
         titulo = titulo.toLowerCase();
         List<String> filaDeLeitoresPorTitulo = new ArrayList<>();
@@ -187,15 +220,23 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return filaDeLeitoresPorTitulo;
     }
+    /**
+     * Retorna a quantidade de leitores na fila de reserva de um titulo de livro específico.
+     * @param titulo - título do livro.
+     * @return A quantidade de leitores na fila.
+     */
     public int qtdLeitoresNaFila(String titulo){
         titulo = titulo.toLowerCase();
         return reservasPorTitulo.get(titulo).size();
     }
+    /**
+     * Remove o primeiro leitor da fila de reserva de um titulo de livro específico.
+     * @param titulo - título do livro reservado.
+     */
     public void removePrimeiroDafila(String titulo){
         titulo = titulo.toLowerCase();
         if (reservasPorTitulo.get(titulo) != null) {
             Leitor primeiro = reservasPorTitulo.get(titulo).poll();
         }
     }
-
 }

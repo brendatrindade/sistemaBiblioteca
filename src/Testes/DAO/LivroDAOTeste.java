@@ -1,19 +1,20 @@
 package Testes.DAO;
+
 import DAO.LivroDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
 
 public class LivroDAOTeste {
     private LivroDAO livroDAO;
@@ -21,8 +22,8 @@ public class LivroDAOTeste {
     private Leitor leitor;
     private Leitor leitor2;
 
-    @BeforeEach
-    void iniciarDAO() throws Excecao {
+    @Before
+    public void iniciarDAO() throws Excecao {
         livroDAO = new LivroDAO();
         livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
@@ -31,60 +32,63 @@ public class LivroDAOTeste {
     }
 
     @Test
-    void salvarLivro() {
-        livroDAO.salvar(livro);
-        assertTrue(livroDAO.getAcervo().contains(livro));
-    }
-    @Before
     public void salvarLivroDuplicado() {
+        livroDAO.deletarTodos();
+        livroDAO.salvar(livro);
         livroDAO.salvar(livro);
         livroDAO.salvar(livro);
         livroDAO.salvar(livro);
         assertEquals(1, livroDAO.getAcervo().size());
     }
     @Test
-    void deletarLivro() {
+    public void salvarLivro() {
+        livroDAO.salvar(livro);
+        assertTrue(livroDAO.getAcervo().contains(livro));
+    }
+    @Test
+    public void deletarLivro() {
         livroDAO.salvar(livro);
         livroDAO.deletar(livro);
+
         assertFalse(livroDAO.getAcervo().contains(livro));
     }
 
     @Test
-    void deletarTodosOsLivro() {
+    public void deletarTodosOsLivro() {
         livroDAO.salvar(livro);
         livroDAO.deletarTodos();
         assertTrue(livroDAO.getAcervo().isEmpty());
     }
 
     @Test
-    void atualizarTituloLivro() {
+    public void atualizarTituloLivro() {
         livroDAO.atualizarTituloLivro(livro, "Novo Titulo");
         assertEquals("Novo Titulo", livro.getTitulo());
     }
 
 
     @Test
-    void buscarLivroPorTitulo() {
+    public void buscarLivroPorTitulo() {
         livroDAO.salvar(livro);
         List<Livro> livros = livroDAO.buscarLivroPorTitulo(livro.getTitulo());
         assertTrue(livros.contains(livro));
     }
 
     @Test
-    void pesquisarLivros() {
+    public void pesquisarLivros() {
         livroDAO.salvar(livro);
         Map<String, List<Livro>> resultados = livroDAO.pesquisarLivros(livro.getTitulo());
         assertTrue(resultados.get("\nTitulos: ").contains(livro));
     }
 
     @Test
-    void AcervoPossuiLivro() {
+    public void AcervoPossuiLivro() {
         livroDAO.salvar(livro);
         assertTrue(livroDAO.possuiLivro(livro));
     }
 
     @Test
-    void getReservasPorTitulo() {
+    public void getReservasPorTitulo() {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         livroDAO.setLeitoresReservasPorTitulo(livro.getTitulo(), leitores);
@@ -93,7 +97,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    void verificaPrimeiroDaFila() {
+    public void verificaPrimeiroDaFila() {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -102,7 +106,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    void nomesNaFila() {
+    public void nomesNaFila() {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -112,7 +116,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    void qtdLeitoresNaFila() {
+    public void qtdLeitoresNaFila() {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -121,7 +125,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    void removePrimeiroDafila() {
+    public void removePrimeiroDafila() {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);

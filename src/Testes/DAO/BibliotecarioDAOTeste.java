@@ -1,49 +1,51 @@
 package Testes.DAO;
+
 import DAO.BibliotecarioDAO;
 import Excecoes.Excecao;
 import Model.Usuarios.Bibliotecario;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 public class BibliotecarioDAOTeste {
 
    private BibliotecarioDAO bibliotecarioDAO;
    private Bibliotecario bibliotecario;
 
-    @BeforeEach
-    void iniciarDAO() throws Excecao {
+    @Before
+    public void iniciarDAO() throws Excecao {
         bibliotecarioDAO = new BibliotecarioDAO();
         bibliotecario = new Bibliotecario("Lisa", "123.456.789-09", "senha123");
     }
 
     @Test
-    void salvarBibliotecario() {
+    public void salvarBibliotecario() {
         bibliotecarioDAO.salvar(bibliotecario);
         assertTrue(bibliotecarioDAO.getBibliotecarios().contains(bibliotecario));
     }
 
     @Test
-    void deletarBibliotecario() {
+    public void deletarBibliotecario() {
         bibliotecarioDAO.salvar(bibliotecario);
         bibliotecarioDAO.deletar(bibliotecario);
         assertFalse(bibliotecarioDAO.getBibliotecarios().contains(bibliotecario));
     }
 
     @Test
-    void deletarTodosOsBibliotecario() {
+    public void deletarTodosOsBibliotecario() {
         bibliotecarioDAO.salvar(bibliotecario);
         bibliotecarioDAO.deletarTodos();
         assertTrue(bibliotecarioDAO.getBibliotecarios().isEmpty());
     }
 
     @Test
-    void buscarBibliotecarioPorId() {
+    public void buscarBibliotecarioPorId() {
         bibliotecarioDAO.salvar(bibliotecario);
         assertEquals(bibliotecario, bibliotecarioDAO.buscarPorId(bibliotecario.getCpf()));
     }
 
     @Test
-    void cpfOperadorEstaCadastrado() {
+    public void cpfOperadorEstaCadastrado() {
         assertThrows(Excecao.class, () -> {
             bibliotecarioDAO.salvar(bibliotecario);
             bibliotecarioDAO.cpfOperadorEstaCadastrado(bibliotecario.getCpf());

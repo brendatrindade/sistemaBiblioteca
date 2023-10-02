@@ -8,12 +8,13 @@ import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
 public class IntegracaoTeste {
     private Leitor leitor;
     private Bibliotecario bibliotecario;
@@ -22,8 +23,8 @@ public class IntegracaoTeste {
     private Emprestimo emprestimo;
     private Reserva reserva;
 
-    @BeforeEach
-    void testCriarInstancias() throws Excecao {
+    @Before
+    public void testCriarInstancias() throws Excecao {
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
         bibliotecario = new Bibliotecario("Pedro", "153.853.595-56", "senha456");
@@ -32,7 +33,7 @@ public class IntegracaoTeste {
     }
 
     @Test
-    void testCriarEmprestimo() {
+    public void testCriarEmprestimo() {
         emprestimo = new Emprestimo(livro, leitor);
 
         assertEquals(leitor, emprestimo.getLeitor());
@@ -41,7 +42,7 @@ public class IntegracaoTeste {
         assertFalse(emprestimo.isstatusEmprestimoFinalizado());
     }
     @Test
-    void testFinalizarEmprestimo() {
+    public void testFinalizarEmprestimo() {
         emprestimo = new Emprestimo(livro, leitor);
         emprestimo.registrarDevolucao();
 
@@ -51,14 +52,14 @@ public class IntegracaoTeste {
     }
 
     @Test
-    void testBloquearBibliotecario() {
+    public void testBloquearBibliotecario() {
         bibliotecario.desbloquearConta();
         administrador.bloquearBibliotecario(bibliotecario);
 
         assertFalse(bibliotecario.isStatusAcessoUsuario());
     }
     @Test
-    void testDesbloquearBibliotecario() {
+    public void testDesbloquearBibliotecario() {
         bibliotecario.bloquearConta();
         administrador.desbloquerBibliotecario(bibliotecario);
 
@@ -66,14 +67,14 @@ public class IntegracaoTeste {
     }
 
     @Test
-    void testBloquearLeitor() {
+    public void testBloquearLeitor() {
         leitor.desbloquearConta();
         administrador.bloquearLeitor(leitor);
 
         assertFalse(leitor.isStatusAcessoUsuario());
     }
     @Test
-    void testDesbloquearLeitor() {
+    public void testDesbloquearLeitor() {
         leitor.bloquearConta();
         administrador.desbloquearLeitor(leitor);
 
