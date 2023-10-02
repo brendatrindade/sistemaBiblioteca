@@ -3,6 +3,7 @@ package Testes.Operacoes;
 import Excecoes.Excecao;
 import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 import org.junit.Before;
@@ -18,10 +19,10 @@ public class EmprestimoTeste {
     @Before
     public void testCriarEmprestimo() throws Excecao {
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-        livro = new Livro("J. Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
+        Localizacao localizacao = new Localizacao("C", "24");
+        livro = new Livro("J. Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
         leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
         emprestimo = new Emprestimo(livro, leitor);
-
     }
     @Test
     public void verificarDadosDoEmprestimo(){

@@ -1,6 +1,7 @@
 package Testes.Operacoes;
 
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,10 +9,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class LivroTeste {
+    private Localizacao localizacao;
     private Livro livro;
     @Before
     public void testCriarLivro() {
-        livro = new Livro("Juegos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
+        localizacao = new Localizacao("A", "51");
+        livro = new Livro("Juegos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+    }
+
+    @Test
+    public void testLocalizacaoDoLivro(){
+        Localizacao minhaLocalizacao = livro.getLocalizacao();
+        assertEquals("A", minhaLocalizacao.getPrateleira());
+        assertEquals("51", minhaLocalizacao.getPosicao());
+    }
+
+    @Test
+    public void testAlterarLocalizacaoDoLivro(){
+        livro.setLocalizacao("H", "37");
+        assertEquals("H", livro.getLocalizacao().getPrateleira());
+        assertEquals("37", livro.getLocalizacao().getPosicao());
     }
 
     @Test

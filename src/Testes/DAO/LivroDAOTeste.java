@@ -3,6 +3,7 @@ package Testes.DAO;
 import DAO.LivroDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Endereco;
 import Model.Usuarios.Leitor;
 import org.junit.Before;
@@ -25,7 +26,8 @@ public class LivroDAOTeste {
     @Before
     public void iniciarDAO() throws Excecao {
         livroDAO = new LivroDAO();
-        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores");
+        Localizacao localizacao = new Localizacao("F", "81");
+        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
         leitor2 = new Leitor("Rafaela", "624.673.930-03", endereco, "75999459548");

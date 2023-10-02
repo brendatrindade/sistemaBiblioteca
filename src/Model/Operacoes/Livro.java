@@ -9,6 +9,7 @@ public class Livro {
     private String categoria;
     private String anoPublicacao;
     private String editora;
+    private Localizacao localizacao;
     private boolean disponibilidade;
     private boolean livroCadastrado = false;
     /**
@@ -20,13 +21,14 @@ public class Livro {
      * @param anoPublicacao String - ano de publicação do livro.
      * @param editora String - editora do livro.
      */
-    public Livro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora) {
+    public Livro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora, Localizacao localizacao) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
         this.categoria = categoria;
         this.anoPublicacao = anoPublicacao;
         this.editora = editora;
+        this.localizacao = localizacao;
         this.disponibilidade = true;
         this.livroCadastrado = true;
     }
@@ -74,6 +76,14 @@ public class Livro {
         return categoria;
     }
     /**
+     * Retorna a localização do livro na biblioteca.
+     *
+     * @return String - Localização do livro.
+     */
+    public Localizacao getLocalizacao() {
+        return localizacao;
+    }
+    /**
      * Define o autor do livro.
      * @param autor String - novo autor do livro.
      */
@@ -116,6 +126,15 @@ public class Livro {
         this.isbn = isbn;
     }
     /**
+     * Define a localização do livro na biblioteca.
+     * @param prateleira String - nova prateleira do livro.
+     * @param posicao String - nova posicao do livro.
+     */
+    public void setLocalizacao(String prateleira, String posicao) {
+        localizacao.setPrateleira(prateleira);
+        localizacao.setPosicao(posicao);
+    }
+    /**
      * Define a disponibilidade do livro.
      * @param disponibilidade boolean - nova disponibilidade do livro (true para disponível, false para indisponível).
      */
@@ -134,11 +153,17 @@ public class Livro {
      * @return String - representa o livro.
      */
     public String toString() {
+        String disp = "";
+        if (disponibilidade)
+            disp = "Disponivel";
+        else
+            disp = "Indisponivel";
         if (livroCadastrado) {
+
             return ("\n"
                     + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
-                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora + " ." +
-                    "\n");
+                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora
+                    + localizacao + " - Status: " + disp);
         }
         return ("Livro não cadastrado");
     }

@@ -2,6 +2,7 @@ package Controle;
 
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Bibliotecario;
 import Model.Usuarios.Leitor;
 import Servico.BibliotecarioServico;
@@ -25,8 +26,8 @@ public class BibliotecarioControle {
         }
     }
 
-    public void registrarNovoLivro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora){
-        bibliotecarioServico.registrarNovoLivro(titulo, autor, isbn, categoria, anoPublicacao, editora);
+    public void registrarNovoLivro(String titulo, String autor,String isbn,String categoria, String anoPublicacao, String editora, Localizacao localizacao){
+        bibliotecarioServico.registrarNovoLivro(titulo, autor, isbn, categoria, anoPublicacao, editora, localizacao);
     }
 
     public void salvarBibliotecario(Bibliotecario bibliotecario){
@@ -55,7 +56,6 @@ public class BibliotecarioControle {
     public Map<String, List<Livro>> pesquisarLivros(String texto) {
         return bibliotecarioServico.pesquisarLivros(texto);
     }
-
     public boolean cpfOperadorEstaCadastrado(String cpf) throws Excecao {
         return bibliotecarioServico.cpfOperadorEstaCadastrado(cpf);
     }

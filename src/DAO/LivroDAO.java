@@ -71,7 +71,6 @@ public class LivroDAO implements DAOgenerico<Livro>{
     public void atualizarAnoPublicacaoLivro(Livro livro, String anoPublicacao) {
         livro.setAnoPublicacao(anoPublicacao);
     }
-
     /**
      * Métodos para atualizar um livro do acervo.
      * @param. dado de busca - String a ser utilizada na indentificação dos livros para busca

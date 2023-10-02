@@ -1,6 +1,7 @@
 package Controle;
 
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Leitor;
 import Servico.LivroServico;
 
@@ -13,8 +14,8 @@ public class LivroControle {
     public LivroControle(LivroServico livroServico) {
         this.livroServico = livroServico;
     }
-    public void criarLivro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora){
-        Livro livro = livroServico.criarLivro(titulo, autor, isbn, categoria, anoPublicacao, editora);
+    public void criarLivro(String titulo, String autor,String isbn,String categoria, String anoPublicacao, String editora, Localizacao localizacao){
+        Livro livro = livroServico.criarLivro(titulo, autor, isbn, categoria, anoPublicacao, editora, localizacao);
     }
     public void deleteLivro(Livro livro) {
         livroServico.deletarLivro(livro);

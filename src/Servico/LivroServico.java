@@ -3,6 +3,7 @@ package Servico;
 import DAO.LivroDAO;
 
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Leitor;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class LivroServico {
         this.livroDAO = livroDAO;
     }
 
-    public Livro criarLivro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora) {
-        Livro livro = new Livro(titulo, autor, isbn, categoria, anoPublicacao, editora);
+    public Livro criarLivro(String titulo, String autor,String isbn,String categoria, String anoPublicacao, String editora, Localizacao localizacao) {
+        Livro livro = new Livro(titulo, autor, isbn, categoria, anoPublicacao, editora, localizacao);
         salvarLivro(livro);
         return livro;
     }
@@ -32,7 +33,6 @@ public class LivroServico {
     public List<Livro> getAcervo(){
         return livroDAO.getAcervo();
     }
-
     public void atualizarTituloLivro(Livro livro, String novoTitulo) {
         livroDAO.atualizarTituloLivro(livro, novoTitulo);
     }
@@ -51,6 +51,7 @@ public class LivroServico {
     public void atualizarAnoPublicacaoLivro(Livro livro, String anoPublicacao) {
         livroDAO.atualizarAnoPublicacaoLivro(livro, anoPublicacao);
     }
+
 
     public List<Livro> buscarLivroPorTitulo(String titulo){
         return livroDAO.buscarLivroPorTitulo(titulo);

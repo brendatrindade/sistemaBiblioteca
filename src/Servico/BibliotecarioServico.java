@@ -5,6 +5,7 @@ import DAO.LivroDAO;
 import Excecoes.Excecao;
 import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Usuarios.Bibliotecario;
 import Model.Usuarios.Leitor;
 
@@ -33,8 +34,8 @@ public class BibliotecarioServico {
         salvarBibliotecario(bibliotecario);
         return bibliotecario;
     }
-    public void registrarNovoLivro(String titulo, String autor,String isbn,String categoria,String anoPublicacao, String editora){
-        livroServico.criarLivro(titulo, autor, isbn, categoria, anoPublicacao, editora);
+    public void registrarNovoLivro(String titulo, String autor,String isbn,String categoria, String anoPublicacao, String editora, Localizacao localizacao){
+        livroServico.criarLivro(titulo, autor, isbn, categoria, anoPublicacao, editora, localizacao);
     }
 
     public void salvarBibliotecario(Bibliotecario bibliotecario) {

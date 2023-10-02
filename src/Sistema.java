@@ -1,8 +1,11 @@
 
+//Minha bagunça, desconsiderar :)
+
 import Controle.*;
 import DAO.*;
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
+import Model.Operacoes.Localizacao;
 import Model.Operacoes.Reserva;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
@@ -37,16 +40,15 @@ public class Sistema {
         Livro livro2 = new Livro("Joana Aquactor", "Aquarela", "124", "romance", "2000", "edita tudo");
         */
 
-        livroControle.criarLivro("Joana Aquariana", "Aquarela", "123", "romance", "2000", "edita tudo");
-        bibliotecarioControle.registrarNovoLivro("Joana Aquactor", "Aquarela", "12221", "romance", "2000", "edita tudo");
+        livroControle.criarLivro("Joana Aquariana", "Aquarela", "123", "romance", "2000", "edita tudo", new Localizacao("J", "27"));
+        bibliotecarioControle.registrarNovoLivro("Joana Aquactor", "Aquarela", "12221", "romance", "2000", "edita tudo", new Localizacao("J", "29"));
 
         administradorControle.criarBibliotecario("Brenda", "05999254507", "123");
         administradorControle.criarAdministrador("Brenda", "05999351545", "123");
 
+        System.out.println(leitorControle.pesquisarLivros("\n aqua \t "));
 
-        //System.out.println(leitorControle.pesquisarLivros("\n aqua \t c  "));
-
-        System.out.println( administradorControle.getAdministradores() );
+        //System.out.println( administradorControle.getAdministradores());
 
         //Emprestimo emprestimo1 = new Emprestimo(livro1, leitor1);
 
