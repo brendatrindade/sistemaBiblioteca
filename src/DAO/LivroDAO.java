@@ -10,7 +10,6 @@ import java.util.*;
  */
 public class LivroDAO implements DAOgenerico<Livro>{
     private static List<Livro> acervo = new ArrayList<>();
-    private static Map<Leitor, Integer> renovacoesDoLeitor = new HashMap<>();
     private static Map<String, Queue<Leitor>> reservasPorTitulo = new HashMap<>();
     /**
      * Adiciona um novo livro ao acervo.
@@ -50,31 +49,56 @@ public class LivroDAO implements DAOgenerico<Livro>{
         return acervo;
     }
     /**
-     * Métodos para atualizar um livro do acervo.
+     * Atualiza um livro do acervo.
      * @param livro - Livro a ser alterado
-     * @param. novoDado - String como o dado a ser alterado no livro
+     * @param novoTitulo - String como o novo dado a ser alterado no livro
      */
     public void atualizarTituloLivro(Livro livro, String novoTitulo) {
         livro.setTitulo(novoTitulo);
     }
+    /**
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novoAutor - String como o novo dado a ser alterado no livro
+     */
     public void atualizarAutorLivro(Livro livro, String novoAutor) {
         livro.setAutor(novoAutor);
     }
+    /**
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novaCategoria - String como o novo dado a ser alterado no livro
+     */
     public void atualizarCategoriaLivro(Livro livro, String novaCategoria) {
         livro.setCategoria(novaCategoria);
     }
-    public void atualizarIsbnLivro(Livro livro, String isbn) {
-        livro.setIsbn(isbn);
-    }
-    public void atualizarEditoraLivro(Livro livro, String editora) {
-        livro.setEditora(editora);
-    }
-    public void atualizarAnoPublicacaoLivro(Livro livro, String anoPublicacao) {
-        livro.setAnoPublicacao(anoPublicacao);
+    /**
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novoIsbn - String como o novo dado a ser alterado no livro
+     */
+    public void atualizarIsbnLivro(Livro livro, String novoIsbn) {
+        livro.setIsbn(novoIsbn);
     }
     /**
-     * Métodos para atualizar um livro do acervo.
-     * @param. dado de busca - String a ser utilizada na indentificação dos livros para busca
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novaEditora - String como o novo dado a ser alterado no livro
+     */
+    public void atualizarEditoraLivro(Livro livro, String novaEditora) {
+        livro.setEditora(novaEditora);
+    }
+    /**
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novoAnoPublicacao - String como o novo dado a ser alterado no livro
+     */
+    public void atualizarAnoPublicacaoLivro(Livro livro, String novoAnoPublicacao) {
+        livro.setAnoPublicacao(novoAnoPublicacao);
+    }
+    /**
+     * Busca um livro do acervo.
+     * @param titulo - Titulo do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
     public List<Livro> buscarLivroPorTitulo(String titulo){
@@ -86,6 +110,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorTitulo; // Retorna null se o livro não for encontrado
     }
+    /**
+     * Busca um livro do acervo.
+     * @param autor - Autor do livro a ser localizado.
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorAutor(String autor) {
         List<Livro> livroPorAutor = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -95,6 +124,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorAutor;
     }
+    /**
+     * Busca um livro do acervo.
+     * @param isbn - ISBN do livro a ser localizado.
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorIsbn(String isbn) {
         List<Livro> livroPorIsbn = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -104,6 +138,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorIsbn;
     }
+    /**
+     * Busca um livro do acervo.
+     * @param categoria - Categoria do livro a ser localizado.
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorCategoria(String categoria) {
         List<Livro> livroPorCategoria = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -113,6 +152,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorCategoria;
     }
+    /**
+     * Busca um livro do acervo.
+     * @param anoPubli - Ano de publicação do livro a ser localizado.
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) {
         List<Livro> livroPorAnoPubli = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -122,6 +166,11 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
         return livroPorAnoPubli;
     }
+    /**
+     * Busca um livro do acervo.
+     * @param editora - Editora do livro a ser localizado.
+     * @return Lista de livros correspondentes ao dado fornecido
+     */
     public List<Livro> buscarLivroPorEditora(String editora) {
         List<Livro> livroPorEditora = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -132,9 +181,9 @@ public class LivroDAO implements DAOgenerico<Livro>{
         return livroPorEditora;
     }
     /**
-     * Este método pesquisa livros no acervo com base em um texto fornecido.
+     * Pesquisa livros no acervo com base em um texto/String fornecido.
      * A pesquisa é realizada nos campos de título, autor, ISBN, categoria e ano de publicação.
-     * @param texto O texto a ser usado na pesquisa.
+     * @param texto - texto a ser usado na pesquisa.
      * @return Um mapa contendo listas de livros que correspondem ao texto em seus respectivos campos.
      */
     public Map<String, List<Livro>> pesquisarLivros(String texto) {
@@ -178,7 +227,7 @@ public class LivroDAO implements DAOgenerico<Livro>{
         return acervo.contains(livro);
     }
     /**
-     * Este método retorna a fila de reservas para um livro específico.
+     * Retorna a fila de reservas para um livro específico.
      * @param titulo O título do livro.
      * @return A fila de leitores que reservaram o livro.
      */
@@ -240,8 +289,4 @@ public class LivroDAO implements DAOgenerico<Livro>{
         }
     }
 
-    public static void setRenovacoesDoLeitor(String titulo, Queue<Leitor> leitoresNaFila) {
-
-        LivroDAO.renovacoesDoLeitor = renovacoesDoLeitor;
-    }
 }

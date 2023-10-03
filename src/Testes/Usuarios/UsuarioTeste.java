@@ -11,19 +11,12 @@ public class UsuarioTeste {
 
     @Before
     public void testCriarUsuario() {
-        try {
             usuario= new Usuario();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
+
     @Test
-    public void testCadastrarCpfValido() {
-        try {
-            usuario.setCpf("700.582.245-56");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public void testCadastrarCpfValido() throws Excecao {
+        usuario.setCpf("700.582.245-56");
     }
 
     @Test

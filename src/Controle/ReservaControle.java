@@ -1,19 +1,18 @@
 package Controle;
 
 import Excecoes.Excecao;
-import Model.Operacoes.Reserva;
 import Model.Usuarios.Leitor;
 import Servico.LivroServico;
 import Servico.ReservaServico;
 
 public class ReservaControle {
-    private ReservaServico reservaServico;
+    private final ReservaServico reservaServico;
 
     public ReservaControle(LivroServico livroServico) {
         this.reservaServico = new ReservaServico(livroServico);
     }
 
-    public void criarReserva(Leitor leitor, String titulo) throws Excecao {
+    public void criarReserva(Leitor leitor, String titulo) {
         try {
             reservaServico.criarReserva(leitor, titulo);
         }
@@ -29,6 +28,5 @@ public class ReservaControle {
     public int getNumeroDeLeitoresNaFila(String titulo) {
         return reservaServico.getNumeroDeLeitoresNaFila(titulo);
     }
-
 }
 

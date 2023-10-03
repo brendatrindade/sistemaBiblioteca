@@ -10,26 +10,41 @@ import Model.Usuarios.Leitor;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Classe LeitorServico: fornece serviços para gerenciar leitores da biblioteca.
+ */
 public class LeitorServico {
-    private LeitorDAO leitorDAO;
-    private EmprestimoServico emprestimoServico;
-    private LivroDAO livroDAO;
-
+    private final LeitorDAO leitorDAO;
+    private final EmprestimoServico emprestimoServico;
+    private final LivroDAO livroDAO;
+    /**
+     * Construtor para a classe LeitorServico.
+     * @param leitorDAO - DAO utilizado para operações de leitor.
+     * @param livroDAO - DAO utilizado para operações de livro.
+     * @param emprestimoServico - Serviço de empréstimo.
+     */
     public LeitorServico(LeitorDAO leitorDAO, LivroDAO livroDAO, EmprestimoServico emprestimoServico) {
         this.leitorDAO = leitorDAO;
         this.livroDAO = livroDAO;
         this.emprestimoServico = emprestimoServico;
     }
-
+    /**
+     * Cria um novo leitor.
+     * @param nome - nome do leitor.
+     * @param cpf - CPF do leitor.
+     * @param endereco - endereço do leitor.
+     * @param telefone - telefone do leitor.
+     * @return O novo leitor criado.
+     * @throws Excecao Se o CPF do leitor já estiver cadastrado.
+     */
     public Leitor criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
-        if (cpfLeitorEstaCadastrado(cpf)) {
+        if (!cpfLeitorEstaCadastrado(cpf)) {
+            Leitor leitor = new Leitor(nome, cpf, endereco, telefone);
+            salvarLeitor(leitor);
+            return leitor;
         }
-        Leitor leitor = new Leitor(nome, cpf, endereco, telefone);
-        salvarLeitor(leitor);
-        return leitor;
+        return null;
     }
-
     public void salvarLeitor(Leitor leitor) {
         leitorDAO.salvar(leitor);
     }
