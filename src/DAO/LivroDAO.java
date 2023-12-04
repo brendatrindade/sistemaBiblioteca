@@ -24,22 +24,38 @@ import java.util.*;
 public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     private static List<Livro> acervo = new ArrayList<>();
     private static Map<String, Queue<Leitor>> reservasPorTitulo = new HashMap<>();
-
+    /**
+     * Salva a lista de livros em um arquivo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public void salvarLivroArquivo() throws Exception {
         Persistencia.salvarLivro(acervo);
     }
+    /**
+     * Lê a lista de livros de um arquivo.
+     * @return - lista de livros lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public List<Livro> lerLivrosArquivo() throws Exception {
         List<Livro> acervoArquivo = Persistencia.lerLivro();
         return acervoArquivo;
     }
+    /**
+     * Salva a lista de reservas por título em um arquivo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public void salvarReservasPorTituloArquivo() throws Exception{
         Persistencia.salvarReservasPorTitulo(reservasPorTitulo);
     }
+    /**
+     * Lê a lista de reservas por título de um arquivo.
+     * @return - mapa de reservas por título lido do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public Map<String, Queue<Leitor>> LerReservasPorTituloArquivo() throws Exception{
         Map<String, Queue<Leitor>> reservasPorTituloArquivo = Persistencia.lerReservasPorTitulo();
         return reservasPorTituloArquivo;
     }
-
     /**
      * Adiciona um novo livro ao acervo.
      * @param c - livro a ser adicionado.

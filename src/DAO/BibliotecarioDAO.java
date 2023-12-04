@@ -12,7 +12,6 @@
  */
 package DAO;
 import Excecoes.Excecao;
-import Model.Operacoes.Livro;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 
@@ -27,15 +26,22 @@ import java.util.List;
 public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializable {
     private static List<Bibliotecario> operadores = new ArrayList<>();
     private static List<Bibliotecario> bibliotecarios = new ArrayList<>();
-
+    /**
+     * Salva a lista de bibliotecários em um arquivo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public void salvarBibliotecarioArquivo() throws Exception {
         Persistencia.salvarBibliotecario(bibliotecarios);
     }
+    /**
+     * Lê a lista de bibliotecários de um arquivo.
+     * @return - lista de bibliotecários lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public List<Bibliotecario> lerLivrosArquivo() throws Exception {
         List<Bibliotecario> bibliotecariosArquivo = Persistencia.lerBibliotecario();
         return bibliotecariosArquivo;
     }
-
     /**
      * Retorna todos os operadores.
      * @return Lista contendo todos os operadores da biblioteca.

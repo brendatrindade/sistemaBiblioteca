@@ -26,23 +26,38 @@ import java.util.*;
 public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
     private static List<Leitor> leitores = new ArrayList<>();
     private static Map<Leitor,List<Emprestimo> > historicoEmprestimos = new HashMap<>();
-
+    /**
+     * Salva a lista de leitores em um arquivo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public void salvarLeitoresArquivo() throws Exception {
         Persistencia.salvarLeitor(leitores);
     }
+    /**
+     * Lê a lista de leitores de um arquivo.
+     * @return - lista de leitores lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public List<Leitor> lerLeitoresArquivo() throws Exception {
         List<Leitor> leitoresArquivo = Persistencia.lerLeitor();
         return leitoresArquivo;
     }
-
+    /**
+     * Salva o histórico de empréstimos em um arquivo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public void salvarHistoricoEmprestimos() throws Exception{
         Persistencia.salvarHistoricoEmprestimos(historicoEmprestimos);
     }
+    /**
+     * Lê o histórico de empréstimos de um arquivo.
+     * @return - mapa do histórico de empréstimos lido do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public Map<Leitor,List<Emprestimo> > LerHistoricoEmprestimos() throws Exception{
         Map<Leitor,List<Emprestimo> > historicoEmprestimosArquivo = Persistencia.lerHistoricoEmprestimos();
         return historicoEmprestimosArquivo;
     }
-
     /**
      * Salva um novo leitor na lista de leitores.
      * @param c - leitor a ser salvo.

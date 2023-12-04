@@ -1,3 +1,11 @@
+/**
+ * Persistencia
+ *
+ * @author Brenda Araújo Trindade Oliveira
+ * @version 1.0
+ * @since 04/12/2023
+ *
+ */
 package DAO;
 import Model.Operacoes.Emprestimo;
 import Model.Operacoes.Livro;
@@ -8,8 +16,17 @@ import Model.Usuarios.Leitor;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Esta classe fornece métodos para realizar operações de persistência de dados em arquivos.
+ * @param <T> - tipo de objeto para a classe manipular.
+ */
 public class Persistencia<T> {
 
+    /**
+     * Salva uma lista de objetos em um arquivo.
+     * @param caminhoArquivo - caminho do arquivo.
+     * @param lista - lista de objetos a ser salva.
+     */
     public void salvarNoArquivo(String caminhoArquivo, List<T> lista) {
         try {
             FileOutputStream arquivo = new FileOutputStream(caminhoArquivo);
@@ -21,7 +38,11 @@ public class Persistencia<T> {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Recupera uma lista de objetos de um arquivo.
+     * @param caminhoArquivo - caminho do arquivo.
+     * @return - lista de objetos lidos do arquivo.
+     */
     public List<T> lerDoArquivo(String caminhoArquivo) {
         List<T> lista = null;
         try {
@@ -38,7 +59,10 @@ public class Persistencia<T> {
         }
         return lista;
     }
-
+    /**
+     * Cria uma pasta de armazenamento cache se ele não existir e inicializa com listas vazias.
+     * @throws Exception se ocorrer um erro durante a criação do cache.
+     */
     public static void criarCache() throws Exception{
         if(!(new File("cache")).exists()){
             File file = new File("cache");
@@ -66,7 +90,11 @@ public class Persistencia<T> {
         }
 
     }
-
+    /**
+     * Salva uma lista de leitores em um arquivo.
+     * @param listaLeitores - lista de leitores a ser salva.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public static void salvarLeitor(List<Leitor> listaLeitores) throws Exception {
         try {
             File caminhoArquivo = new File("cache\\leitores.ser");
@@ -79,6 +107,11 @@ public class Persistencia<T> {
             e.printStackTrace();
         }
     }
+    /**
+     * Lê uma lista de leitores de um arquivo.
+     * @return - lista de leitores lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public static List<Leitor> lerLeitor() throws Exception{
         try {
             FileInputStream caminhoArquivo = new FileInputStream("cache\\leitores.ser");
@@ -97,7 +130,11 @@ public class Persistencia<T> {
             throw new Exception("Problemas na leitura do arquivo.", e);
         }
     }
-
+    /**
+     * Salva uma lista de livros em um arquivo.
+     * @param listaLivros - lista de livros a ser salva.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public static void salvarLivro(List<Livro> listaLivros) throws Exception {
         try {
             File caminhoArquivo = new File("cache\\livros.ser");
@@ -110,7 +147,11 @@ public class Persistencia<T> {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Lê uma lista de livros de um arquivo.
+     * @return - lista de livros lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public static List<Livro> lerLivro() throws Exception{
         try {
             FileInputStream caminhoArquivo = new FileInputStream("cache\\livros.ser");
@@ -129,7 +170,11 @@ public class Persistencia<T> {
             throw new Exception("Problemas na leitura do arquivo.", e);
         }
     }
-
+    /**
+     * Salva uma lista de bibliotecários em um arquivo.
+     * @param listaBibliotecarios - lista de bibliotecários a ser salva.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public static void salvarBibliotecario(List<Bibliotecario> listaBibliotecarios) throws Exception {
         try {
             File caminhoArquivo = new File("cache\\bibliotecarios.ser");
@@ -142,7 +187,11 @@ public class Persistencia<T> {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Lê uma lista de bibliotecários de um arquivo.
+     * @return - lista de bibliotecários lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public static List<Bibliotecario> lerBibliotecario() throws Exception{
         try {
             FileInputStream caminhoArquivo = new FileInputStream("cache\\bibliotecarios.ser");
@@ -161,7 +210,11 @@ public class Persistencia<T> {
             throw new Exception("Problemas na leitura do arquivo.", e);
         }
     }
-
+    /**
+     * Salva uma lista de administradores em um arquivo.
+     * @param listaAdministradores - lista de administradores a ser salva.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
+     */
     public static void salvarAdministrador (List<Administrador> listaAdministradores) throws Exception {
         try {
             File caminhoArquivo = new File("cache\\administradores.ser");
@@ -174,7 +227,11 @@ public class Persistencia<T> {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Lê uma lista de administradores de um arquivo.
+     * @return - lista de administradores lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
     public static List<Administrador> lerAdministrador() throws Exception{
         try {
             FileInputStream caminhoArquivo = new FileInputStream("cache\\administradores.ser");
@@ -194,7 +251,9 @@ public class Persistencia<T> {
         }
     }
     /**
-     * Salva a lista de reserva de um titulo de livro específico no arquivo.
+     * Salva a lista de reserva de um título de livro específico no arquivo.
+     * @param reservasPorTitulo - mapa de reservas por título a ser salvo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public static void salvarReservasPorTitulo(Map<String, Queue<Leitor>> reservasPorTitulo) throws Exception {
         try {
@@ -209,7 +268,9 @@ public class Persistencia<T> {
         }
     }
     /**
-     * Lê a lista de reserva arquivada de um titulo de livro específico.
+     * Lê a lista de reserva arquivada de um título de livro específico.
+     * @return - mapa de reservas por título lido do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
      */
     public static Map<String, Queue<Leitor>> lerReservasPorTitulo() throws Exception{
         try {
@@ -230,7 +291,9 @@ public class Persistencia<T> {
         }
     }
     /**
-     * Salva o historico de emprestimos de um leitor no arquivo.
+     * Salva o histórico de empréstimos em um arquivo.
+     * @param historicoEmprestimos - mapa do histórico de empréstimos a ser salvo.
+     * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public static void salvarHistoricoEmprestimos(Map<Leitor,List<Emprestimo>> historicoEmprestimos) throws Exception {
         try {
@@ -245,7 +308,9 @@ public class Persistencia<T> {
         }
     }
     /**
-     * Lê o historico de emprestimos arquivado de um leitor .
+     * Lê o histórico de empréstimos arquivado de um leitor.
+     * @return - mapa do histórico de empréstimos lido do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
      */
     public static Map<Leitor,List<Emprestimo>> lerHistoricoEmprestimos() throws Exception{
         try {
