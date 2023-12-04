@@ -11,10 +11,13 @@
  *
  */
 package Model.Operacoes;
+
+import java.io.Serializable;
+
 /**
  * Classe Localizacao: Representa a localização de um livro na biblioteca.
  */
-public class Localizacao {
+public class Localizacao implements Serializable {
     private String prateleira;
     private String posicao;
 

@@ -11,10 +11,13 @@
  *
  */
 package Model.Usuarios;
+
+import java.io.Serializable;
+
 /**
  * Classe Endereco: Representa o endereço residencial de um Leitor do sistema de biblioteca.
  */
-public class Endereco {
+public class Endereco implements Serializable {
     private String rua;
     private String numero;
     private String cidade;
