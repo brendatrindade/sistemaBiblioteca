@@ -12,6 +12,7 @@
  */
 package DAO;
 
+import Model.Operacoes.Livro;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 
@@ -25,6 +26,15 @@ import java.util.List;
 public class AdministradorDAO extends BibliotecarioDAO{
     private static List<Bibliotecario> operadores = getOperadores();
     private static List<Administrador> administradores = new ArrayList<>();
+
+    public void salvarAdministradorArquivo() throws Exception {
+        Persistencia.salvarAdministrador(administradores);
+    }
+    public List<Administrador> lerAdministradorArquivo() throws Exception {
+        List<Administrador> administradoresArquivo = Persistencia.lerAdministrador();
+        return administradoresArquivo;
+    }
+
     /**
      * Salva um novo administrador na lista de administradores.
      * @param administrador - administrador a ser salvo.

@@ -12,10 +12,12 @@
  */
 package Model.Usuarios;
 import Excecoes.Excecao;
+import java.io.Serializable;
+
 /**
  * Superclasse Classe Usuario: Generalização de um usuário no sistema de biblioteca.
  */
-public class Usuario {
+public class Usuario implements Serializable {
     private String cpf; // --> id do usuário
     private String nome;
     private boolean statusAcessoUsuario; // --> true = Acesso ativo | false = Acesso bloqueado

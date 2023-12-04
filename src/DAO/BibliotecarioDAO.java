@@ -12,9 +12,11 @@
  */
 package DAO;
 import Excecoes.Excecao;
+import Model.Operacoes.Livro;
 import Model.Usuarios.Administrador;
 import Model.Usuarios.Bibliotecario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -22,9 +24,18 @@ import java.util.List;
  * Generalização dos operadores.
  * Contém métodos gerenciamento dos bibliotecarios e operadores.
  */
-public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> {
+public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializable {
     private static List<Bibliotecario> operadores = new ArrayList<>();
     private static List<Bibliotecario> bibliotecarios = new ArrayList<>();
+
+    public void salvarBibliotecarioArquivo() throws Exception {
+        Persistencia.salvarBibliotecario(bibliotecarios);
+    }
+    public List<Bibliotecario> lerLivrosArquivo() throws Exception {
+        List<Bibliotecario> bibliotecariosArquivo = Persistencia.lerBibliotecario();
+        return bibliotecariosArquivo;
+    }
+
     /**
      * Retorna todos os operadores.
      * @return Lista contendo todos os operadores da biblioteca.

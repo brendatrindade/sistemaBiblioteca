@@ -15,14 +15,31 @@ package DAO;
 import Model.Operacoes.Livro;
 import Model.Usuarios.Leitor;
 
+import java.io.Serializable;
 import java.util.*;
 /**
  * Classe LivroDAO: implementa a interface DAOgenerico para o objeto Livro.
  * Contém métodos para gerenciamento dos livros no acervo da biblioteca.
  */
-public class LivroDAO implements DAOgenerico<Livro>{
+public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     private static List<Livro> acervo = new ArrayList<>();
     private static Map<String, Queue<Leitor>> reservasPorTitulo = new HashMap<>();
+
+    public void salvarLivroArquivo() throws Exception {
+        Persistencia.salvarLivro(acervo);
+    }
+    public List<Livro> lerLivrosArquivo() throws Exception {
+        List<Livro> acervoArquivo = Persistencia.lerLivro();
+        return acervoArquivo;
+    }
+    public void salvarReservasPorTituloArquivo() throws Exception{
+        Persistencia.salvarReservasPorTitulo(reservasPorTitulo);
+    }
+    public Map<String, Queue<Leitor>> LerReservasPorTituloArquivo() throws Exception{
+        Map<String, Queue<Leitor>> reservasPorTituloArquivo = Persistencia.lerReservasPorTitulo();
+        return reservasPorTituloArquivo;
+    }
+
     /**
      * Adiciona um novo livro ao acervo.
      * @param c - livro a ser adicionado.

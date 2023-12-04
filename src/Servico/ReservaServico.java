@@ -12,6 +12,7 @@
  */
 package Servico;
 
+import DAO.Persistencia;
 import Excecoes.Excecao;
 import Model.Operacoes.Livro;
 import Model.Operacoes.Reserva;
@@ -92,5 +93,7 @@ public class ReservaServico {
         Queue<Leitor> leitoresNaFila = livroServico.getReservasPorTitulo(titulo);
         return leitoresNaFila.size();
     }
+
+
 }
 

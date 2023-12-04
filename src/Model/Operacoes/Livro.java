@@ -11,10 +11,13 @@
  *
  */
 package Model.Operacoes;
+
+import java.io.Serializable;
+
 /**
  * Classe Livro: Representa um livro no sistema de biblioteca.
  */
-public class Livro {
+public class Livro implements Serializable {
     private String titulo;
     private String autor;
     private String isbn;

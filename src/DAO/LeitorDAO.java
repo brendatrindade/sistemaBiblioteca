@@ -15,17 +15,34 @@ package DAO;
 import Excecoes.Excecao;
 import Model.Usuarios.Leitor;
 import Model.Operacoes.Emprestimo;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.io.Serializable;
+import java.util.*;
+
 /**
  * Classe LeitorDAO: implementa DAOgenerico para o objeto Leitor.
  * Ela contém métodos para gerenciamento dos leitores cadastrados na biblioteca.
  */
-public class LeitorDAO implements DAOgenerico<Leitor> {
+public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
     private static List<Leitor> leitores = new ArrayList<>();
     private static Map<Leitor,List<Emprestimo> > historicoEmprestimos = new HashMap<>();
+
+    public void salvarLeitoresArquivo() throws Exception {
+        Persistencia.salvarLeitor(leitores);
+    }
+    public List<Leitor> lerLeitoresArquivo() throws Exception {
+        List<Leitor> leitoresArquivo = Persistencia.lerLeitor();
+        return leitoresArquivo;
+    }
+
+    public void salvarHistoricoEmprestimos() throws Exception{
+        Persistencia.salvarHistoricoEmprestimos(historicoEmprestimos);
+    }
+    public Map<Leitor,List<Emprestimo> > LerHistoricoEmprestimos() throws Exception{
+        Map<Leitor,List<Emprestimo> > historicoEmprestimosArquivo = Persistencia.lerHistoricoEmprestimos();
+        return historicoEmprestimosArquivo;
+    }
+
     /**
      * Salva um novo leitor na lista de leitores.
      * @param c - leitor a ser salvo.

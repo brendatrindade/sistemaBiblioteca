@@ -228,4 +228,10 @@ public class LivroServico {
     public void removePrimeiroDafila(String titulo) {
         livroDAO.removePrimeiroDafila(titulo);
     }
+    /**
+     * Salva a lista de reserva de um titulo de livro específico no arquivo.
+     */
+    public void salvarReservasPorTituloArquivo() throws Exception {
+        livroDAO.salvarReservasPorTituloArquivo();
+    }
 }

@@ -12,9 +12,10 @@
  */
 package Model.Operacoes;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Relatorio {
+public class Relatorio implements Serializable {
     private long numLivrosEmprestados;
     private long numLivrosAtrasados;
     private long numLivrosReservados;

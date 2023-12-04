@@ -13,13 +13,15 @@
 package Model.Operacoes;
 
 import Model.Usuarios.Leitor;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 /**
  * Classe Emprestimo: Representa o empréstimo de um livro por um leitor.
  */
-public class Emprestimo {
+public class Emprestimo implements Serializable {
     public static int limiteEmprestimosPorLeitor = 3;
     public static int limiteRenovacoesPorEmprestimo = 2;
     private int numeroDeRenovacoes = 0;

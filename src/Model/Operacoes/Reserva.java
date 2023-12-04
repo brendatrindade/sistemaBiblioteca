@@ -13,10 +13,13 @@
 package Model.Operacoes;
 
 import Model.Usuarios.Leitor;
+
+import java.io.Serializable;
+
 /**
  * Classe Reserva: Representa a reserva de um livro por realizada por um leitor.
  */
-public class Reserva {
+public class Reserva implements Serializable {
     private final String titulo;
     private final Leitor leitor;
     private int tamanhoFila;

@@ -40,5 +40,7 @@ public class ReservaControle {
     public int getNumeroDeLeitoresNaFila(String titulo) {
         return reservaServico.getNumeroDeLeitoresNaFila(titulo);
     }
+
+
 }
 
