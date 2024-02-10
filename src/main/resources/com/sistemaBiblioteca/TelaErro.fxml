@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="206.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.TelaErro_Controller">
+
+        <children>
+            <Rectangle arcWidth="5.0" height="224.0" stroke="TRANSPARENT" strokeType="INSIDE" width="175.0">
+         <fill>
+            <RadialGradient centerX="0.7389380362181537" centerY="0.5265151442903461" focusDistance="0.44036698997567547" radius="0.9633026997977441">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.12240000069141388" green="0.5099999904632568" blue="0.5099999904632568" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.5157894492149353" green="0.11844054609537125" blue="0.11844054609537125" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill></Rectangle>
+            <ImageView fitHeight="201.0" fitWidth="170.0" layoutX="2.0" layoutY="27.0" opacity="0.45" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@Imagens/IconeBiblioteca.png" />
+                </image>
+         <effect>
+            <ColorAdjust brightness="-0.62" contrast="-0.24" />
+         </effect>
+            </ImageView>
+            <Text fx:id="alerta" layoutX="179.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show mensagem alerta  " textAlignment="CENTER" wrappingWidth="280.04874420166016" x="2.0">
+                <font>
+                    <Font name="Arial Narrow" size="24.0" />
+                </font>
+         <fill>
+            <RadialGradient centerX="0.46460176147190874" centerY="0.5" radius="0.9862385058621748">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.12240000069141388" green="0.5099999904632568" blue="0.5099999904632568" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6526315808296204" green="0.11844054609537125" blue="0.11844054609537125" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+            </Text>
+      <ProgressIndicator layoutX="146.0" layoutY="86.0" opacity="0.21" prefHeight="58.0" prefWidth="56.0">
+         <effect>
+            <ColorAdjust brightness="-1.0" contrast="-1.0" hue="1.0" saturation="1.0" />
+         </effect></ProgressIndicator>
+      <Separator layoutX="172.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="224.0" prefWidth="17.0" />
+        </children>
+
+</AnchorPane>

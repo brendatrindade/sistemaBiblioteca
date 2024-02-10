@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="952.0" style="-fx-background-color: #00777f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.LivroPesquisado_Controller">
+   <children>
+      <ImageView fitHeight="55.0" fitWidth="62.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Imagens/IconeLupa.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="76.0" layoutY="14.0" prefHeight="55.0" prefWidth="344.0" text="Resultados com:" textAlignment="CENTER" textFill="#8e8e8e">
+         <font>
+            <Font name="Rockwell" size="45.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tabelaLivros" layoutX="14.0" layoutY="73.0" prefHeight="430.0" prefWidth="923.0" style="-fx-border-color: #474748; -fx-border-radius: 2; -fx-background-color: white; -fx-border-width: 0px 0px 2px 0px;">
+        <columns>
+          <TableColumn fx:id="colunaTitulo" prefWidth="279.20001792907715" text="Título" />
+          <TableColumn fx:id="colunaAutor" minWidth="0.0" prefWidth="178.39996337890625" resizable="false" text="Autoria" />
+            <TableColumn fx:id="colunaCategoria" prefWidth="163.19998168945312" resizable="false" text="Categoria" />
+            <TableColumn fx:id="colunaAno" prefWidth="112.800048828125" resizable="false" text="Ano de Publicação" />
+            <TableColumn fx:id="colunaISBN" minWidth="0.0" prefWidth="189.59991455078125" resizable="false" text="ISBN" />
+        </columns>
+      </TableView>
+      <Label fx:id="chaveBusca" layoutX="415.0" layoutY="23.0" prefHeight="42.0" prefWidth="522.0" text="chave busca" textFill="#8e8e8e">
+         <font>
+            <Font name="Rockwell" size="35.0" />
+         </font>
+      </Label>
+   </children>
+
+</AnchorPane>
