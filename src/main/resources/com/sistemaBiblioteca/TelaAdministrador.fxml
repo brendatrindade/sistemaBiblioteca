@@ -16,27 +16,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.TelaAdministrador_Controller">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #00777f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.TelaAdministrador_Controller">
 
     <children>
-        <VBox prefHeight="258.0" prefWidth="214.0" style="-fx-background-color: #00777f;" AnchorPane.bottomAnchor="318.0" AnchorPane.topAnchor="0.0">
+        <TextField fx:id="barraPesquisa" alignment="CENTER" layoutX="9.0" layoutY="265.0" onKeyTyped="#searchClients" prefHeight="28.0" prefWidth="162.0" promptText="Pesquisar" style="-fx-background-color: #fffafa; -fx-border-color: black; -fx-border-width: 0px 0px 2px 0px;">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </TextField>
+        <Button fx:id="botaoPesquisar" layoutX="174.0" layoutY="265.0" mnemonicParsing="false" onAction="#searchClient" prefHeight="28.0" prefWidth="34.0" style="-fx-background-color: transparent; -fx-border-color: black; -fx-background-radius: 30; -fx-border-radius: 30;" textFill="WHITE">
+            <cursor>
+                <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+            <font>
+                <Font name="Calibri Bold" size="15.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="22.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@Imagens/IconeLupa.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </Button>
+        <ScrollPane fx:id="telaDeRolagem" focusTraversable="false" hbarPolicy="NEVER" layoutX="9.0" layoutY="309.0" prefHeight="258.0" prefWidth="199.0" style="-fx-background-radius: 10; -fx-background-color: transparent;" />
+        <VBox prefHeight="258.0" prefWidth="218.0" style="-fx-background-color: #00777f;" AnchorPane.bottomAnchor="318.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Pane prefHeight="87.0" prefWidth="214.0">
+                <Pane prefHeight="87.0" prefWidth="218.0">
                     <children>
-                        <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="21.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="45.0" fitWidth="42.0" layoutX="-2.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@Imagens/IconeAvatar.png" />
                             </image>
                         </ImageView>
-                        <Label fx:id="NomeAdministrador" layoutX="65.0" layoutY="26.0" prefHeight="45.0" prefWidth="143.0" text="Nome Administrador" textFill="#e7e5e5" />
+                        <Label fx:id="NomeAdministrador" layoutX="40.0" layoutY="21.0" prefHeight="45.0" prefWidth="169.0" text="Nome Administrador">
+                     <font>
+                        <Font name="Rockwell" size="14.0" />
+                     </font></Label>
                     </children>
                 </Pane>
-                <Button fx:id="botaoCadastrarLeitor" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="30.0" prefWidth="181.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Cadastrar Leitor" textFill="WHITE">
-                    <padding>
-                        <Insets left="50.0" />
-                    </padding>
+                <Button fx:id="botaoCadastrarLeitor" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Cadastrar Leitor">
                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="23.0" focusTraversable="true" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="38.0" fitWidth="23.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@Imagens/iconLeitor.png" />
                             </image>
@@ -46,17 +70,14 @@
                         <Insets />
                     </opaqueInsets>
                     <font>
-                        <Font name="Arial Narrow" size="12.0" />
+                        <Font name="Rockwell" size="12.0" />
                     </font>
                 </Button>
-            <Button fx:id="botaoCadastrarOperador" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="208.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Cadastrar Operador" textFill="WHITE">
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
+            <Button fx:id="botaoCadastrarOperador" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Cadastrar Operador">
                <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="23.0" focusTraversable="true" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="23.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Imagens/iconOperador.png" />
+                        <Image url="@Imagens/IconeOperador.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -64,15 +85,12 @@
                   <Insets />
                </opaqueInsets>
                <font>
-                  <Font name="Arial Narrow" size="12.0" />
+                  <Font name="Rockwell" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="botaoBloquearAcesso" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="208.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Bloquear Acesso" textFill="WHITE">
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
+            <Button fx:id="botaoBloquearAcesso" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Bloquear Acesso">
                <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="21.0" focusTraversable="true" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="21.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Imagens/iconBloqueio.png" />
                      </image>
@@ -82,17 +100,14 @@
                   <Insets />
                </opaqueInsets>
                <font>
-                  <Font name="Arial Narrow" size="12.0" />
+                  <Font name="Rockwell" size="12.0" />
                </font>
             </Button>
-                <Button fx:id="botaoGerarRelatorio" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="209.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Gerar Relatório" textFill="WHITE">
-                    <padding>
-                        <Insets left="50.0" />
-                    </padding>
+                <Button fx:id="botaoGerarRelatorio" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Gerar Relatório">
                     <graphic>
                         <ImageView fitHeight="38.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@Imagens/IconeAjustes.png" />
+                                <Image url="@Imagens/IconeGrafico.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -100,13 +115,10 @@
                         <Insets />
                     </opaqueInsets>
                     <font>
-                        <Font name="Arial Narrow" size="12.0" />
+                        <Font name="Rockwell" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="botaoGerenciarAcervo" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="209.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Gerenciar Acervo" textFill="WHITE">
-                    <padding>
-                        <Insets left="50.0" />
-                    </padding>
+                <Button fx:id="botaoGerenciarAcervo" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Gerenciar Acervo">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -115,10 +127,10 @@
                         </ImageView>
                     </graphic>
                     <font>
-                        <Font name="Arial Narrow" size="12.0" />
+                        <Font name="Rockwell" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="botaoSair" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#showLoginStage" prefHeight="35.0" prefWidth="210.0" style="-fx-background-color: transparent;" stylesheets="@css/styles.css" text="Sair" textFill="WHITE">
+                <Button fx:id="botaoSair" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#showLoginStage" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: transparent;" text="Sair">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -126,45 +138,23 @@
                             </image>
                         </ImageView>
                     </graphic>
-                    <padding>
-                        <Insets left="50.0" />
-                    </padding>
                     <font>
-                        <Font name="Arial Narrow" size="12.0" />
+                        <Font name="Rockwell" size="12.0" />
                     </font>
                 </Button>
             </children>
         </VBox>
         <StackPane layoutX="214.0" prefHeight="576.0" prefWidth="838.0" style="-fx-background-color: #02030A;">
             <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Pane prefHeight="200.0" prefWidth="200.0" />
                 <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="842.0" style="-fx-background-color: #fffafa;" />
             </children>
         </StackPane>
-        <Separator layoutX="207.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="576.0" prefWidth="14.0" style="-fx-background-color: #00777f; -fx-background-radius: 0;" />
-        <TextField fx:id="barraPesquisa" layoutY="262.0" onKeyTyped="#searchClients" prefHeight="30.0" prefWidth="162.0" promptText="Pesquisar" style="-fx-background-color: #fffafa; -fx-border-color: #00777f; -fx-border-radius: 2em;">
-            <opaqueInsets>
-                <Insets />
-            </opaqueInsets>
-        </TextField>
-        <Button fx:id="botaoPesquisar" layoutX="165.0" layoutY="259.0" mnemonicParsing="false" onAction="#searchClient" prefHeight="31.0" prefWidth="14.0" style="-fx-background-color: #00777f; -fx-background-radius: 30;" textFill="WHITE">
-            <cursor>
-                <Cursor fx:constant="OPEN_HAND" />
-            </cursor>
-            <font>
-                <Font name="Calibri Bold" size="15.0" />
-            </font>
-            <graphic>
-                <ImageView fitHeight="21.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@Imagens/IconeLupa.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-            <opaqueInsets>
-                <Insets left="2.0" />
-            </opaqueInsets>
-        </Button>
-        <ScrollPane fx:id="telaDeRolagem" focusTraversable="false" hbarPolicy="NEVER" layoutY="299.0" prefHeight="276.0" prefWidth="207.0" style="-fx-background-radius: 10; -fx-background-color: transparent;" stylesheets="@css/styles.css" />
+        <Separator layoutX="216.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="576.0" prefWidth="5.0" style="-fx-background-color: #00777f; -fx-background-radius: 0;" />
     </children>
     <effect>
         <DropShadow color="#1b1eeb" />

@@ -12,10 +12,7 @@ import com.sistemaBiblioteca.DAO.Persistencia;
 import com.sistemaBiblioteca.Excecoes.Excecao;
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
-import com.sistemaBiblioteca.Model.Usuarios.Administrador;
-import com.sistemaBiblioteca.Model.Usuarios.Bibliotecario;
-import com.sistemaBiblioteca.Model.Usuarios.Endereco;
-import com.sistemaBiblioteca.Model.Usuarios.Leitor;
+import com.sistemaBiblioteca.Model.Usuarios.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,8 +56,9 @@ public class TelaInicial_Controller {
     };
 
     @FXML
-    void loginLeitor(ActionEvent event) throws Exception {
+    public void loginLeitor(ActionEvent event) throws Exception {
         String cpf = cpf_acesso.getText().replaceAll("[^0-9]", "");
+
         if (validaCPF(cpf)) {
             if (DAO.getLeitorDAO().cpfLeitorEstaCadastrado(cpf)) {
                 // CPF inserido é valido e possui cadastro, chamar a tela do Leitor
@@ -93,24 +91,21 @@ public class TelaInicial_Controller {
     }
 
     @FXML
-    void loginOperador(ActionEvent event) throws Exception {
-
+    public void loginOperador(ActionEvent event) throws Exception {
         Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentScreen.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaLoginOperador.fxml"));
         Parent root = loader.load();
-
         Stage registerStage = new Stage();
         Scene scene = new Scene(root);
         registerStage.setResizable(false);
         registerStage.setScene(scene);
         registerStage.show();
         registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
-
     }
 
     @FXML
-    private void iniciarPesquisa(ActionEvent event) throws Exception {
+    public void iniciarPesquisa(ActionEvent event) throws Exception {
         List<Livro> titulos = new ArrayList<>();
         List<Livro> autores = new ArrayList<>();
         List<Livro> isbnes = new ArrayList<>();
@@ -161,6 +156,7 @@ public class TelaInicial_Controller {
 
                 LivroPesquisado_Controller livroPesquisadoController = loader.getController();
                 livroPesquisadoController.preencherTabela(titulos, autores, isbnes, categorias, anoPubli);
+                livroPesquisadoController.setChaveBusca(txtInserido);
 
                 Stage registerStage = new Stage();
                 Scene scene = new Scene(root);
@@ -175,6 +171,50 @@ public class TelaInicial_Controller {
                 TelaErro_Controller telaErro_controller = new TelaErro_Controller();
                 telaErro_controller.showTelaErroCPF("Digite algo para pesquisar\n");
             }
+
+    }
+
+    @FXML
+    void initialize() throws Exception {
+        assert barra_pesquisa_ini != null : "fx:id=\"barra_pesquisa_ini\" was not injected: check your FXML file 'TelaInicial.fxml'.";
+        assert botaoAcessoOperador != null : "fx:id=\"botaoAcessoOperador\" was not injected: check your FXML file 'TelaInicial.fxml'.";
+        assert botao_entrar != null : "fx:id=\"botao_entrar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
+        assert botao_ok_pesquisar != null : "fx:id=\"botao_ok_pesquisar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
+        assert cpf_acesso != null : "fx:id=\"cpf_acesso\" was not injected: check your FXML file 'TelaInicial.fxml'.";
+        if(Persistencia.existeCache())
+            setGerarDados(true);
+    }
+
+    void initialize2() throws Exception {
+
+        DAO.getLeitorDAO().deletarTodos();
+        DAO.getBibliotecarioDAO().deletarTodos();
+        DAO.getAdministradorDAO().deletarTodosAdministradores();
+        DAO.getLivroDAO().deletarTodos();
+
+        Persistencia.criarCache();
+
+        Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
+        Leitor leitor1 = new Leitor("Brenda L.", "78642486597", endereco, "74999823548");
+        Endereco endereco2 = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
+        Leitor leitor2 = new Leitor("Leitor 2.", "58138131012", endereco2, "75989873521");
+
+        Bibliotecario bibliotecario1 = new Bibliotecario("Julia B.", "123.456.789-09", "senha123");
+        Administrador administrador1 = new Administrador("Maria A.", "361.215.045-60", "senha456");
+
+        Localizacao localizacao = new Localizacao("Z", "12");
+        Livro livro1 = new Livro("Primeiro Edai", "Klack", "1357579800294", "Educativo", "1999", "Univer", localizacao);
+
+        Localizacao localizacao2 = new Localizacao("A", "45");
+        Livro livro2 = new Livro("Segundo Edai", "Klack", "2657579833294", "Educativo", "2003", "Univer", localizacao2);
+
+
+        DAO.getLeitorDAO().criarLeitor(leitor1);
+        DAO.getLeitorDAO().criarLeitor(leitor2);
+        DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario1);
+        DAO.getAdministradorDAO().criarAdministrador(administrador1);
+        DAO.getLivroDAO().criarLivro(livro1);
+        DAO.getLivroDAO().criarLivro(livro2);
 
     }
 
@@ -209,49 +249,4 @@ public class TelaInicial_Controller {
 
         return (Character.getNumericValue(cpf.charAt(10)) == segundoDigito);
     }
-
-    @FXML
-    void showRegisterStage(MouseEvent event) {
-
-    }
-
-    @FXML
-    void initialize() throws Exception {
-        assert barra_pesquisa_ini != null : "fx:id=\"barra_pesquisa_ini\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        assert botaoAcessoOperador != null : "fx:id=\"botaoAcessoOperador\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        assert botao_entrar != null : "fx:id=\"botao_entrar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        assert botao_ok_pesquisar != null : "fx:id=\"botao_ok_pesquisar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        assert cpf_acesso != null : "fx:id=\"cpf_acesso\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        if(Persistencia.existeCache())
-            setGerarDados(true);
-    }
-
-    void initialize2() throws Exception {
-
-        DAO.getLeitorDAO().deletarTodos();
-        DAO.getBibliotecarioDAO().deletarTodos();
-        DAO.getAdministradorDAO().deletarTodosAdministradores();
-        DAO.getLivroDAO().deletarTodos();
-
-        Persistencia.criarCache();
-
-        Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-        Leitor leitor1 = new Leitor("Brenda L.", "78642486597", endereco, "74999823548");
-        Endereco endereco2 = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
-        Leitor leitor2 = new Leitor("Leitor 2.", "58138131012", endereco2, "75989873521");
-
-        Bibliotecario bibliotecario1 = new Bibliotecario("Julia B.", "123.456.789-09", "senha123");
-        Administrador administrador1 = new Administrador("Maria A.", "361.215.045-60", "senha456");
-
-        Localizacao localizacao = new Localizacao("Z", "12");
-        Livro livro1 = new Livro("Primeiro Edai", "Klack", "1357579800294", "Educativo", "2024", "Univer", localizacao);
-
-        DAO.getLeitorDAO().criarLeitor(leitor1);
-        DAO.getLeitorDAO().criarLeitor(leitor2);
-        DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario1);
-        DAO.getAdministradorDAO().criarAdministrador(administrador1);
-        DAO.getLivroDAO().criarLivro(livro1);
-
-    }
-
 }

@@ -51,6 +51,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
         return leitor;
     }
 
+
     /**
      * Salva a lista de leitores em um arquivo.
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.

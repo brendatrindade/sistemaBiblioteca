@@ -42,21 +42,25 @@ public class LivroPesquisado_Controller {
     @FXML
     private TableView<Livro> tabelaLivros;
 
+    public void setChaveBusca(String chaveBusca){
+        this.chaveBusca.setText(chaveBusca);
+    }
+
     public void preencherTabela(List<Livro> titulos, List<Livro> autores, List<Livro> isbnes, List<Livro> categorias, List<Livro> anoPubli ) {
 
         colunaTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colunaAutor.setCellValueFactory(new PropertyValueFactory<>("autor"));
-        colunaISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        colunaAno.setCellValueFactory(new PropertyValueFactory<>("anoPublicacao"));
         colunaCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colunaAno.setCellValueFactory(new PropertyValueFactory<>("anoPublicacao"));
+        colunaISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 
         // Preenche a tabela com os dados das listas recebidas
         ObservableList<Livro> listaLivros = FXCollections.observableArrayList();
         listaLivros.addAll(titulos);
         listaLivros.addAll(autores);
-        listaLivros.addAll(isbnes);
         listaLivros.addAll(categorias);
         listaLivros.addAll(anoPubli);
+        listaLivros.addAll(isbnes);
 
         tabelaLivros.setItems(listaLivros);
 

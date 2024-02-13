@@ -27,3 +27,5 @@ public class Main extends Application{
         launch();
     }
 }
+
+//colocar um botao de voltar depois de vizualizar o resultado da pesquisa

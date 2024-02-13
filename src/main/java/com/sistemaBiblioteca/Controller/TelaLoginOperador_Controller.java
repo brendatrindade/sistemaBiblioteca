@@ -131,6 +131,4 @@ public class TelaLoginOperador_Controller {
 
         return (Character.getNumericValue(cpf.charAt(10)) == segundoDigito);
     }
-
-
 }

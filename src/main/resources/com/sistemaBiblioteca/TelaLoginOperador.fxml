@@ -12,31 +12,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="402.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.TelaLoginOperador_Controller">
 
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="663.0">
-            <left>
-                <AnchorPane prefHeight="402.0" prefWidth="130.0" style="-fx-background-color: #00777f;" BorderPane.alignment="CENTER">
+            <right>
+                <AnchorPane prefHeight="402.0" prefWidth="462.0" style="-fx-background-color: fffafa;" BorderPane.alignment="CENTER">
+                    <children>
+                  <ImageView fitHeight="402.0" fitWidth="440.0" layoutX="116.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Imagens/LogoBibliotecaBranco.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="-0.15" />
+                     </effect>
+                  </ImageView>
+                    </children>
+                </AnchorPane>
+            </right>
+         <left>
+                <AnchorPane prefHeight="344.0" prefWidth="258.0" style="-fx-background-color: #00777f;" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets />
                     </BorderPane.margin>
-                </AnchorPane>
-            </left>
-            <right>
-                <AnchorPane prefHeight="406.0" prefWidth="517.0" style="-fx-background-color: fffafa;" BorderPane.alignment="CENTER">
-                    <children>
-                        <ImageView fitHeight="251.0" fitWidth="420.0" layoutX="-32.0" layoutY="154.0" opacity="0.88" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Imagens/IconeBibliotecaRdm.png" />
-                            </image>
-                     <effect>
-                        <ColorAdjust brightness="-0.45" />
-                     </effect>
-                        </ImageView>
-                        <Button fx:id="botao_entrar" contentDisplay="RIGHT" layoutX="354.0" layoutY="141.0" mnemonicParsing="false" onAction="#loginOperador" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: #00777f; -fx-background-radius: 10;" text="Entrar" textFill="#c9c3c3" AnchorPane.bottomAnchor="239.00000000000003">
+               <children>
+                  <Separator layoutX="251.0" layoutY="1.0" orientation="VERTICAL" prefHeight="402.0" prefWidth="14.0" style="-fx-background-color: #00777f; -fx-border-radius: 5;" />
+                        <TextField fx:id="cpf_acesso_operador" layoutX="31.0" layoutY="119.0" prefHeight="18.0" prefWidth="182.0" promptText="CPF" style="-fx-background-color: #00777f; -fx-border-color: a6a6a6; -fx-border-width: 0px 0px 2px 0px;">
+                            <font>
+                                <Font name="Rockwell" size="14.0" />
+                            </font>
+                        </TextField>
+                  <PasswordField fx:id="senha_operador" layoutX="31.0" layoutY="164.0" prefHeight="0.0" prefWidth="182.0" promptText="Senha" style="-fx-border-color: a6a6a6; -fx-background-color: #00777f; -fx-border-width: 0px 0px 2px 0px;">
+                     <font>
+                        <Font name="Rockwell" size="14.0" />
+                     </font>
+                  </PasswordField>
+                        <Button fx:id="botao_entrar" contentDisplay="RIGHT" layoutX="49.0" layoutY="209.0" mnemonicParsing="false" onAction="#loginOperador" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: #00777f; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: a6a6a6;" text="Entrar" textFill="#c9c3c3" AnchorPane.bottomAnchor="167.8">
                             <cursor>
                                 <Cursor fx:constant="OPEN_HAND" />
                             </cursor>
@@ -44,25 +56,9 @@
                                 <Font name="Arial Narrow Bold" size="12.0" />
                             </font>
                         </Button>
-                        <Text fill="#00777f" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sistema de Biblioteca" textAlignment="CENTER" wrappingWidth="519.2485466003418">
-                            <font>
-                                <Font name="Berlin Sans FB" size="55.0" />
-                            </font>
-                        </Text>
-                        <TextField fx:id="cpf_acesso_operador" layoutX="336.0" layoutY="72.0" prefHeight="18.0" prefWidth="182.0" promptText="CPF" style="-fx-background-color: #00777f; -fx-border-color: a6a6a6; -fx-border-width: 0px 0px 2px 0px;">
-                            <font>
-                                <Font name="Rockwell" size="14.0" />
-                            </font>
-                        </TextField>
-                        <Separator layoutX="-131.0" layoutY="55.0" prefHeight="8.0" prefWidth="663.0" style="-fx-background-color: #00777f;" />
-                  <PasswordField fx:id="senha_operador" layoutX="336.0" layoutY="107.0" prefHeight="20.0" prefWidth="182.0" promptText="Senha" style="-fx-border-color: a6a6a6; -fx-background-color: #00777f; -fx-border-width: 0px 0px 2px 0px;">
-                     <font>
-                        <Font name="Rockwell" size="14.0" />
-                     </font>
-                  </PasswordField>
-                    </children>
+               </children>
                 </AnchorPane>
-            </right>
+         </left>
         </BorderPane>
     </children>
 </AnchorPane>
