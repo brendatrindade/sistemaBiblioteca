@@ -209,7 +209,7 @@
                         <Font name="Rockwell" size="60.0" />
                      </font>
                   </Label>
-                  <Button fx:id="botaoCriarLivro" layoutX="357.0" layoutY="508.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: black;" text="Registrar" textFill="WHITE">
+                  <Button fx:id="botaoCriarLivro" layoutX="357.0" layoutY="508.0" mnemonicParsing="false" onAction="#criarLivro" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: black;" text="Registrar" textFill="WHITE">
                      <font>
                         <Font name="Rockwell" size="16.0" />
                      </font>

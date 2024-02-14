@@ -10,6 +10,7 @@ import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import com.sistemaBiblioteca.Servico.LivroServico;
 import com.sistemaBiblioteca.Servico.ReservaServico;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +29,8 @@ public class ReservaTeste {
 
     @Test
     public void testReservarLivro() throws Exception {
-        reserva = reservaServico.criarReserva(leitor, "Vorazes");
+        reserva = reservaServico.criarReserva(leitor, "Livro Teste Reserva");
+        reservaServico.cancelarReserva(leitor, "Livro Teste Reserva");
         boolean reservado = reserva.isReservaConcluida();
         assertTrue(reservado);
     }
@@ -40,21 +42,24 @@ public class ReservaTeste {
 
     @Test
     public void cancelarReserva() throws Exception {
-        reserva = reservaServico.criarReserva(leitor, "Vorazes");
-        boolean cancelado = reservaServico.cancelarReserva(leitor, "Vorazes");
+        reserva = reservaServico.criarReserva(leitor, "Livro Teste Reserva");
+        boolean cancelado = reservaServico.cancelarReserva(leitor, "Livro Teste Reserva");
         assertTrue(cancelado);
     }
-
     @Before
-    public void testCriaInstancias() throws Excecao {
+    public void testCriaInstancias() throws Exception {
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         this.leitor = new Leitor("Brenda", "786.424.865-97", endereco, "74999823548");
         Localizacao localizacao = new Localizacao("w", "59");
-        this.livro = new Livro("Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        this.livro = new Livro("Livro Teste Reserva", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Reserva Teste", localizacao);
         this.livro.setDisponibilidade(false);
-        livroDAO.salvar(livro);
-        LivroServico livroServico = new LivroServico(livroDAO);
+        livroDAO.criarLivro(livro);
+        LivroServico livroServico = new LivroServico();
         this.reservaServico = new ReservaServico(livroServico);
+    }
+    @After
+    public void limparArquivo() throws Exception {
+        livroDAO.deletarTodosLivrosArquivo();
     }
 }
 

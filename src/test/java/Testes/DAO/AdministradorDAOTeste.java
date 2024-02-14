@@ -4,6 +4,7 @@ import com.sistemaBiblioteca.DAO.AdministradorDAO;
 import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.Excecoes.Excecao;
 import com.sistemaBiblioteca.Model.Usuarios.Administrador;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,5 +48,11 @@ public class AdministradorDAOTeste {
         administradorDAO.salvarAdiministrador(administrador);
         assertEquals(administrador.getCpf(), administradorDAO.buscarAdministradorPorId(administrador.getCpf()).getCpf());
     }
+
+    @After
+    public void limparArquivo() throws Exception {
+        administradorDAO.deletarTodosAdministradores();
+    }
+
 }
 

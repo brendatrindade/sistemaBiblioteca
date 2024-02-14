@@ -13,6 +13,7 @@
 package com.sistemaBiblioteca.DAO;
 
 import com.sistemaBiblioteca.Excecoes.Excecao;
+import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
@@ -37,7 +38,11 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
         this.historicoEmprestimos = Persistencia.lerHistoricoEmprestimos();
     }
 
-
+    /**
+     * Criar e registrar um novo leitor no sistema.
+     * @param leitor Objeto contendo os atributos necessários.
+     * @return Objeto leitor registrado.
+     */
     public Leitor criarLeitor(Leitor leitor) throws Exception {
         if (!leitor.validaCPF(leitor.getCpf())) {
             throw new Exception("CPF inválido!");
@@ -50,14 +55,35 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
         salvarLeitoresArquivo();
         return leitor;
     }
-
-
     /**
      * Salva a lista de leitores em um arquivo.
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public void salvarLeitoresArquivo() throws Exception {
-        Persistencia.salvarLeitor(leitores);
+        Persistencia.salvarLeitor(this.leitores);
+    }
+    /**
+     * Deleta um leitor do arquivo.
+     * @param leitor - leitor a ser deletado.
+     * @throws Exception se ocorrer um erro no processo de deletar do arquivo.
+     */
+    public void deletarLivroArquivo(Leitor leitor) throws Exception {
+        if (this.leitores.contains(leitor)){
+            if( this.leitores.remove(leitor) ){
+                salvarLeitoresArquivo();
+            } else {
+                throw new Exception("Erro ao deletar Livro.");
+            }
+        } else {
+            throw new Exception("Livro não encontrado no Acervo.");
+        }
+    }
+    /**
+     * Deleta todos os leitores do arquivo
+     */
+    public void deletarTodosLeitoresArquivo() throws Exception {
+        deletarTodos();
+        salvarLeitoresArquivo();
     }
     /**
      * Lê a lista de leitores de um arquivo.
@@ -73,7 +99,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public void salvarHistoricoEmprestimos() throws Exception{
-        Persistencia.salvarHistoricoEmprestimos(historicoEmprestimos);
+        Persistencia.salvarHistoricoEmprestimos(this.historicoEmprestimos);
     }
     /**
      * Lê o histórico de empréstimos de um arquivo.
@@ -90,21 +116,21 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      */
     @Override
     public void salvar(Leitor c) {
-        leitores.add(c);
+        this.leitores.add(c);
     }
     /**
      * Deleta um leitor da lista de leitores.
      * @param leitor - leitor a ser deletado.
      */
     public void deletar(Leitor leitor) {
-        leitores.remove(leitor);
+        this.leitores.remove(leitor);
     }
     /**
      * Deleta todos os leitores da lista de leitores.
      */
     @Override
     public void deletarTodos() {
-        leitores = new ArrayList<>();
+        this.leitores = new ArrayList<>();
     }
     /**
      * Este método busca um leitor pelo id - CPF.
@@ -113,8 +139,8 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      */
     @Override
     public Leitor buscarPorId(String id) {
-        if(!leitores.isEmpty()){
-            for(Leitor leitor : leitores){
+        if(!this.leitores.isEmpty()){
+            for(Leitor leitor : this.leitores){
                 if(leitor.getCpf().equals(id))
                     return leitor;
             }
@@ -126,7 +152,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @return Lista com todos os leitores.
      */
     public List<Leitor> getListaLeitores() {
-        return leitores;
+        return this.leitores;
     }
     /**
      * Adiciona um empréstimo ao histórico de empréstimos de um leitor.
@@ -134,13 +160,13 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @param novoEmprestimo - empréstimo a ser adicionado ao seu histórico.
      */
     public void adicionaHistoricoEmprestimos(Leitor leitor, Emprestimo novoEmprestimo) {
-        List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
+        List<Emprestimo> emprestimosDoLeitor = this.historicoEmprestimos.get(leitor);
 
         if (emprestimosDoLeitor == null) {
             emprestimosDoLeitor = new ArrayList<>();
         }
         emprestimosDoLeitor.add(novoEmprestimo);
-        historicoEmprestimos.put(leitor, emprestimosDoLeitor);
+        this.historicoEmprestimos.put(leitor, emprestimosDoLeitor);
     }
     /**
      * Retorna o histórico de empréstimos realizados por um leitor.
@@ -148,7 +174,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @return Lista de empréstimos feitos pelo leitor.
      */
     public List<Emprestimo> getHistoricoEmprestimos(Leitor leitor) {
-        return historicoEmprestimos.get(leitor);
+        return this.historicoEmprestimos.get(leitor);
     }
     /**
      * Retorna os empréstimos ativos de um leitor.
@@ -157,7 +183,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      */
     public List<Emprestimo> getEmprestimosAtivos(Leitor leitor) {
         List<Emprestimo> emprestimosAtivos = new ArrayList<>();
-        List<Emprestimo> emprestimosDoLeitor = historicoEmprestimos.get(leitor);
+        List<Emprestimo> emprestimosDoLeitor = this.historicoEmprestimos.get(leitor);
         if (!emprestimosDoLeitor.isEmpty()) {
             for (Emprestimo emprestimo : emprestimosDoLeitor) {
                 if (!emprestimo.isstatusEmprestimoFinalizado())
@@ -181,8 +207,8 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @throws Excecao Se o CPF já estiver cadastrado, a exceção é lançada.
      */
     public boolean cpfLeitorEstaCadastrado(String cpf) {
-        if (!leitores.isEmpty()) {
-            for (Leitor l : leitores) {
+        if (!this.leitores.isEmpty()) {
+            for (Leitor l : this.leitores) {
                 if (l.getCpf().equals(cpf)){
                     return true;
                 }

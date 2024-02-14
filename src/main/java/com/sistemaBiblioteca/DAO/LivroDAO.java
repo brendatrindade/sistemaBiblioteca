@@ -33,21 +33,48 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         this.reservasPorTitulo = Persistencia.lerReservasPorTitulo();
     }
 
+    /**
+     * Criar e registrar um novo livro no sistema.
+     * @param livro Objeto contendo os atributos necessários.
+     * @return Objeto livro registrado.
+     */
     public Livro criarLivro(Livro livro) throws Exception {
-        if (possuiLivro(livro)) {
+        if (acervoPossuiLivro(livro)) {
             throw new Exception("Este livro já está registrado!");
         }
         salvar(livro);
         salvarLivroArquivo();
         return livro;
     }
-
     /**
      * Salva a lista de livros em um arquivo.
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public void salvarLivroArquivo() throws Exception {
-        Persistencia.salvarLivro(acervo);
+        Persistencia.salvarLivro(this.acervo);
+    }
+    /**
+     * Deleta um livro do acervo arquivado.
+     * @param livro - livro a ser deletado.
+     * @throws Exception se ocorrer um erro no processo de deletar do arquivo.
+     */
+    public void deletarLivroArquivo(Livro livro) throws Exception {
+        if (acervoPossuiLivro(livro)){
+            if( this.acervo.remove(livro) ){
+                salvarLivroArquivo();
+            } else {
+                throw new Exception("Erro ao deletar Livro.");
+            }
+        } else {
+            throw new Exception("Livro não encontrado no Acervo.");
+        }
+    }
+    /**
+     * Deleta todos os Livros do arquivo
+     */
+    public void deletarTodosLivrosArquivo() throws Exception {
+        deletarTodos();
+        salvarLivroArquivo();
     }
     /**
      * Lê a lista de livros de um arquivo.
@@ -63,7 +90,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public void salvarReservasPorTituloArquivo() throws Exception{
-        Persistencia.salvarReservasPorTitulo(reservasPorTitulo);
+        Persistencia.salvarReservasPorTitulo(this.reservasPorTitulo);
     }
     /**
      * Lê a lista de reservas por título de um arquivo.
@@ -78,15 +105,14 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     public void getLocalizacao(Livro livro){
         Localizacao localizacao = livro.getLocalizacao();
     }
-
     /**
      * Adiciona um novo livro ao acervo.
      * @param c - livro a ser adicionado.
      */
     @Override
     public void salvar(Livro c) {
-        if (!acervo.contains(c)) {
-            acervo.add(c);
+        if (!this.acervo.contains(c)) {
+            this.acervo.add(c);
         }
     }
     /**
@@ -95,14 +121,14 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     @Override
     public void deletar(Livro c) {
-        acervo.remove(c);
+        this.acervo.remove(c);
     }
     /**
      * Deleta todos os Livros
      */
     @Override
     public void deletarTodos() {
-        acervo = new ArrayList<>();
+        this.acervo = new ArrayList<>();
     }
     @Override
     public Livro buscarPorId(String id) {
@@ -114,7 +140,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @return Lista contendo todos os livros do acervo.
      */
     public List<Livro> getAcervo() {
-        return acervo;
+        return this.acervo;
     }
     /**
      * Atualiza um livro do acervo.
@@ -169,9 +195,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param titulo - Titulo do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorTitulo(String titulo){
+    public List<Livro> buscarLivroPorTitulo(String titulo) throws Exception {
         List<Livro> livroPorTitulo = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getTitulo().equalsIgnoreCase(titulo)) {
                 livroPorTitulo.add(livro);
             }
@@ -183,9 +209,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param autor - Autor do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorAutor(String autor) {
+    public List<Livro> buscarLivroPorAutor(String autor) throws Exception {
         List<Livro> livroPorAutor = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getAutor().equalsIgnoreCase(autor)) {
                 livroPorAutor.add(livro);
             }
@@ -197,9 +223,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param isbn - ISBN do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorIsbn(String isbn) {
+    public List<Livro> buscarLivroPorIsbn(String isbn) throws Exception {
         List<Livro> livroPorIsbn = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getIsbn().equalsIgnoreCase(isbn)) {
                 livroPorIsbn.add(livro);
             }
@@ -211,9 +237,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param categoria - Categoria do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorCategoria(String categoria) {
+    public List<Livro> buscarLivroPorCategoria(String categoria) throws Exception {
         List<Livro> livroPorCategoria = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getCategoria().equalsIgnoreCase(categoria)) {
                 livroPorCategoria.add(livro);
             }
@@ -225,9 +251,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param anoPubli - Ano de publicação do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) {
+    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) throws Exception {
         List<Livro> livroPorAnoPubli = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getAnoPublicacao().equalsIgnoreCase(anoPubli)) {
                 livroPorAnoPubli .add(livro);
             }
@@ -239,9 +265,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param editora - Editora do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorEditora(String editora) {
+    public List<Livro> buscarLivroPorEditora(String editora) throws Exception {
         List<Livro> livroPorEditora = new ArrayList<>();
-        for (Livro livro : acervo) {
+        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
             if (livro.getEditora().equalsIgnoreCase(editora)) {
                 livroPorEditora .add(livro);
             }
@@ -254,15 +280,17 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param texto - texto a ser usado na pesquisa.
      * @return Um mapa contendo listas de livros que correspondem ao texto em seus respectivos campos.
      */
-    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+    public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
+
         Map <String, List<Livro>> resultados = new HashMap<>();
+
         List<Livro> titulos = new ArrayList<>();
         List<Livro> autores = new ArrayList<>();
         List<Livro> isbnes = new ArrayList<>();
         List<Livro> categorias = new ArrayList<>();
         List<Livro> anoPubli = new ArrayList<>();
 
-        for (Livro livroSistema : acervo){
+        for (Livro livroSistema : DAO.getLivroDAO().lerLivrosArquivo()){
             if (livroSistema.getTitulo().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ){
                 titulos.add(livroSistema);
                 resultados.put("Titulos", titulos);
@@ -291,8 +319,8 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param livro - Livro a ser verificado.
      * @return true se o livro estiver no acervo, false caso contrário.
      */
-    public boolean possuiLivro(Livro livro) {
-        return acervo.contains(livro);
+    public boolean acervoPossuiLivro(Livro livro) {
+        return this.acervo.contains(livro);
     }
     /**
      * Retorna a fila de reservas para um livro específico.
@@ -301,7 +329,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public Queue<Leitor> getReservasPorTitulo(String titulo) {
         titulo = titulo.toLowerCase();
-        return reservasPorTitulo.get(titulo);
+        return this.reservasPorTitulo.get(titulo);
     }
     /**
      * Define a fila de reservas para um titulo de livro específico.
@@ -310,7 +338,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public void setLeitoresReservasPorTitulo(String titulo, Queue<Leitor> leitoresNaFila) {
         titulo = titulo.toLowerCase();
-        reservasPorTitulo.put(titulo, leitoresNaFila);
+        this.reservasPorTitulo.put(titulo, leitoresNaFila);
     }
     /**
      * Verifica quem é o primeiro leitor da fila de reserva de um titulo de livro específico.
@@ -319,8 +347,8 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public Leitor verificaPrimeiroDaFila(String titulo){
         titulo = titulo.toLowerCase();
-        if(!reservasPorTitulo.get(titulo).isEmpty())
-            return reservasPorTitulo.get(titulo).peek();
+        if(!this.reservasPorTitulo.get(titulo).isEmpty())
+            return this.reservasPorTitulo.get(titulo).peek();
         return null;
     }
     /**
@@ -331,8 +359,8 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     public List<String> nomesNaFila(String titulo){
         titulo = titulo.toLowerCase();
         List<String> filaDeLeitoresPorTitulo = new ArrayList<>();
-        if (!reservasPorTitulo.get(titulo).isEmpty()) {
-            for (Leitor leitor : reservasPorTitulo.get(titulo))
+        if (!this.reservasPorTitulo.get(titulo).isEmpty()) {
+            for (Leitor leitor : this.reservasPorTitulo.get(titulo))
                 filaDeLeitoresPorTitulo.add(leitor.getNome());
         }
         return filaDeLeitoresPorTitulo;
@@ -344,7 +372,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public int qtdLeitoresNaFila(String titulo){
         titulo = titulo.toLowerCase();
-        return reservasPorTitulo.get(titulo).size();
+        return this.reservasPorTitulo.get(titulo).size();
     }
     /**
      * Remove o primeiro leitor da fila de reserva de um titulo de livro específico.
@@ -352,8 +380,8 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public void removePrimeiroDafila(String titulo){
         titulo = titulo.toLowerCase();
-        if (!reservasPorTitulo.get(titulo).isEmpty()) {
-            Leitor primeiro = reservasPorTitulo.get(titulo).poll();
+        if (!this.reservasPorTitulo.get(titulo).isEmpty()) {
+            Leitor primeiro = this.reservasPorTitulo.get(titulo).poll();
         }
     }
 

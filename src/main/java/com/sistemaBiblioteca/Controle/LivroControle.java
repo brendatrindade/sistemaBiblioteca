@@ -56,22 +56,22 @@ public class LivroControle {
     public void atualizarAnoPublicacaoLivro(Livro livro, String anoPublicacao) {
         livroServico.atualizarAnoPublicacaoLivro(livro, anoPublicacao);
     }
-    public List<Livro> buscarLivroPorTitulo(String titulo){
+    public List<Livro> buscarLivroPorTitulo(String titulo) throws Exception {
         return livroServico.buscarLivroPorTitulo(titulo);
     }
-    public List<Livro> buscarLivroPorAutor(String autor) {
+    public List<Livro> buscarLivroPorAutor(String autor) throws Exception {
         return livroServico.buscarLivroPorAutor(autor);
     }
-    public List<Livro> buscarLivroPorIsbn(String isbn) {
+    public List<Livro> buscarLivroPorIsbn(String isbn) throws Exception {
         return livroServico.buscarLivroPorIsbn(isbn);
     }
-    public List<Livro> buscarLivroPorCategoria(String categoria) {
+    public List<Livro> buscarLivroPorCategoria(String categoria) throws Exception {
         return livroServico.buscarLivroPorCategoria(categoria);
     }
-    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) {
+    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) throws Exception {
         return livroServico.buscarLivroPorAnoPublicacao(anoPubli);
     }
-    public List<Livro> buscarLivroPorEditora(String editora) {
+    public List<Livro> buscarLivroPorEditora(String editora) throws Exception {
         return livroServico.buscarLivroPorEditora(editora);
     }
     public boolean possuiLivro(Livro livro) {

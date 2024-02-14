@@ -1,6 +1,5 @@
 package com.sistemaBiblioteca.Controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.ResourceBundle;
 
 import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.DAO.Persistencia;
-import com.sistemaBiblioteca.Excecoes.Excecao;
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
 import com.sistemaBiblioteca.Model.Usuarios.*;
@@ -20,11 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class TelaInicial_Controller {
@@ -51,9 +46,8 @@ public class TelaInicial_Controller {
     private TextField cpf_acesso;
 
     public void setGerarDados(boolean gerar) throws Exception {
-        if (gerar) {
-            initialize2();}
-    };
+        if (gerar) initialize2();
+    }
 
     @FXML
     public void loginLeitor(ActionEvent event) throws Exception {
@@ -81,12 +75,12 @@ public class TelaInicial_Controller {
                     excep.printStackTrace();
                 }
             } else {
-                TelaErro_Controller telaErro_controller = new TelaErro_Controller();
-                telaErro_controller.showTelaErroCPF("Ops! CPF não encontrado\n");
+                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
             }
         } else {
-            TelaErro_Controller telaErro_controller = new TelaErro_Controller();
-            telaErro_controller.showTelaErroCPF("Ops! CPF inválido\n");
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
         }
     }
 
@@ -106,6 +100,7 @@ public class TelaInicial_Controller {
 
     @FXML
     public void iniciarPesquisa(ActionEvent event) throws Exception {
+
         List<Livro> titulos = new ArrayList<>();
         List<Livro> autores = new ArrayList<>();
         List<Livro> isbnes = new ArrayList<>();
@@ -168,8 +163,8 @@ public class TelaInicial_Controller {
                 excep.printStackTrace();
             }
         } else{
-                TelaErro_Controller telaErro_controller = new TelaErro_Controller();
-                telaErro_controller.showTelaErroCPF("Digite algo para pesquisar\n");
+                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                telaAviso_controller.showTelaAviso("Digite algo para pesquisar\n");
             }
 
     }
@@ -181,41 +176,42 @@ public class TelaInicial_Controller {
         assert botao_entrar != null : "fx:id=\"botao_entrar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
         assert botao_ok_pesquisar != null : "fx:id=\"botao_ok_pesquisar\" was not injected: check your FXML file 'TelaInicial.fxml'.";
         assert cpf_acesso != null : "fx:id=\"cpf_acesso\" was not injected: check your FXML file 'TelaInicial.fxml'.";
-        if(Persistencia.existeCache())
-            setGerarDados(true);
     }
 
     void initialize2() throws Exception {
 
-        DAO.getLeitorDAO().deletarTodos();
-        DAO.getBibliotecarioDAO().deletarTodos();
-        DAO.getAdministradorDAO().deletarTodosAdministradores();
-        DAO.getLivroDAO().deletarTodos();
+        if (!Persistencia.existeCache()) {
+            /*
+            DAO.getLeitorDAO().deletarTodos();
+            DAO.getBibliotecarioDAO().deletarTodos();
+            DAO.getAdministradorDAO().deletarTodosAdministradores();
+            DAO.getLivroDAO().deletarTodosLivrosArquivo();
+            */
 
-        Persistencia.criarCache();
+            Persistencia.criarCache();
 
-        Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-        Leitor leitor1 = new Leitor("Brenda L.", "78642486597", endereco, "74999823548");
-        Endereco endereco2 = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
-        Leitor leitor2 = new Leitor("Leitor 2.", "58138131012", endereco2, "75989873521");
+            Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
+            Leitor leitor1 = new Leitor("Brenda L.", "78642486597", endereco, "74999823548");
+            Endereco endereco2 = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
+            Leitor leitor2 = new Leitor("Leitor 2.", "58138131012", endereco2, "75989873521");
 
-        Bibliotecario bibliotecario1 = new Bibliotecario("Julia B.", "123.456.789-09", "senha123");
-        Administrador administrador1 = new Administrador("Maria A.", "361.215.045-60", "senha456");
+            Bibliotecario bibliotecario1 = new Bibliotecario("Julia B.", "123.456.789-09", "senha123");
+            Administrador administrador1 = new Administrador("Maria A.", "361.215.045-60", "senha456");
 
-        Localizacao localizacao = new Localizacao("Z", "12");
-        Livro livro1 = new Livro("Primeiro Edai", "Klack", "1357579800294", "Educativo", "1999", "Univer", localizacao);
+            Localizacao localizacao = new Localizacao("Z", "12");
+            Livro livro1 = new Livro("Primeiro Edai", "Klack", "1357579800294", "Educativo", "1999", "Univer", localizacao);
 
-        Localizacao localizacao2 = new Localizacao("A", "45");
-        Livro livro2 = new Livro("Segundo Edai", "Klack", "2657579833294", "Educativo", "2003", "Univer", localizacao2);
+            Localizacao localizacao2 = new Localizacao("A", "45");
+            Livro livro2 = new Livro("Segundo Edai", "Klack", "2657579833294", "Educativo", "2003", "Univer", localizacao2);
 
-
-        DAO.getLeitorDAO().criarLeitor(leitor1);
-        DAO.getLeitorDAO().criarLeitor(leitor2);
-        DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario1);
-        DAO.getAdministradorDAO().criarAdministrador(administrador1);
-        DAO.getLivroDAO().criarLivro(livro1);
-        DAO.getLivroDAO().criarLivro(livro2);
-
+            DAO.getLeitorDAO().criarLeitor(leitor1);
+            DAO.getLeitorDAO().criarLeitor(leitor2);
+            DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario1);
+            DAO.getAdministradorDAO().criarAdministrador(administrador1);
+            DAO.getLivroDAO().criarLivro(livro1);
+            DAO.getLivroDAO().criarLivro(livro2);
+        }
+        setGerarDados(false);
     }
 
     public boolean validaCPF(String cpf) {

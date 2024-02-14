@@ -13,6 +13,7 @@
 package com.sistemaBiblioteca.DAO;
 
 import com.sistemaBiblioteca.Excecoes.Excecao;
+import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Usuarios.Administrador;
 import com.sistemaBiblioteca.Model.Usuarios.Bibliotecario;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
@@ -34,7 +35,11 @@ public class AdministradorDAO extends BibliotecarioDAO{
         this.administradores = new ArrayList<>();
         this.administradores = Persistencia.lerAdministrador();
     }
-
+    /**
+     * Criar e registrar um novo administrador no sistema.
+     * @param administrador Objeto contendo os atributos necessários.
+     * @return Objeto administrador registrado.
+     */
     public Administrador criarAdministrador(Administrador administrador) throws Exception {
         if (!administrador.validaCPF(administrador.getCpf())) {
             throw new Exception("CPF inválido!");
@@ -46,13 +51,35 @@ public class AdministradorDAO extends BibliotecarioDAO{
         salvarAdministradorArquivo();
         return administrador;
     }
-
     /**
      * Salva a lista de administradores em um arquivo.
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
      */
     public void salvarAdministradorArquivo() throws Exception {
-        Persistencia.salvarAdministrador(administradores);
+        Persistencia.salvarAdministrador(this.administradores);
+    }
+    /**
+     * Deleta um administrador do arquivo.
+     * @param administrador - administrador a ser deletado.
+     * @throws Exception se ocorrer um erro no processo de deletar do arquivo.
+     */
+    public void deletarAdministradorArquivo(Administrador administrador) throws Exception {
+        if (this.administradores.contains(administrador)){
+            if( this.administradores.remove(administrador) ){
+                salvarAdministradorArquivo();
+            } else {
+                throw new Exception("Erro ao deletar administrador.");
+            }
+        } else {
+            throw new Exception("Administrador não encontrado no arquivo.");
+        }
+    }
+    /**
+     * Deleta todos os administradores do arquivo
+     */
+    public void deletarTodosAdministradoresArquivo() throws Exception {
+        deletarTodos();
+        salvarAdministradorArquivo();
     }
     /**
      * Lê a lista de administradores de um arquivo.
@@ -68,20 +95,20 @@ public class AdministradorDAO extends BibliotecarioDAO{
      * @param administrador - administrador a ser salvo.
      */
     public void salvarAdiministrador(Administrador administrador) {
-        administradores.add(administrador);
+        this.administradores.add(administrador);
     }
     /**
      * Deleta um administrador da lista de administradores.
      * @param administrador - administrador a ser deletado.
      */
     public void deletarAdministrador(Administrador administrador) {
-        administradores.remove(administrador);
+        this.administradores.remove(administrador);
     }
     /**
      * Deleta todos os administradores da lista de administradores.
      */
     public void deletarTodosAdministradores() {
-        administradores = new ArrayList<>();
+        this.administradores = new ArrayList<>();
     }
     /**
      * Busca um administrador pelo id - CPF.
@@ -89,8 +116,8 @@ public class AdministradorDAO extends BibliotecarioDAO{
      * @return Administrador encontrado ou null se o cpf não possuir cadastro.
      */
     public Administrador buscarAdministradorPorId(String id) {
-        if(!administradores.isEmpty()){
-            for(Administrador administrador : administradores){
+        if(!this.administradores.isEmpty()){
+            for(Administrador administrador : this.administradores){
                 if(administrador.getCpf().equals(id))
                     return administrador;
             }
@@ -102,18 +129,18 @@ public class AdministradorDAO extends BibliotecarioDAO{
      * @return Lista contendo todos os administradores.
      */
     public List<Administrador> getAdministradores(){
-        for (Bibliotecario operador : operadores) {
+        for (Bibliotecario operador : this.operadores) {
             if (operador instanceof Administrador) {
                 Administrador administrador = (Administrador) operador;
-                administradores.add(administrador);
+                this.administradores.add(administrador);
             }
         }
-        return administradores;
+        return this.administradores;
     }
 
     public boolean cpfAdministradorEstaCadastrado(String cpf){
-        if (!administradores.isEmpty()){
-            for (Administrador a : administradores) {
+        if (!this.administradores.isEmpty()){
+            for (Administrador a : this.administradores) {
                 if (a.getCpf().equals(cpf))
                     return true;
             }

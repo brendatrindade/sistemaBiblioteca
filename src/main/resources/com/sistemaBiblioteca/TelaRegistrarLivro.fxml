@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="telaResgistroDeLivro" prefHeight="400.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="264.0" layoutY="86.0" />
+      <TextField layoutX="252.0" layoutY="140.0" />
+      <TextField layoutX="54.0" layoutY="165.0" />
+      <TextField layoutX="83.0" layoutY="298.0" />
+      <TextField layoutX="94.0" layoutY="257.0" />
+      <TextField layoutX="115.0" layoutY="218.0" />
+      <TextField layoutX="34.0" layoutY="61.0" />
+      <TextField layoutX="217.0" layoutY="35.0" />
+      <TextField layoutX="434.0" layoutY="36.0" />
+      <TextField layoutX="434.0" layoutY="128.0" />
+      <Label layoutX="39.0" layoutY="40.0" prefHeight="17.0" prefWidth="58.0" text="Título" />
+      <Label layoutX="40.0" layoutY="282.0" text="Label" />
+      <Label layoutX="312.0" layoutY="322.0" text="Label" />
+      <Label layoutX="399.0" layoutY="314.0" text="Label" />
+      <Label layoutX="366.0" layoutY="209.0" text="Label" />
+      <Label layoutX="56.0" layoutY="144.0" text="Label" />
+      <Label layoutX="252.0" layoutY="123.0" text="Label" />
+      <Label layoutX="264.0" layoutY="65.0" text="Label" />
+      <Label layoutX="434.0" layoutY="16.0" text="Categoria" />
+      <Label layoutX="218.0" layoutY="15.0" text="Autor" />
+   </children>
+</Pane>

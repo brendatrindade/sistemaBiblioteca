@@ -4,6 +4,7 @@ import com.sistemaBiblioteca.DAO.BibliotecarioDAO;
 import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.Excecoes.Excecao;
 import com.sistemaBiblioteca.Model.Usuarios.Bibliotecario;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +51,13 @@ public class BibliotecarioDAOTeste {
 
     @Test
     public void cpfEstaCadastrado() {
+        bibliotecarioDAO.salvar(bibliotecario);
         assertTrue(bibliotecarioDAO.cpfBibliotecarioEstaCadastrado(bibliotecario.getCpf()));
+    }
+
+    @After
+    public void limparArquivo() throws Exception {
+        bibliotecarioDAO.deletarTodos();
     }
 }
 

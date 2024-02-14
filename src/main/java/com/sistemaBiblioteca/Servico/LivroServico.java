@@ -12,6 +12,7 @@
  */
 package com.sistemaBiblioteca.Servico;
 
+import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.DAO.LivroDAO;
 
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
@@ -27,10 +28,9 @@ public class LivroServico {
     private LivroDAO livroDAO;
     /**
      * Construtor da classe LivroServico.
-     * @param livroDAO - DAO utilizado para operações de livro.
      */
-    public LivroServico(LivroDAO livroDAO) {
-        this.livroDAO = livroDAO;
+    public LivroServico() throws Exception {
+        this.livroDAO = DAO.getLivroDAO();
     }
     /**
      * Cria um novo livro.
@@ -130,7 +130,7 @@ public class LivroServico {
      * @param titulo - Titulo do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorTitulo(String titulo){
+    public List<Livro> buscarLivroPorTitulo(String titulo) throws Exception {
         return livroDAO.buscarLivroPorTitulo(titulo);
     }
     /**
@@ -138,7 +138,7 @@ public class LivroServico {
      * @param autor - Autor do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorAutor(String autor) {
+    public List<Livro> buscarLivroPorAutor(String autor) throws Exception {
         return livroDAO.buscarLivroPorAutor(autor);
     }
     /**
@@ -146,7 +146,7 @@ public class LivroServico {
      * @param isbn - ISBN do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorIsbn(String isbn) {
+    public List<Livro> buscarLivroPorIsbn(String isbn) throws Exception {
         return livroDAO.buscarLivroPorIsbn(isbn);
     }
     /**
@@ -154,7 +154,7 @@ public class LivroServico {
      * @param categoria - Categoria do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorCategoria(String categoria) {
+    public List<Livro> buscarLivroPorCategoria(String categoria) throws Exception {
         return livroDAO.buscarLivroPorCategoria(categoria);
     }
     /**
@@ -162,7 +162,7 @@ public class LivroServico {
      * @param anoPubli - Ano de publicação do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) {
+    public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) throws Exception {
         return livroDAO.buscarLivroPorAnoPublicacao(anoPubli);
     }
     /**
@@ -170,7 +170,7 @@ public class LivroServico {
      * @param editora - Editora do livro a ser localizado.
      * @return Lista de livros correspondentes ao dado fornecido
      */
-    public List<Livro> buscarLivroPorEditora(String editora) {
+    public List<Livro> buscarLivroPorEditora(String editora) throws Exception {
         return livroDAO.buscarLivroPorEditora(editora);
     }
     /**
@@ -179,7 +179,7 @@ public class LivroServico {
      * @return true se o livro estiver no acervo, false caso contrário.
      */
     public boolean possuiLivro(Livro livro) {
-        return livroDAO.possuiLivro(livro);
+        return livroDAO.acervoPossuiLivro(livro);
     }
     /**
      * Este método retorna a fila de reservas para um livro específico.

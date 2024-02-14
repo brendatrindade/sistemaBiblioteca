@@ -27,7 +27,6 @@ public class Persistencia<T> {
         }
         return false;
     }
-
     /**
      * Cria uma pasta de armazenamento cache se ele não existir e inicializa com listas vazias.
      * @throws Exception se ocorrer um erro durante a criação do cache.
@@ -58,7 +57,6 @@ public class Persistencia<T> {
             Persistencia.salvarHistoricoEmprestimos(new HashMap<>());
         }
     }
-
     /**
      * Salva uma lista de objetos em um arquivo.
      * @param caminhoArquivo - caminho do arquivo.
@@ -110,8 +108,8 @@ public class Persistencia<T> {
             obj.writeObject(listaLeitores);
             obj.close();
             arquivo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new Exception("Não foi possível salvar Leitores.");
         }
     }
     /**

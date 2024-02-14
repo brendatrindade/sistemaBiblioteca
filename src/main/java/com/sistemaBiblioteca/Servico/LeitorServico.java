@@ -89,7 +89,7 @@ public class LeitorServico {
         return leitorDAO.qtdEmprestimosAtivos(leitor);
     }
 
-    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+    public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
         return livroDAO.pesquisarLivros(texto);
     }
 

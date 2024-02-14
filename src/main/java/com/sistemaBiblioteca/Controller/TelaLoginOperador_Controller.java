@@ -83,13 +83,13 @@ public class TelaLoginOperador_Controller {
                         }
                     }
                 } else {
-                    TelaErro_Controller telaErro_controller = new TelaErro_Controller();
-                    telaErro_controller.showTelaErroCPF("Ops! CPF não encontrado\n");
+                    TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                    telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
                 }
             }
         } else {
-            TelaErro_Controller telaErro_controller = new TelaErro_Controller();
-            telaErro_controller.showTelaErroCPF("Ops! CPF inválido\n");
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
         }
     }
 

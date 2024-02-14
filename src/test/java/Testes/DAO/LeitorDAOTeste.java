@@ -8,6 +8,7 @@ import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
 import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,6 +80,12 @@ public class LeitorDAOTeste {
     public void VerificarSeCpfEstaCadastrado() {
         leitorDAO.salvar(leitor);
         assertTrue(leitorDAO.cpfLeitorEstaCadastrado(leitor.getCpf()));
+    }
+
+
+    @After
+    public void limparArquivo() throws Exception {
+        leitorDAO.deletarTodos();
     }
 }
 

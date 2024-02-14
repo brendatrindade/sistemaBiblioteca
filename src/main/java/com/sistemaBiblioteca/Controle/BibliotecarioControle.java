@@ -70,7 +70,7 @@ public class BibliotecarioControle {
     public void devolverLivroPorTitulo(String titulo, Leitor leitor) {
         bibliotecarioServico.devolverLivroPorTitulo(titulo, leitor);
     }
-    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+    public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
         return bibliotecarioServico.pesquisarLivros(texto);
     }
     public boolean cpfOperadorEstaCadastrado(String cpf) throws Excecao {

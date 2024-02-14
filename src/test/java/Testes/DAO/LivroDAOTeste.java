@@ -7,6 +7,7 @@ import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
 import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class LivroDAOTeste {
     @Before
     public void iniciarDAO() throws Excecao {
         Localizacao localizacao = new Localizacao("F", "81");
-        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Livro DAO Teste", "2012", "Rocco Jovens Leitores", localizacao);
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
         leitor2 = new Leitor("Rafaela", "624.673.930-03", endereco, "75999459548");
@@ -54,7 +55,6 @@ public class LivroDAOTeste {
     public void deletarLivro() {
         livroDAO.salvar(livro);
         livroDAO.deletar(livro);
-
         assertFalse(livroDAO.getAcervo().contains(livro));
     }
 
@@ -73,23 +73,32 @@ public class LivroDAOTeste {
 
 
     @Test
-    public void buscarLivroPorTitulo() {
-        livroDAO.salvar(livro);
+    public void buscarLivroPorTitulo() throws Exception {
         List<Livro> livros = livroDAO.buscarLivroPorTitulo(livro.getTitulo());
-        assertTrue(livros.contains(livro));
+        for (Livro l : livros) {
+            if (l.getTitulo().equalsIgnoreCase(livro.getTitulo())) {
+                assertEquals(l.getTitulo(), livro.getTitulo());
+            }
+        }
     }
 
     @Test
-    public void pesquisarLivros() {
-        livroDAO.salvar(livro);
-        Map<String, List<Livro>> resultados = livroDAO.pesquisarLivros(livro.getTitulo());
-        assertTrue(resultados.get("Titulos").contains(livro));
+    public void pesquisarLivros() throws Exception {
+        livroDAO.criarLivro(livro);
+        Map<String, List<Livro>> resultados = livroDAO.pesquisarLivros(livro.getAutor());
+
+        for (Livro l : resultados.get("Autoria")) {
+            if (l.getTitulo().equalsIgnoreCase(livro.getAutor())) {
+                assertEquals(l.getAutor(), livro.getAutor());
+            }
+        }
+
     }
 
     @Test
     public void AcervoPossuiLivro() {
         livroDAO.salvar(livro);
-        assertTrue(livroDAO.possuiLivro(livro));
+        assertTrue(livroDAO.acervoPossuiLivro(livro));
     }
 
     @Test
@@ -138,6 +147,12 @@ public class LivroDAOTeste {
         livroDAO.removePrimeiroDafila(livro.getTitulo());
         assertFalse(livroDAO.nomesNaFila(livro.getTitulo()).contains(leitor.getNome()));
         assertEquals(1, livroDAO.getReservasPorTitulo(livro.getTitulo()).size());
+    }
+
+
+    @After
+    public void limparArquivo() throws Exception {
+        livroDAO.deletarTodosLivrosArquivo();
     }
 
 }

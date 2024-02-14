@@ -1,3 +1,4 @@
+/*
 package com.sistemaBiblioteca;
 //Minha bagunça, desconsiderar :)
 
@@ -37,7 +38,7 @@ public class Sistema {
         Livro livro1 = new Livro("Joana Aquariana", "Aquarela", "123", "romance", "2000", "edita tudo");
         Livro livro2 = new Livro("Joana Aquactor", "Aquarela", "124", "romance", "2000", "edita tudo");
         */
-
+/*
         livroControle.criarLivro("Joana Aquariana", "Aquarela", "123", "romance", "2000", "edita tudo", new Localizacao("J", "27"));
         bibliotecarioControle.registrarNovoLivro("Joana Aquactor", "Aquarela", "12221", "romance", "2000", "edita tudo", new Localizacao("J", "29"));
 
@@ -88,7 +89,8 @@ public class Sistema {
 
         //System.out.println(bibliotecario1.getBibliotecarios());
         //System.out.println(administrador1.getAdministradores());
-
+/*
     }
 
 }
+*/

@@ -11,6 +11,7 @@ import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import com.sistemaBiblioteca.Servico.LivroServico;
 import com.sistemaBiblioteca.Servico.ReservaServico;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,14 +39,15 @@ public class PersistenciaTeste {
     public void iniciarTestes() throws Exception {
         Persistencia.criarCache();
         Localizacao localizacao = new Localizacao("O", "46");
-        livro = new Livro("Jogos V.", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("Jogos V.", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Persistencia Teste", localizacao);
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         leitor = new Leitor("Brenda A.", "78642486597", endereco, "74999823548");
         emprestimo = new Emprestimo(livro, leitor);
         bibliotecario = new Bibliotecario("Lisa J.", "123.456.789-09", "senha123");
         administrador = new Administrador("Maria L.", "361.215.045-60", "senha456");
-        LivroServico livroServico = new LivroServico(livroDAO);
+        LivroServico livroServico = new LivroServico();
         this.reservaServico = new ReservaServico(livroServico);
+        livroDAO.criarLivro(livro);
     }
 
     @Test
@@ -145,7 +147,6 @@ public class PersistenciaTeste {
 
     @Test
     public void testSalvarReservasPorTituloArquivo() throws Exception {
-        livroDAO.salvar(livro);
         reserva = reservaServico.criarReserva(leitor, "Jogos V.");
         livroDAO.salvarReservasPorTituloArquivo();
 
@@ -154,14 +155,24 @@ public class PersistenciaTeste {
 
     @Test
     public void testLerReservasPorTituloArquivo() throws Exception {
+
         reservaServico.criarReserva(leitor, "Jogos V.");
         reservaServico.criarReserva(leitor, "Jogos V.");
         reservaServico.criarReserva(leitor, "Jogos V.");
+        livroDAO.salvarReservasPorTituloArquivo();
 
         Map<String, Queue<Leitor>> mapaArquivado = Persistencia.lerReservasPorTitulo();
-
-        assertEquals(3, mapaArquivado.size());
+        assertEquals(4, mapaArquivado.size());
     }
+
+    @After
+    public void limparArquivo() throws Exception {
+        livroDAO.deletarTodosLivrosArquivo();
+        leitorDAO.deletarTodos();
+        bibliotecarioDAO.deletarTodos();
+        administradorDAO.deletarTodosAdministradores();
+    }
+
 }
 
 

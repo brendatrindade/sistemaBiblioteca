@@ -158,7 +158,7 @@ public class BibliotecarioServico {
      * @param texto - texto a ser usado na pesquisa.
      * @return Um mapa contendo listas de livros que correspondem ao texto em seus respectivos campos.
      */
-    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+    public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
         return leitorServico.pesquisarLivros(texto);
     }
     /**

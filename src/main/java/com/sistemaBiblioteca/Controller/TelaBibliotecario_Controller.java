@@ -1,11 +1,11 @@
 package com.sistemaBiblioteca.Controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.sistemaBiblioteca.DAO.DAO;
-import com.sistemaBiblioteca.Main;
+import com.sistemaBiblioteca.Model.Operacoes.Livro;
+import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -97,6 +94,35 @@ public class TelaBibliotecario_Controller {
     void registrarLivro() {
         paneRegistrarLivro.toFront();
     }
+
+    @FXML
+    void criarLivro() throws Exception {
+        try {
+            Livro livro = new Livro(titulo.getText(), autor.getText(), isbn.getText(), categoria.getText(), anoPublicacao.getText(),
+                    editora.getText(), new Localizacao(localizacaoPrateleira.getText(), localizacaoPosicao.getText()));
+
+            DAO.getLivroDAO().criarLivro(livro);
+
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso("Livro " + titulo.getText()+ " registrado com sucesso!");
+
+            titulo.clear();
+            autor.clear();
+            isbn.clear();
+            categoria.clear();
+            anoPublicacao.clear();
+            editora.clear();
+            localizacaoPrateleira.clear();
+            localizacaoPosicao.clear();
+
+            paneTelaPrincipal.toFront();
+
+        } catch (Exception e){
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso(e.getMessage());
+        }
+    }
+
     @FXML
     void registrarEmprestimo() {
         paneRegistrarEmprestimo.toFront();

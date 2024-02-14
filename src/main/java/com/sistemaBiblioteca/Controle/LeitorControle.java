@@ -77,7 +77,7 @@ public class LeitorControle {
         return leitorServico.qtdEmprestimosAtivos(leitor);
     }
 
-    public Map<String, List<Livro>> pesquisarLivros(String texto) {
+    public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
         return leitorServico.pesquisarLivros(texto);
     }
     public boolean cpfLeitorEstaCadastrado(String cpf) throws Excecao {
