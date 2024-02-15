@@ -68,7 +68,7 @@ public class Endereco implements Serializable {
      * @return String - representa o endereço.
      */
     public String toString() {
-        return ("Endereço: " + rua + " , " + numero +"\nCidade: " + cidade + " - " + estado + ".");
+        return ("Endereço: " + rua + " , " + numero +" - Cidade: " + cidade + " - " + estado + ".");
     }
 
 }

@@ -188,10 +188,13 @@ public class Emprestimo implements Serializable {
      */
     public String toString() {
         if (emprestimoRealizado) {
-            return ("\n" + leitor + livro + "\nLivro Disponivel: " + livro.isDisponibilidade() +
-                "\nEmprestado: " + dataEmprestimo + " - Devolucao esperada: " + dataEsperadaDev + " - Devolvido: " + dataRealizadaDev +
-                "\nEm atraso:" + emAtraso() + " - Finalizado: " + isstatusEmprestimoFinalizado() +
-                "\nRenovacoes: " + numeroDeRenovacoes);
+            return ("Emprestimo: \n" +
+                    leitor + livro +
+                    "\nEmprestado: " + dataEmprestimo + " - Devolucao esperada: " + dataEsperadaDev +
+                    "\nDevolvido: " + dataRealizadaDev + " - Em atraso:" + emAtraso() +
+                    "\nFinalizado: " + isstatusEmprestimoFinalizado() + " - Renovacoes: " + numeroDeRenovacoes +
+                    "\nLivro Disponivel: " + livro.isDisponibilidade() );
+
         }
         return ("Emprestimo não realizado.");
     }

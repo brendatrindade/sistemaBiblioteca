@@ -184,7 +184,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
     public List<Emprestimo> getEmprestimosAtivos(Leitor leitor) {
         List<Emprestimo> emprestimosAtivos = new ArrayList<>();
         List<Emprestimo> emprestimosDoLeitor = this.historicoEmprestimos.get(leitor);
-        if (!emprestimosDoLeitor.isEmpty()) {
+        if (emprestimosDoLeitor != null) {
             for (Emprestimo emprestimo : emprestimosDoLeitor) {
                 if (!emprestimo.isstatusEmprestimoFinalizado())
                     emprestimosAtivos.add(emprestimo);

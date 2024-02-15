@@ -49,7 +49,7 @@ public class Bibliotecario extends Usuario {
      * @return String - cargo do operador.
      */
     public String getCargo() {
-        return cargo;
+        return this.cargo;
     }
     /**
      * Define a senha do operador.
@@ -63,7 +63,7 @@ public class Bibliotecario extends Usuario {
      * @return String - senha do operador.
      */
     public String getSenha() {
-        return senha;
+        return this.senha;
     }
     /**
      * Retorna a representação em String do objeto Bibliotecario.

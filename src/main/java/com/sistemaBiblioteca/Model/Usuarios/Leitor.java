@@ -71,8 +71,8 @@ public class Leitor extends Usuario {
      */
     public String toString() {
         if (cadastroRealizado) {
-            return ("\nLeitor(a): " + super.getNome() + " - CPF: " + super.getCpf() +
-                    "\nTelefone: " + telefone + "\n" + endereco + " .\n");
+            return ("\nLeitor(a): " + super.getNome() + " - CPF: " + super.getCpf() + " - Telefone: " + telefone +
+                    "\n" + endereco + "\n");
         }
         return ("Leitor não cadastrado.");
     }

@@ -161,6 +161,14 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializab
             }
         } return false;
     }
-
+    /**
+     * Retorna a senha do bibliotecário.
+     * @param cpf - CPF do bibliotecário a ser buscado.
+     * @return String senha cadastrada.
+     */
+    public String getSenhaBibliotecario(String cpf) {
+        Bibliotecario b = buscarPorId(cpf);
+        return b.getSenha();
+    }
 
 }

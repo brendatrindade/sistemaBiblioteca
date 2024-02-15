@@ -50,7 +50,8 @@ public class Localizacao implements Serializable {
      * @return String - representa a localização.
      */
     public String toString() {
-        return ("\nLocalizacao: Prateleira " + prateleira + " - Posicao " + posicao + ".");
+        return ("Prateleira: " + prateleira +
+                "\nPosicao: " + posicao);
     }
 }
 

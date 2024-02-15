@@ -347,7 +347,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public Leitor verificaPrimeiroDaFila(String titulo){
         titulo = titulo.toLowerCase();
-        if(!this.reservasPorTitulo.get(titulo).isEmpty())
+        if( this.reservasPorTitulo.get(titulo) != null )
             return this.reservasPorTitulo.get(titulo).peek();
         return null;
     }
@@ -359,7 +359,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     public List<String> nomesNaFila(String titulo){
         titulo = titulo.toLowerCase();
         List<String> filaDeLeitoresPorTitulo = new ArrayList<>();
-        if (!this.reservasPorTitulo.get(titulo).isEmpty()) {
+        if (this.reservasPorTitulo.get(titulo) != null) {
             for (Leitor leitor : this.reservasPorTitulo.get(titulo))
                 filaDeLeitoresPorTitulo.add(leitor.getNome());
         }
@@ -380,7 +380,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public void removePrimeiroDafila(String titulo){
         titulo = titulo.toLowerCase();
-        if (!this.reservasPorTitulo.get(titulo).isEmpty()) {
+        if (this.reservasPorTitulo.get(titulo) != null) {
             Leitor primeiro = this.reservasPorTitulo.get(titulo).poll();
         }
     }

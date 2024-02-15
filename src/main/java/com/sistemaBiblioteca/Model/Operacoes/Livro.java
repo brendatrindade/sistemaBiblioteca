@@ -175,9 +175,9 @@ public class Livro implements Serializable {
             disp = "Indisponivel";
         if (livroCadastrado) {
 
-            return ("\n"
-                    + "Livro: " + titulo + " - Autoria: " + autor + " - ISBN: " + isbn + "\nCategoria: " + categoria
-                    + " - Ano de publicacao: " + anoPublicacao + " - Editora: " + editora
+            return ("Livro: " + titulo + " - Autoria: " + autor +
+                    "\nISBN: " + isbn + " - Categoria: " + categoria +
+                    "\nAno de publicacao: " + anoPublicacao + " - Editora: " + editora
                     + localizacao + " - Status: " + disp);
         }
         return ("Livro não cadastrado");

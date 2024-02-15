@@ -1,11 +1,15 @@
 package com.sistemaBiblioteca.Controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.sistemaBiblioteca.DAO.DAO;
+import com.sistemaBiblioteca.Excecoes.Excecao;
+import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
+import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +44,10 @@ public class TelaBibliotecario_Controller {
     @FXML
     private TextField barraPesquisa;
     @FXML
+    private Button botaoCriarDevolucao;
+    @FXML
+    private Button botaoCriarEmprestimo;
+    @FXML
     private Button botaoCriarLivro;
     @FXML
     private Button botaoPesquisar;
@@ -58,6 +66,10 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     private TextField categoria;
+    @FXML
+    private TextField cpfLeitorDevolucao;
+    @FXML
+    private TextField cpfLeitorCriarEmprestimo;
 
     @FXML
     private TextField editora;
@@ -88,6 +100,10 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     private TextField titulo;
+    @FXML
+    private TextField tituloLivroDevolucao;
+    @FXML
+    private TextField tituloLivroCriarEmprestimo;
 
 
     @FXML
@@ -122,14 +138,131 @@ public class TelaBibliotecario_Controller {
             telaAviso_controller.showTelaAviso(e.getMessage());
         }
     }
-
     @FXML
     void registrarEmprestimo() {
         paneRegistrarEmprestimo.toFront();
     }
+
+    @FXML
+    void criarEmprestimo(ActionEvent event) throws Exception {
+
+        String tituloInserido = tituloLivroCriarEmprestimo.getText();
+        String cpfInserido = cpfLeitorCriarEmprestimo.getText();
+
+        if ( (!tituloInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty())) {
+
+            Leitor leitor = DAO.getLeitorDAO().buscarPorId(cpfInserido);
+
+            List<Livro> livrosDoTitulo = DAO.getLivroDAO().buscarLivroPorTitulo(tituloInserido);
+            Livro livroDisponivel = null;
+            if (!livrosDoTitulo.isEmpty()) {
+                for (Livro livro : livrosDoTitulo) {
+                    if (livro.isDisponibilidade()) {
+                        livroDisponivel = livro;
+                        break;
+                    }
+                }
+            } else {
+                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                telaAviso_controller.showTelaAviso("Ops! Nenhum livro correspondente ao TÍTULO informado foi lozalidado.");
+            }
+
+            if (leitor != null) {
+                //Leitor encontrado
+                if (livroDisponivel != null) {
+                    //Titulo possui livro disponivel para ser emprestado
+                    if (leitor.isStatusAcessoUsuario()) {
+                        //Leitor possui acesso ativo
+                        if ( (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == leitor) || (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == null) ) {
+                            //Leitor é o primeiro na fila de reservas desse título ou a fila de reservas desse título esta vazia
+                            if (DAO.getLeitorDAO().qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
+                                //A quantidade de emprestimos ativos do leitor é menor que o limite, registrar empréstimo
+                                DAO.getLivroDAO().removePrimeiroDafila(livroDisponivel.getTitulo());
+                                //Remove Leitor da fila de reservas
+                                Emprestimo emprestimo = new Emprestimo(livroDisponivel, leitor);
+                                //Gera o emprestimo
+                                DAO.getLeitorDAO().adicionaHistoricoEmprestimos(leitor, emprestimo);
+                                //Salva o emprestimo no historico do leitor
+                                DAO.getLeitorDAO().salvarHistoricoEmprestimos();
+                                //Salva no arquivo
+                                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                                telaAviso_controller.showTelaAviso(emprestimo + "\nRegistrado com sucesso!");
+
+                                cpfLeitorCriarEmprestimo.clear();
+                                tituloLivroCriarEmprestimo.clear();
+
+                                paneTelaPrincipal.toFront();
+
+                            } else {
+                                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                                telaAviso_controller.showTelaAviso(leitor.getNome() + ", o numero máximo de emprestimos ativos já foi atingido");
+                            }
+
+                        } else {
+                            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                            telaAviso_controller.showTelaAviso("Pessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". "
+                                    + leitor.getNome() + ", reserve o livro e aguarde para pegar emprestado quando disponivel.");
+                        }
+
+                    } else {
+                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                        telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
+                    }
+
+                } else {
+                    TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                    telaAviso_controller.showTelaAviso("Livro:" + tituloInserido + " indiponível para emprestimo no momento");
+                }
+
+            } else {
+                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi lozalidado.");
+            }
+        } else{
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar o emprestimo.");
+        }
+    }
+
+
     @FXML
     void registrarDevolucao() {
         paneRegistrarDevolucao.toFront();
+    }
+
+    @FXML
+    void criarDevolucao(ActionEvent event) throws Exception {
+
+        String tituloInserido = tituloLivroDevolucao.getText();
+        String cpfInserido = cpfLeitorDevolucao.getText();
+
+        if ((!tituloInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty())) {
+            Leitor leitor = DAO.getLeitorDAO().buscarPorId(cpfInserido);
+            List<Emprestimo> emprestimosLeitorAtivo = DAO.getLeitorDAO().getEmprestimosAtivos(leitor);
+            if (!emprestimosLeitorAtivo.isEmpty()) {
+                for (Emprestimo emprestimoDoTitulo : emprestimosLeitorAtivo) {
+                    if ( tituloInserido.equalsIgnoreCase(emprestimoDoTitulo.getLivro().getTitulo() ) ) {
+                        emprestimoDoTitulo.registrarDevolucao();
+                        DAO.getLeitorDAO().salvarHistoricoEmprestimos();
+                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                        telaAviso_controller.showTelaAviso(emprestimoDoTitulo + "\nDevolução registrada com sucesso!");
+                        break;
+                    } else {
+                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                        telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");
+                    }
+                }
+                tituloLivroDevolucao.clear();
+                cpfLeitorDevolucao.clear();
+                paneTelaPrincipal.toFront();
+            } else {
+                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+                telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimos ativos.");
+            }
+        }else {
+            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+            telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar devolucao do emprestimo.");
+        }
     }
 
     public void sair(ActionEvent event) throws Exception {
@@ -137,7 +270,7 @@ public class TelaBibliotecario_Controller {
         try {
             Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentScreen.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaInicial.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
             Parent root = loader.load();
             Stage registerStage = new Stage();
             registerStage.setTitle("Sistema de Biblioteca");
@@ -153,11 +286,24 @@ public class TelaBibliotecario_Controller {
     }
 
     @FXML
+    public void iniciarPesquisa(ActionEvent event) throws Exception {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
+        Parent root = loader.load();
+        TelaInicial_Controller telaInicialController = loader.getController();
+        telaInicialController.setBarra_pesquisa_ini(barraPesquisa.getText());
+        telaInicialController.setSairPesquisa("/com/sistemaBiblioteca/TelaBibliotecario.fxml");
+        telaInicialController.iniciarPesquisa(event);
+
+    }
+
+    @FXML
     void initialize() {
         assert NomeBibliotecario != null : "fx:id=\"NomeBibliotecario\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert anoPublicacao != null : "fx:id=\"anoPublicacao\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert autor != null : "fx:id=\"autor\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert barraPesquisa != null : "fx:id=\"barraPesquisa\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
+        assert botaoCriarEmprestimo != null : "fx:id=\"botaoCriarEmprestimo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert botaoCriarLivro != null : "fx:id=\"botaoCriarLivro\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert botaoPesquisar != null : "fx:id=\"botaoPesquisar\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert botaoRegistrarDevolucao != null : "fx:id=\"botaoRegistrarDevolucao\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
@@ -165,6 +311,7 @@ public class TelaBibliotecario_Controller {
         assert botaoRegistrarLivro != null : "fx:id=\"botaoRegistrarLivro\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert botaoSair != null : "fx:id=\"botaoSair\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert categoria != null : "fx:id=\"categoria\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
+        assert cpfLeitorCriarEmprestimo != null : "fx:id=\"cpfLeitorCriarEmprestimo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert editora != null : "fx:id=\"editora\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert isbn != null : "fx:id=\"isbn\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert localizacaoPosicao != null : "fx:id=\"localizacaoPosicao\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
@@ -175,6 +322,7 @@ public class TelaBibliotecario_Controller {
         assert paneTelaPrincipal != null : "fx:id=\"paneTelaPrincipal\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert telaDeRolagem != null : "fx:id=\"telaDeRolagem\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert titulo != null : "fx:id=\"titulo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
+        assert tituloLivroCriarEmprestimo != null : "fx:id=\"tituloLivroCriarEmprestimo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
     }
 
     public void setNome(String cpf) throws Exception {

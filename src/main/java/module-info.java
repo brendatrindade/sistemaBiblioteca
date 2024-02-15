@@ -4,6 +4,7 @@ module GerenciadorBiblioteca{
     requires javafx.controls;
     requires javafx.fxml;
     requires java.base;
+    requires javafx.graphics;
 
     exports com.sistemaBiblioteca.Model.Operacoes;
     exports com.sistemaBiblioteca;

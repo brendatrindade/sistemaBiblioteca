@@ -146,4 +146,10 @@ public class AdministradorDAO extends BibliotecarioDAO{
             }
         } return false;
     }
+
+    public String getSenhaAdiministrador(String cpf) {
+        Administrador a = buscarAdministradorPorId(cpf);
+        return a.getSenha();
+    }
+
 }

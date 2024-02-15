@@ -45,8 +45,19 @@ public class TelaInicial_Controller {
     @FXML
     private TextField cpf_acesso;
 
+    private String sairPesquisa= null;
+
+    public void setSairPesquisa(String sairPara){
+        this.sairPesquisa = sairPara;
+    }
+
+
     public void setGerarDados(boolean gerar) throws Exception {
         if (gerar) initialize2();
+    }
+
+    public void setBarra_pesquisa_ini(String textoInserido){
+        this.barra_pesquisa_ini.setText(textoInserido);
     }
 
     @FXML
@@ -59,7 +70,7 @@ public class TelaInicial_Controller {
                 try {
                     Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     currentScreen.close();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaLeitor.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaLeitor.fxml"));
                     Parent root = loader.load();
 
                     TelaLeitor_Controller telaLeitorController = loader.getController();
@@ -88,7 +99,7 @@ public class TelaInicial_Controller {
     public void loginOperador(ActionEvent event) throws Exception {
         Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentScreen.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaLoginOperador.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaLoginOperador.fxml"));
         Parent root = loader.load();
         Stage registerStage = new Stage();
         Scene scene = new Scene(root);
@@ -97,6 +108,7 @@ public class TelaInicial_Controller {
         registerStage.show();
         registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
     }
+
 
     @FXML
     public void iniciarPesquisa(ActionEvent event) throws Exception {
@@ -146,12 +158,16 @@ public class TelaInicial_Controller {
             try {
                 Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 currentScreen.close();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/LivroPesquisado.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/LivroPesquisado.fxml"));
                 Parent root = loader.load();
 
                 LivroPesquisado_Controller livroPesquisadoController = loader.getController();
                 livroPesquisadoController.preencherTabela(titulos, autores, isbnes, categorias, anoPubli);
                 livroPesquisadoController.setChaveBusca(txtInserido);
+
+                if (sairPesquisa != null){
+                    livroPesquisadoController.setSairPara(sairPesquisa);
+                }
 
                 Stage registerStage = new Stage();
                 Scene scene = new Scene(root);
@@ -180,13 +196,13 @@ public class TelaInicial_Controller {
 
     void initialize2() throws Exception {
 
-        if (!Persistencia.existeCache()) {
-            /*
+        if (Persistencia.existeCache()) {
+
             DAO.getLeitorDAO().deletarTodos();
             DAO.getBibliotecarioDAO().deletarTodos();
             DAO.getAdministradorDAO().deletarTodosAdministradores();
             DAO.getLivroDAO().deletarTodosLivrosArquivo();
-            */
+
 
             Persistencia.criarCache();
 
@@ -210,6 +226,7 @@ public class TelaInicial_Controller {
             DAO.getAdministradorDAO().criarAdministrador(administrador1);
             DAO.getLivroDAO().criarLivro(livro1);
             DAO.getLivroDAO().criarLivro(livro2);
+
         }
         setGerarDados(false);
     }

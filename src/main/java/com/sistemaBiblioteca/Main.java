@@ -4,12 +4,9 @@ import com.sistemaBiblioteca.Controller.TelaInicial_Controller;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Main extends Application{
 
@@ -33,4 +30,5 @@ public class Main extends Application{
     }
 }
 
-//colocar um botao de voltar depois de vizualizar o resultado da pesquisa
+//Adicionar botão sair Tela Acesso Operador
+//verificar gerar dados inicias

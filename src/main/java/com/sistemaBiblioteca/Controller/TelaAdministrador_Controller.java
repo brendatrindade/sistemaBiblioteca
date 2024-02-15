@@ -4,13 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.sistemaBiblioteca.DAO.DAO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 public class TelaAdministrador_Controller {
@@ -54,25 +52,7 @@ public class TelaAdministrador_Controller {
     @FXML
     private ScrollPane telaDeRolagem;
 
-    @FXML
-    void handleClicks(ActionEvent event) {
 
-    }
-
-    @FXML
-    void searchClient(ActionEvent event) {
-
-    }
-
-    @FXML
-    void searchClients(KeyEvent event) {
-
-    }
-
-    @FXML
-    void showLoginStage(ActionEvent event) {
-
-    }
 
     @FXML
     void initialize() {

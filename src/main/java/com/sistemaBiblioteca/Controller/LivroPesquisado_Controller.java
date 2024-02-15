@@ -44,7 +44,17 @@ public class LivroPesquisado_Controller {
     @FXML
     private TableColumn<String, List<Livro>> colunaTitulo;
     @FXML
+    private TableColumn<String, List<Livro>> colunaDisponibilidade;
+    @FXML
+    private TableColumn<String, List<Livro>> colunaLocalizacao;;
+    @FXML
     private TableView<Livro> tabelaLivros;
+
+    private String sairPara = null;
+
+    public void setSairPara(String telaAnterior){
+        this.sairPara = telaAnterior;
+    }
 
     public void setChaveBusca(String chaveBusca){
         this.chaveBusca.setText(chaveBusca);
@@ -57,8 +67,9 @@ public class LivroPesquisado_Controller {
         colunaCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colunaAno.setCellValueFactory(new PropertyValueFactory<>("anoPublicacao"));
         colunaISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        colunaDisponibilidade.setCellValueFactory(new PropertyValueFactory<>("disponibilidade"));
+        colunaLocalizacao.setCellValueFactory(new PropertyValueFactory<>("localizacao"));
 
-        // Preenche a tabela com os dados das listas recebidas
         ObservableList<Livro> listaLivros = FXCollections.observableArrayList();
         listaLivros.addAll(titulos);
         listaLivros.addAll(autores);
@@ -72,24 +83,37 @@ public class LivroPesquisado_Controller {
 
     @FXML
     void sair(ActionEvent event) {
-
         try {
             Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentScreen.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaInicial.fxml"));
-            Parent root = loader.load();
-            Stage registerStage = new Stage();
-            registerStage.setTitle("Sistema de Biblioteca");
-            Scene scene = new Scene(root);
-            registerStage.setResizable(false);
-            registerStage.setScene(scene);
-            registerStage.show();
-            registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+            if(this.sairPara != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(this.sairPara));
+                Parent root = loader.load();
+                Stage registerStage = new Stage();
+                registerStage.setTitle("Sistema de Biblioteca");
+                Scene scene = new Scene(root);
+                registerStage.setResizable(false);
+                registerStage.setScene(scene);
+                registerStage.show();
+                registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
 
+            }else{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/SistemaBiblioteca/TelaInicial.fxml"));
+                Parent root = loader.load();
+                Stage registerStage = new Stage();
+                registerStage.setTitle("Sistema de Biblioteca");
+                Scene scene = new Scene(root);
+                registerStage.setResizable(false);
+                registerStage.setScene(scene);
+                registerStage.show();
+                registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+
+            }
         } catch (Exception excep) {
             excep.printStackTrace();
         }
     }
+
 
     @FXML
     void initialize() {
@@ -98,10 +122,13 @@ public class LivroPesquisado_Controller {
         assert colunaAno != null : "fx:id=\"colunaAno\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
         assert colunaAutor != null : "fx:id=\"colunaAutor\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
         assert colunaCategoria != null : "fx:id=\"colunaCategoria\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
+        assert colunaDisponibilidade != null : "fx:id=\"colunaDisponibilidade\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
         assert colunaISBN != null : "fx:id=\"colunaISBN\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
+        assert colunaLocalizacao != null : "fx:id=\"colunaLocalizacao\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
         assert colunaTitulo != null : "fx:id=\"colunaTitulo\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
         assert tabelaLivros != null : "fx:id=\"tabelaLivros\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
 
     }
+
 
 }
