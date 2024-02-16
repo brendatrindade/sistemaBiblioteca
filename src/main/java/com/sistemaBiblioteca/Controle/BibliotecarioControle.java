@@ -38,7 +38,7 @@ public class BibliotecarioControle {
             System.out.println(e.getMessage());
         }
     }
-    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Exception {
         Emprestimo novoEmprestimo = bibliotecarioServico.registrarEmprestimo(livro, leitor);
         return novoEmprestimo;
     }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.sistemaBiblioteca.DAO.DAO;
-import com.sistemaBiblioteca.Excecoes.Excecao;
 import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
@@ -113,13 +112,13 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     void criarLivro() throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+
         try {
             Livro livro = new Livro(titulo.getText(), autor.getText(), isbn.getText(), categoria.getText(), anoPublicacao.getText(),
                     editora.getText(), new Localizacao(localizacaoPrateleira.getText(), localizacaoPosicao.getText()));
 
             DAO.getLivroDAO().criarLivro(livro);
-
-            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
             telaAviso_controller.showTelaAviso("Livro " + titulo.getText()+ " registrado com sucesso!");
 
             titulo.clear();
@@ -130,11 +129,9 @@ public class TelaBibliotecario_Controller {
             editora.clear();
             localizacaoPrateleira.clear();
             localizacaoPosicao.clear();
-
             paneTelaPrincipal.toFront();
 
         } catch (Exception e){
-            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
             telaAviso_controller.showTelaAviso(e.getMessage());
         }
     }
@@ -145,6 +142,7 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     void criarEmprestimo(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         String tituloInserido = tituloLivroCriarEmprestimo.getText();
         String cpfInserido = cpfLeitorCriarEmprestimo.getText();
@@ -162,10 +160,7 @@ public class TelaBibliotecario_Controller {
                         break;
                     }
                 }
-            } else {
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                telaAviso_controller.showTelaAviso("Ops! Nenhum livro correspondente ao TÍTULO informado foi lozalidado.");
-            }
+            } else telaAviso_controller.showTelaAviso("Ops! Nenhum livro correspondente ao TÍTULO informado foi localizado.");
 
             if (leitor != null) {
                 //Leitor encontrado
@@ -179,13 +174,17 @@ public class TelaBibliotecario_Controller {
                                 //A quantidade de emprestimos ativos do leitor é menor que o limite, registrar empréstimo
                                 DAO.getLivroDAO().removePrimeiroDafila(livroDisponivel.getTitulo());
                                 //Remove Leitor da fila de reservas
+                                DAO.getLivroDAO().removerLivroPorTitulo(tituloInserido);
+                                //Remove Livro disponivel do acervo
                                 Emprestimo emprestimo = new Emprestimo(livroDisponivel, leitor);
                                 //Gera o emprestimo
+                                DAO.getLivroDAO().atualizarAcervoPosEmprestimo(tituloInserido);
+                                //Atualiza o acervo com o livro indisponivel
                                 DAO.getLeitorDAO().adicionaHistoricoEmprestimos(leitor, emprestimo);
                                 //Salva o emprestimo no historico do leitor
                                 DAO.getLeitorDAO().salvarHistoricoEmprestimos();
                                 //Salva no arquivo
-                                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+
                                 telaAviso_controller.showTelaAviso(emprestimo + "\nRegistrado com sucesso!");
 
                                 cpfLeitorCriarEmprestimo.clear();
@@ -193,37 +192,17 @@ public class TelaBibliotecario_Controller {
 
                                 paneTelaPrincipal.toFront();
 
-                            } else {
-                                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                                telaAviso_controller.showTelaAviso(leitor.getNome() + ", o numero máximo de emprestimos ativos já foi atingido");
-                            }
+                            } else telaAviso_controller.showTelaAviso(leitor.getNome() + ", o numero máximo de emprestimos ativos já foi atingido");
+                        } else telaAviso_controller.showTelaAviso("Ops! Ainda não chegou a sua vez. \nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". "
+                                    + leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
+                    } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
+                } else telaAviso_controller.showTelaAviso("Livro: " + tituloInserido + " indisponível para emprestimo no momento. " +
+                            "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) +" . \n" +
+                            leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
+            } else telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi lozalidado.");
+        } else telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar o emprestimo.");
 
-                        } else {
-                            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                            telaAviso_controller.showTelaAviso("Pessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". "
-                                    + leitor.getNome() + ", reserve o livro e aguarde para pegar emprestado quando disponivel.");
-                        }
-
-                    } else {
-                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                        telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
-                    }
-
-                } else {
-                    TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                    telaAviso_controller.showTelaAviso("Livro:" + tituloInserido + " indiponível para emprestimo no momento");
-                }
-
-            } else {
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi lozalidado.");
-            }
-        } else{
-            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-            telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar o emprestimo.");
-        }
     }
-
 
     @FXML
     void registrarDevolucao() {
@@ -232,6 +211,7 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     void criarDevolucao(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         String tituloInserido = tituloLivroDevolucao.getText();
         String cpfInserido = cpfLeitorDevolucao.getText();
@@ -244,25 +224,16 @@ public class TelaBibliotecario_Controller {
                     if ( tituloInserido.equalsIgnoreCase(emprestimoDoTitulo.getLivro().getTitulo() ) ) {
                         emprestimoDoTitulo.registrarDevolucao();
                         DAO.getLeitorDAO().salvarHistoricoEmprestimos();
-                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
                         telaAviso_controller.showTelaAviso(emprestimoDoTitulo + "\nDevolução registrada com sucesso!");
                         break;
-                    } else {
-                        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                        telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");
-                    }
+                    } else telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");
                 }
+
                 tituloLivroDevolucao.clear();
                 cpfLeitorDevolucao.clear();
                 paneTelaPrincipal.toFront();
-            } else {
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimos ativos.");
-            }
-        }else {
-            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-            telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar devolucao do emprestimo.");
-        }
+            } else telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimos ativos.");
+        } else telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar devolucao do emprestimo.");
     }
 
     public void sair(ActionEvent event) throws Exception {
@@ -292,7 +263,7 @@ public class TelaBibliotecario_Controller {
         Parent root = loader.load();
         TelaInicial_Controller telaInicialController = loader.getController();
         telaInicialController.setBarra_pesquisa_ini(barraPesquisa.getText());
-        telaInicialController.setSairPesquisa("/com/sistemaBiblioteca/TelaBibliotecario.fxml");
+        telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaBibliotecario.fxml");
         telaInicialController.iniciarPesquisa(event);
 
     }

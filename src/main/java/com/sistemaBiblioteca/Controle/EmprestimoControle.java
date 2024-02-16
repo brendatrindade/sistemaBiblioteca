@@ -25,7 +25,7 @@ public class EmprestimoControle {
         this.emprestimoServico = emprestimoServico;
     }
 
-    public void criarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+    public void criarEmprestimo(Livro livro, Leitor leitor) throws Exception {
         try {
             Emprestimo emprestimo = emprestimoServico.criarEmprestimo(livro, leitor);
             System.out.println("Empréstimo do livro: " + livro.getTitulo() + " realizado com sucesso!");

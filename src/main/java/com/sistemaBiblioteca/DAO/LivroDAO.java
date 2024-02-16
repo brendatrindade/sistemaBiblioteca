@@ -12,10 +12,14 @@
  */
 package com.sistemaBiblioteca.DAO;
 
+import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
 import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Operacoes.Localizacao;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.*;
 /**
@@ -197,7 +201,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorTitulo(String titulo) throws Exception {
         List<Livro> livroPorTitulo = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getTitulo().equalsIgnoreCase(titulo)) {
                 livroPorTitulo.add(livro);
             }
@@ -211,7 +215,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorAutor(String autor) throws Exception {
         List<Livro> livroPorAutor = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getAutor().equalsIgnoreCase(autor)) {
                 livroPorAutor.add(livro);
             }
@@ -225,7 +229,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorIsbn(String isbn) throws Exception {
         List<Livro> livroPorIsbn = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getIsbn().equalsIgnoreCase(isbn)) {
                 livroPorIsbn.add(livro);
             }
@@ -239,7 +243,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorCategoria(String categoria) throws Exception {
         List<Livro> livroPorCategoria = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getCategoria().equalsIgnoreCase(categoria)) {
                 livroPorCategoria.add(livro);
             }
@@ -253,7 +257,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorAnoPublicacao(String anoPubli) throws Exception {
         List<Livro> livroPorAnoPubli = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getAnoPublicacao().equalsIgnoreCase(anoPubli)) {
                 livroPorAnoPubli .add(livro);
             }
@@ -267,7 +271,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public List<Livro> buscarLivroPorEditora(String editora) throws Exception {
         List<Livro> livroPorEditora = new ArrayList<>();
-        for (Livro livro : DAO.getLivroDAO().lerLivrosArquivo()) {
+        for (Livro livro : lerLivrosArquivo()) {
             if (livro.getEditora().equalsIgnoreCase(editora)) {
                 livroPorEditora .add(livro);
             }
@@ -290,7 +294,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         List<Livro> categorias = new ArrayList<>();
         List<Livro> anoPubli = new ArrayList<>();
 
-        for (Livro livroSistema : DAO.getLivroDAO().lerLivrosArquivo()){
+        for (Livro livroSistema : lerLivrosArquivo()){
             if (livroSistema.getTitulo().toLowerCase().replaceAll("\\s","").contains(texto.toLowerCase().replaceAll("\\s","")) ){
                 titulos.add(livroSistema);
                 resultados.put("Titulos", titulos);
@@ -384,5 +388,31 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             Leitor primeiro = this.reservasPorTitulo.get(titulo).poll();
         }
     }
+
+    public void removerLivroPorTitulo(String titulo) throws Exception {
+        for (Livro livro : lerLivrosArquivo()) {
+            if (livro.getTitulo().equalsIgnoreCase(titulo)) {
+                if(livro.isDisponibilidade()){
+                    acervo.remove(livro);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void atualizarAcervoPosEmprestimo(String tituloLivro) throws Exception {
+        List<Livro> livrosArquivo = lerLivrosArquivo();
+        for (Livro livro : livrosArquivo) {
+            if (livro.getTitulo().equalsIgnoreCase(tituloLivro)) {
+                if(livro.isDisponibilidade()) {
+                    livro.setDisponibilidade(false);
+                    this.acervo = livrosArquivo;
+                    salvarLivroArquivo();
+                    break;
+                }
+            }
+        }
+    }
+
 
 }

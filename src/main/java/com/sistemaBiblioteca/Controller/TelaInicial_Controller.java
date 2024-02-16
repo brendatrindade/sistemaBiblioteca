@@ -47,7 +47,7 @@ public class TelaInicial_Controller {
 
     private String sairPesquisa= null;
 
-    public void setSairPesquisa(String sairPara){
+    public void setSairDaPesquisaPara(String sairPara){
         this.sairPesquisa = sairPara;
     }
 
@@ -62,6 +62,7 @@ public class TelaInicial_Controller {
 
     @FXML
     public void loginLeitor(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
         String cpf = cpf_acesso.getText().replaceAll("[^0-9]", "");
 
         if (validaCPF(cpf)) {
@@ -74,7 +75,7 @@ public class TelaInicial_Controller {
                     Parent root = loader.load();
 
                     TelaLeitor_Controller telaLeitorController = loader.getController();
-                    telaLeitorController.setNomeCliente(cpf);
+                    telaLeitorController.setNomeLeitor(cpf);
 
                     Stage registerStage = new Stage();
                     Scene scene = new Scene(root);
@@ -85,14 +86,9 @@ public class TelaInicial_Controller {
                 } catch (Exception excep) {
                     excep.printStackTrace();
                 }
-            } else {
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
-            }
-        } else {
-            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-            telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
-        }
+            } else telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
+        } else telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
+
     }
 
     @FXML
@@ -124,31 +120,41 @@ public class TelaInicial_Controller {
         Map<String, List<Livro> > resultadoPesquisa = DAO.getLivroDAO().pesquisarLivros(txtInserido);
 
         if ((resultadoPesquisa.get("Titulos")) == null){
-            titulos.add(new Livro("Sem resultados", "-", "-", "-", "-", "-", new Localizacao("-", "-")));
+            Livro semTitulo = new Livro("Sem resultados", "-", "-", "-", "-", "-", new Localizacao("-", "-"));
+            semTitulo.setDisponibilidade(false);
+            titulos.add(semTitulo);
         } else{
             List<Livro> l = resultadoPesquisa.get("Titulos");
             titulos.addAll(l);
         }
         if ((resultadoPesquisa.get("Autoria")) == null){
-            titulos.add(new Livro("-", "Sem resultados", "-", "-", "-", "-", new Localizacao("-", "-")));
+            Livro semAutoria = new Livro("-", "Sem resultados", "-", "-", "-", "-", new Localizacao("-", "-"));
+            semAutoria.setDisponibilidade(false);
+            titulos.add(semAutoria);
         }else{
             List<Livro> l = resultadoPesquisa.get("Autoria");
             titulos.addAll(l);
         }
         if (((resultadoPesquisa.get("ISBN")) == null)){
-            titulos.add(new Livro("-", "-", "Sem resultados", "-", "-", "-", new Localizacao("-", "-")));
+            Livro semIsbn = new Livro("-", "-", "Sem resultados", "-", "-", "-", new Localizacao("-", "-"));
+            semIsbn.setDisponibilidade(false);
+            titulos.add(semIsbn);
         }else{
             List<Livro> l = resultadoPesquisa.get("ISBN");
             titulos.addAll(l);
         }
         if ((resultadoPesquisa.get("Categorias")) == null){
-            titulos.add(new Livro("-", "-", "-", "Sem resultados", "-", "-", new Localizacao("-", "-")));
+            Livro semCategoria =new Livro("-", "-", "-", "Sem resultados", "-", "-", new Localizacao("-", "-"));
+            semCategoria.setDisponibilidade(false);
+            titulos.add(semCategoria);
         }else{
             List<Livro> l = resultadoPesquisa.get("Categorias");
             titulos.addAll(l);
         }
         if ((resultadoPesquisa.get("Ano de Publicação")) == null){
-            titulos.add(new Livro("-", "-", "-", "-", "Sem resultados", "-", new Localizacao("-", "-")));
+            Livro semAno = new Livro("-", "-", "-", "-", "Sem resultados", "-", new Localizacao("-", "-"));
+            semAno.setDisponibilidade(false);
+            titulos.add(semAno);
         }else{
             List<Livro> l = resultadoPesquisa.get("Ano de Publicação");
             titulos.addAll(l);

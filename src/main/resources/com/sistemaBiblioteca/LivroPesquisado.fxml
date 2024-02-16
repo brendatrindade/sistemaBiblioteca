@@ -24,7 +24,7 @@
             </ImageView>
          </graphic>
       </Label>
-      <TableView fx:id="tabelaLivros" layoutX="14.0" layoutY="73.0" prefHeight="430.0" prefWidth="923.0" style="-fx-border-color: #474748; -fx-border-radius: 2; -fx-background-color: white; -fx-border-width: 0px 0px 2px 0px;" styleClass="table-cell" stylesheets="@CSS/style.css">
+      <TableView fx:id="tabelaLivros" layoutX="14.0" layoutY="73.0" prefHeight="430.0" prefWidth="923.0" style="-fx-border-color: #474748; -fx-border-radius: 2; -fx-background-color: white; -fx-border-width: 0px 0px 2px 0px;" styleClass="table-cell" stylesheets="@CSS/costumizacao.css">
         <columns>
           <TableColumn fx:id="colunaTitulo" prefWidth="250.0" resizable="false" text="Título" />
           <TableColumn fx:id="colunaAutor" minWidth="0.0" prefWidth="145.0" resizable="false" text="Autoria" />
@@ -43,7 +43,7 @@
             <Insets left="10.0" />
          </padding>
       </Label>
-      <Button fx:id="botaoSair" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="20.0" mnemonicParsing="false" onAction="#sairTelaInicial" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: transparent;" text="Sair">
+      <Button fx:id="botaoSair" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutY="20.0" mnemonicParsing="false" onAction="#sair" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: transparent;" text="Sair">
          <font>
             <Font name="Rockwell" size="14.0" />
          </font>

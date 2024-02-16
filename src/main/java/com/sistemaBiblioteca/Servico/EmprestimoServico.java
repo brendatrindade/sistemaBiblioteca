@@ -42,7 +42,7 @@ public class EmprestimoServico {
      * @throws Excecao Se o leitor não puder pegar livros emprestados no momento, se seu numero máximo de emprestimos ativos já foi atingido,
      * se o livro não estiver disponível e ele não for o primeiro leitor na fila de reservas para o titulo.
      */
-    public Emprestimo criarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+    public Emprestimo criarEmprestimo(Livro livro, Leitor leitor) throws Exception {
         if (leitor.isStatusAcessoUsuario()) {
             if (livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == leitor || livroServico.verificaPrimeiroDaFila(livro.getTitulo()) == null) {
                 if (leitorDAO.qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {

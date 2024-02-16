@@ -121,7 +121,7 @@ public class BibliotecarioServico {
      * @throws Excecao Se o leitor não puder pegar livros emprestados no momento, se seu numero máximo de emprestimos ativos já foi atingido,
      * se o livro não estiver disponível e ele não for o primeiro leitor na fila de reservas para o titulo.
      */
-    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Excecao {
+    public Emprestimo registrarEmprestimo(Livro livro, Leitor leitor) throws Exception {
         return emprestimoServico.criarEmprestimo(livro, leitor);
     }
     /**

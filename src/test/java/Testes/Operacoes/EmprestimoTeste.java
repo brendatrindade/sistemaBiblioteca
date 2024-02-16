@@ -39,7 +39,7 @@ public class EmprestimoTeste {
         assertTrue(livro.isDisponibilidade());
     }
     @Test
-    public void testRenovarEmprestimo() {
+    public void testRenovarEmprestimo() throws Exception {
         LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
         boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
         LocalDate dataEsperadaPosRenovacao = emprestimo.getDataEsperadaDev();
@@ -51,7 +51,7 @@ public class EmprestimoTeste {
     }
 
     @Test
-    public void testRenovarSegundaVezEmprestimo() {
+    public void testRenovarSegundaVezEmprestimo() throws Exception {
         boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
         LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
         boolean renovado2 = emprestimo.solicitarRenovacao(emprestimo);
@@ -67,7 +67,7 @@ public class EmprestimoTeste {
     }
 
     @Test
-    public void testRenovarTerceiraVezEmprestimo() {
+    public void testRenovarTerceiraVezEmprestimo() throws Exception {
         boolean renovado = emprestimo.solicitarRenovacao(emprestimo);
         LocalDate dataEsperadaAnterior = emprestimo.getDataEsperadaDev();
         boolean renovado2 = emprestimo.solicitarRenovacao(emprestimo);
