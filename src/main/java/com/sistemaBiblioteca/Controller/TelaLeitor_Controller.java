@@ -1,11 +1,12 @@
 package com.sistemaBiblioteca.Controller;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
+import com.sistemaBiblioteca.Model.Operacoes.Livro;
+import com.sistemaBiblioteca.Model.Operacoes.Reserva;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ import javafx.stage.Stage;
 
 public class TelaLeitor_Controller {
 
+
     @FXML
     private ResourceBundle resources;
 
@@ -35,6 +37,9 @@ public class TelaLeitor_Controller {
 
     @FXML
     private Button botaoCriarRenovacao;
+
+    @FXML
+    private Button botaoCriarReserva;
 
     @FXML
     private Button botaoPesquisar;
@@ -63,7 +68,11 @@ public class TelaLeitor_Controller {
     @FXML
     private TextField tituloLivroRenovarEmprestimo;
 
+    @FXML
+    private TextField tituloReservarLivro;
+
     private Leitor leitor;
+
 
     @FXML
     void renovarEmprestimo(ActionEvent event) {
@@ -72,12 +81,11 @@ public class TelaLeitor_Controller {
 
     @FXML
     void criarRenovacao(ActionEvent event) throws Exception {
-        //Revisar aqui!!!!!!!!!!
 
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         String tituloInserido = tituloLivroRenovarEmprestimo.getText();
-        List<Emprestimo> emprestimosAtivosLeitor = DAO.getLeitorDAO().getEmprestimosAtivos(this.leitor);
+        List<Emprestimo> emprestimosAtivosLeitor = DAO.getLeitorDAO().getEmprestimosAtivosArq(this.leitor);
         Emprestimo emprestimoParaRenovar = null;
 
         if ((!tituloInserido.trim().isEmpty())) {
@@ -97,7 +105,7 @@ public class TelaLeitor_Controller {
                         //Emprestimo correspondente ao titulo ativo encontrado, solicitar renovacao
                         boolean renovado = emprestimoParaRenovar.solicitarRenovacao(emprestimoParaRenovar);
                         if (renovado) {
-                            DAO.getLeitorDAO().adicionaHistoricoEmprestimos(leitor, emprestimoParaRenovar);
+                            DAO.getLeitorDAO().adicionaHistoricoEmprestimosArq(this.leitor, emprestimoParaRenovar);
                             //Salva o emprestimo no historico do leitor
                             DAO.getLeitorDAO().salvarHistoricoEmprestimos();
                             //Salva no arquivo
@@ -124,9 +132,56 @@ public class TelaLeitor_Controller {
     }
 
     @FXML
-    void criarReservaLivro(ActionEvent event) {
+    void criarReserva(ActionEvent event) throws Exception {
 
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
+        String tituloParaReservar = tituloReservarLivro.getText();
+
+        List<Livro> livrosPorTitulo = DAO.getLivroDAO().buscarLivroPorTitulo(tituloParaReservar);
+        List<Livro> livrosDisponiveis = new ArrayList<>();
+
+        if (!livrosPorTitulo.isEmpty()) {
+
+            for (Livro livro : livrosPorTitulo) {
+                if (livro.isDisponibilidade()) {
+                    livrosDisponiveis.add(livro);
+                }
+            }
+            if (livrosDisponiveis.isEmpty()) {
+
+                if (this.leitor.isStatusAcessoUsuario()) {
+                    Queue<Leitor> leitoresNaFila = DAO.getLivroDAO().getReservasPorTitulo(tituloParaReservar);
+                    if (leitoresNaFila == null) {
+                        leitoresNaFila = new LinkedList<>();
+                    }
+                    boolean leitorEstaNaFila = false;
+                    for (Leitor leitorNaFila : leitoresNaFila){
+                        if( (leitorNaFila.getCpf()).equals(this.leitor.getCpf()) ) {
+                            leitorEstaNaFila = true;
+                        }
+                    }
+                    if (!leitorEstaNaFila) {
+                        leitoresNaFila.add(this.leitor);
+                        DAO.getLivroDAO().setLeitoresReservasPorTitulo(tituloParaReservar, leitoresNaFila);
+                        Reserva novaReserva = new Reserva(leitor, tituloParaReservar);
+                        novaReserva.setTamanhoFila(leitoresNaFila.size());
+
+                        DAO.getLivroDAO().salvarReservasPorTituloArquivo();
+
+                        telaAviso_controller.showTelaAviso(novaReserva + "\nReserva realizada com sucesso!");
+
+                        tituloReservarLivro.clear();
+                        paneTelaPrincipal.toFront();
+
+                    } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " já esta na fila do livro: " + tituloParaReservar + ".\n" +
+                            "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(tituloParaReservar) + ".");
+
+                } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode reservar livros no momento. \nAcesso bloqueado.");
+
+            } else telaAviso_controller.showTelaAviso("Ops! " + tituloParaReservar + " já esta disponivel para emprestimo.");
+
+        } else telaAviso_controller.showTelaAviso("Ops! Titulo nao localizado.");
 
     }
 
@@ -143,7 +198,7 @@ public class TelaLeitor_Controller {
     }
 
     @FXML
-    public void sair(ActionEvent event) throws Exception {
+    public void sair(ActionEvent event) {
         try {
             Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentScreen.close();
@@ -167,6 +222,7 @@ public class TelaLeitor_Controller {
     void initialize() {
         assert barraPesquisa != null : "fx:id=\"barraPesquisa\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert botaoCriarRenovacao != null : "fx:id=\"botaoCriarRenovacao\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
+        assert botaoCriarReserva != null : "fx:id=\"botaoCriarReserva\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert botaoPesquisar != null : "fx:id=\"botaoPesquisar\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert botaoRenovarEmprestimo != null : "fx:id=\"botaoRenovarEmprestimo\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert botaoReservar != null : "fx:id=\"botaoReservar\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
@@ -175,7 +231,8 @@ public class TelaLeitor_Controller {
         assert paneRenovarEmprestimo != null : "fx:id=\"paneRenovarEmprestimo\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert paneTelaPrincipal != null : "fx:id=\"paneTelaPrincipal\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
         assert paneTelaReservar != null : "fx:id=\"paneTelaReservar\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
-        assert tituloLivroRenovarEmprestimo != null : "fx:id=\"tituloLivroCriarEmprestimo\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
+        assert tituloLivroRenovarEmprestimo != null : "fx:id=\"tituloLivroRenovarEmprestimo\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
+        assert tituloReservarLivro != null : "fx:id=\"tituloReservarLivro\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
 
     }
 

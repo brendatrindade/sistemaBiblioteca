@@ -28,10 +28,34 @@ public class TelaLoginOperador_Controller {
     private Button botao_entrar;
 
     @FXML
+    private Button botaoSair;
+
+    @FXML
     private TextField cpf_acesso_operador;
 
     @FXML
     private PasswordField senha_operador;
+
+
+    @FXML
+    void sair(ActionEvent event) {
+        try {
+            Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentScreen.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
+            Parent root = loader.load();
+            Stage registerStage = new Stage();
+            registerStage.setTitle("Sistema de Biblioteca");
+            Scene scene = new Scene(root);
+            registerStage.setResizable(false);
+            registerStage.setScene(scene);
+            registerStage.show();
+            registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+
+        } catch (Exception excep) {
+            excep.printStackTrace();
+        }
+    }
 
     @FXML
     void loginOperador(ActionEvent event) throws Exception {
@@ -119,6 +143,7 @@ public class TelaLoginOperador_Controller {
 
     @FXML
     void initialize() {
+        assert botaoSair != null : "fx:id=\"botaoSair\" was not injected: check your FXML file 'TelaLoginOperador.fxml'.";
         assert botao_entrar != null : "fx:id=\"botao_entrar\" was not injected: check your FXML file 'TelaLoginOperador.fxml'.";
         assert cpf_acesso_operador != null : "fx:id=\"cpf_acesso_operador\" was not injected: check your FXML file 'TelaLoginOperador.fxml'.";
         assert senha_operador != null : "fx:id=\"senha_operador\" was not injected: check your FXML file 'TelaLoginOperador.fxml'.";

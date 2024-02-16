@@ -102,7 +102,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    public void getReservasPorTitulo() {
+    public void getReservasPorTitulo() throws Exception {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         livroDAO.setLeitoresReservasPorTitulo(livro.getTitulo(), leitores);
@@ -111,7 +111,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    public void verificaPrimeiroDaFila() {
+    public void verificaPrimeiroDaFila() throws Exception {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -120,7 +120,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    public void nomesNaFila() {
+    public void nomesNaFila() throws Exception {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -130,7 +130,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    public void qtdLeitoresNaFila() {
+    public void qtdLeitoresNaFila() throws Exception {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);
@@ -139,7 +139,7 @@ public class LivroDAOTeste {
     }
 
     @Test
-    public void removePrimeiroDafila() {
+    public void removePrimeiroDafila() throws Exception {
         Queue<Leitor> leitores = new LinkedList<>();
         leitores.add(leitor);
         leitores.add(leitor2);

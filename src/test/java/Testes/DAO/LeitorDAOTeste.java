@@ -82,10 +82,10 @@ public class LeitorDAOTeste {
         assertTrue(leitorDAO.cpfLeitorEstaCadastrado(leitor.getCpf()));
     }
 
-
     @After
     public void limparArquivo() throws Exception {
-        leitorDAO.deletarTodos();
+        leitorDAO.deletarTodoHistoricoEmprestimo();
+        leitorDAO.deletarTodosLeitoresArquivo();
     }
 }
 

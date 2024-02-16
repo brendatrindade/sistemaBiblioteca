@@ -13,11 +13,8 @@
 package com.sistemaBiblioteca.DAO;
 
 import com.sistemaBiblioteca.Excecoes.Excecao;
-import com.sistemaBiblioteca.Model.Operacoes.Livro;
-import com.sistemaBiblioteca.Model.Usuarios.Endereco;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
-import com.sistemaBiblioteca.Model.Usuarios.Usuario;
 
 import java.io.Serializable;
 import java.util.*;
@@ -55,6 +52,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
         salvarLeitoresArquivo();
         return leitor;
     }
+
     /**
      * Salva a lista de leitores em um arquivo.
      * @throws Exception se ocorrer um erro no processo de salvar no arquivo.
@@ -67,15 +65,15 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @param leitor - leitor a ser deletado.
      * @throws Exception se ocorrer um erro no processo de deletar do arquivo.
      */
-    public void deletarLivroArquivo(Leitor leitor) throws Exception {
+    public void deletarLeitorArquivo(Leitor leitor) throws Exception {
         if (this.leitores.contains(leitor)){
             if( this.leitores.remove(leitor) ){
                 salvarLeitoresArquivo();
             } else {
-                throw new Exception("Erro ao deletar Livro.");
+                throw new Exception("Erro ao deletar leitor.");
             }
         } else {
-            throw new Exception("Livro não encontrado no Acervo.");
+            throw new Exception("leitor não encontrado.");
         }
     }
     /**
@@ -131,6 +129,13 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
     @Override
     public void deletarTodos() {
         this.leitores = new ArrayList<>();
+    }
+    /**
+     * Deleta todos o historico de emprestimo e salva no arquivo
+     */
+    public void deletarTodoHistoricoEmprestimo() throws Exception {
+        this.historicoEmprestimos = new HashMap<>();
+        salvarHistoricoEmprestimos();
     }
     /**
      * Este método busca um leitor pelo id - CPF.
@@ -215,6 +220,54 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
             }
         }
         return false;
+    }
+    public void adicionaHistoricoEmprestimosArq(Leitor leitor, Emprestimo novoEmprestimo) {
+        List<Leitor> leitoresHE = new ArrayList<>(this.historicoEmprestimos.keySet());
+        boolean leitorEncontrado = false;
+        int i = 0;
+        while ( (!leitorEncontrado) && (i < leitoresHE.size()) ) {
+            Leitor leitorObj = leitoresHE.get(i);
+
+            if ( leitorObj.getCpf().equals(leitor.getCpf()) ) {
+                //o leitor que esta solicitando o emprestimo ja esta no mapa
+                List<Emprestimo> emprestimosDoLeitor = this.historicoEmprestimos.get(leitorObj);
+                // carrega a lista de emprestimo do leito
+                emprestimosDoLeitor.add(novoEmprestimo);
+                // adiciona o novo emprestimo a lista
+                this.historicoEmprestimos.put(leitorObj, emprestimosDoLeitor);
+                // adiciona a lista ao mapa
+                leitorEncontrado = true;
+            }
+            i++;
+        }
+        if(!leitorEncontrado){
+            List<Emprestimo> primeiroEmprestimo = new ArrayList<>();
+            primeiroEmprestimo.add(novoEmprestimo);
+            this.historicoEmprestimos.put(leitor, primeiroEmprestimo);
+        }
+    }
+    public List<Emprestimo> getHistoricoEmprestimosArq(Leitor leitor) {
+        List<Leitor> leitoresHE = new ArrayList<>(this.historicoEmprestimos.keySet());
+        for (Leitor leitorObj : leitoresHE ) {
+            if ( leitorObj.getCpf().equals(leitor.getCpf()) ) {
+                return this.historicoEmprestimos.get(leitorObj);
+            }
+        }
+        return null;
+    }
+    public List<Emprestimo> getEmprestimosAtivosArq(Leitor leitor) {
+        List<Emprestimo> emprestimosAtivos = new ArrayList<>();
+        List<Emprestimo> emprestimosDoLeitor = getHistoricoEmprestimosArq(leitor);
+        if (emprestimosDoLeitor != null) {
+            for (Emprestimo emprestimo : emprestimosDoLeitor) {
+                if (!emprestimo.isstatusEmprestimoFinalizado())
+                    emprestimosAtivos.add(emprestimo);
+            }
+        }
+        return emprestimosAtivos;
+    }
+    public int qtdEmprestimosAtivosArq(Leitor leitor) {
+        return getEmprestimosAtivosArq(leitor).size();
     }
 
 }

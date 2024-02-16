@@ -80,6 +80,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         deletarTodos();
         salvarLivroArquivo();
     }
+
+
+
     /**
      * Lê a lista de livros de um arquivo.
      * @return - lista de livros lidos do arquivo.
@@ -134,6 +137,14 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
     public void deletarTodos() {
         this.acervo = new ArrayList<>();
     }
+    /**
+     * Deleta todos as Reservas
+     */
+    public void deletarTodasReservas() throws Exception {
+        this.reservasPorTitulo = new HashMap<>();
+        salvarReservasPorTituloArquivo();
+    }
+
     @Override
     public Livro buscarPorId(String id) {
         //Livro possui metodos de busca especificos para seus atributos
@@ -340,9 +351,10 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @param titulo - título do livro.
      * @param leitoresNaFila A fila de leitores que reservaram o livro.
      */
-    public void setLeitoresReservasPorTitulo(String titulo, Queue<Leitor> leitoresNaFila) {
+    public void setLeitoresReservasPorTitulo(String titulo, Queue<Leitor> leitoresNaFila) throws Exception {
         titulo = titulo.toLowerCase();
         this.reservasPorTitulo.put(titulo, leitoresNaFila);
+        salvarReservasPorTituloArquivo();
     }
     /**
      * Verifica quem é o primeiro leitor da fila de reserva de um titulo de livro específico.
@@ -376,7 +388,9 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public int qtdLeitoresNaFila(String titulo){
         titulo = titulo.toLowerCase();
-        return this.reservasPorTitulo.get(titulo).size();
+        if (this.reservasPorTitulo.get(titulo) != null) {
+            return this.reservasPorTitulo.get(titulo).size();
+        } else return 0;
     }
     /**
      * Remove o primeiro leitor da fila de reserva de um titulo de livro específico.
@@ -413,6 +427,21 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             }
         }
     }
+
+    public void atualizarAcervoPosDevolucao(String tituloLivro) throws Exception {
+        List<Livro> livrosArquivo = lerLivrosArquivo();
+        for (Livro livro : livrosArquivo) {
+            if (livro.getTitulo().equalsIgnoreCase(tituloLivro)) {
+                if(!livro.isDisponibilidade()) {
+                    livro.setDisponibilidade(true);
+                    this.acervo = livrosArquivo;
+                    salvarLivroArquivo();
+                    break;
+                }
+            }
+        }
+    }
+
 
 
 }

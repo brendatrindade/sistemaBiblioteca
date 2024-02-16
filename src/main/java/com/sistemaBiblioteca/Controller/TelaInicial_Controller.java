@@ -202,11 +202,15 @@ public class TelaInicial_Controller {
 
     void initialize2() throws Exception {
 
-        if (Persistencia.existeCache()) {
+        if (!Persistencia.existeCache()) {
 
-            DAO.getLeitorDAO().deletarTodos();
-            DAO.getBibliotecarioDAO().deletarTodos();
+            DAO.getLeitorDAO().deletarTodosLeitoresArquivo();
+            DAO.getLeitorDAO().deletarTodoHistoricoEmprestimo();
+
+            DAO.getBibliotecarioDAO().deletarTodosBibliotecariosArquivo();
             DAO.getAdministradorDAO().deletarTodosAdministradores();
+
+            DAO.getLivroDAO().deletarTodasReservas();
             DAO.getLivroDAO().deletarTodosLivrosArquivo();
 
 

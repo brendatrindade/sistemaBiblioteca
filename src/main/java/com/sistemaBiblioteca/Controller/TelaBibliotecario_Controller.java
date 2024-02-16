@@ -168,9 +168,10 @@ public class TelaBibliotecario_Controller {
                     //Titulo possui livro disponivel para ser emprestado
                     if (leitor.isStatusAcessoUsuario()) {
                         //Leitor possui acesso ativo
-                        if ( (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == leitor) || (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == null) ) {
+                        Leitor primeiroDaFila = DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo());
+                        if ( (primeiroDaFila.getCpf()).equals(leitor.getCpf()) || (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == null) ) {
                             //Leitor é o primeiro na fila de reservas desse título ou a fila de reservas desse título esta vazia
-                            if (DAO.getLeitorDAO().qtdEmprestimosAtivos(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
+                            if (DAO.getLeitorDAO().qtdEmprestimosAtivosArq(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
                                 //A quantidade de emprestimos ativos do leitor é menor que o limite, registrar empréstimo
                                 DAO.getLivroDAO().removePrimeiroDafila(livroDisponivel.getTitulo());
                                 //Remove Leitor da fila de reservas
@@ -180,7 +181,7 @@ public class TelaBibliotecario_Controller {
                                 //Gera o emprestimo
                                 DAO.getLivroDAO().atualizarAcervoPosEmprestimo(tituloInserido);
                                 //Atualiza o acervo com o livro indisponivel
-                                DAO.getLeitorDAO().adicionaHistoricoEmprestimos(leitor, emprestimo);
+                                DAO.getLeitorDAO().adicionaHistoricoEmprestimosArq(leitor, emprestimo);
                                 //Salva o emprestimo no historico do leitor
                                 DAO.getLeitorDAO().salvarHistoricoEmprestimos();
                                 //Salva no arquivo
@@ -196,8 +197,8 @@ public class TelaBibliotecario_Controller {
                         } else telaAviso_controller.showTelaAviso("Ops! Ainda não chegou a sua vez. \nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". "
                                     + leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
                     } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
-                } else telaAviso_controller.showTelaAviso("Livro: " + tituloInserido + " indisponível para emprestimo no momento. " +
-                            "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) +" . \n" +
+                } else telaAviso_controller.showTelaAviso("Livro: " + tituloInserido + " indisponível para emprestimo no momento." +
+                            "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(tituloInserido) +" . " +
                             leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
             } else telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi lozalidado.");
         } else telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar o emprestimo.");
@@ -218,12 +219,14 @@ public class TelaBibliotecario_Controller {
 
         if ((!tituloInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty())) {
             Leitor leitor = DAO.getLeitorDAO().buscarPorId(cpfInserido);
-            List<Emprestimo> emprestimosLeitorAtivo = DAO.getLeitorDAO().getEmprestimosAtivos(leitor);
+            List<Emprestimo> emprestimosLeitorAtivo = DAO.getLeitorDAO().getEmprestimosAtivosArq(leitor);
             if (!emprestimosLeitorAtivo.isEmpty()) {
                 for (Emprestimo emprestimoDoTitulo : emprestimosLeitorAtivo) {
                     if ( tituloInserido.equalsIgnoreCase(emprestimoDoTitulo.getLivro().getTitulo() ) ) {
                         emprestimoDoTitulo.registrarDevolucao();
+                        DAO.getLivroDAO().atualizarAcervoPosDevolucao(tituloInserido);
                         DAO.getLeitorDAO().salvarHistoricoEmprestimos();
+
                         telaAviso_controller.showTelaAviso(emprestimoDoTitulo + "\nDevolução registrada com sucesso!");
                         break;
                     } else telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");

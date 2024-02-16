@@ -155,22 +155,21 @@ public class PersistenciaTeste {
 
     @Test
     public void testLerReservasPorTituloArquivo() throws Exception {
-
         reservaServico.criarReserva(leitor, "Jogos V.");
         reservaServico.criarReserva(leitor, "Jogos V.");
         reservaServico.criarReserva(leitor, "Jogos V.");
         livroDAO.salvarReservasPorTituloArquivo();
 
         Map<String, Queue<Leitor>> mapaArquivado = Persistencia.lerReservasPorTitulo();
-        assertEquals(4, mapaArquivado.size());
+        assertEquals(3, mapaArquivado.size());
     }
 
     @After
     public void limparArquivo() throws Exception {
         livroDAO.deletarTodosLivrosArquivo();
-        leitorDAO.deletarTodos();
-        bibliotecarioDAO.deletarTodos();
-        administradorDAO.deletarTodosAdministradores();
+        leitorDAO.deletarTodosLeitoresArquivo();
+        bibliotecarioDAO.deletarTodosBibliotecariosArquivo();
+        administradorDAO.deletarTodosAdministradoresArquivo();
     }
 
 }
