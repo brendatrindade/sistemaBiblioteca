@@ -75,7 +75,7 @@ public class TelaInicial_Controller {
                     Parent root = loader.load();
 
                     TelaLeitor_Controller telaLeitorController = loader.getController();
-                    telaLeitorController.setNomeLeitor(cpf);
+                    telaLeitorController.setLeitor(cpf);
 
                     Stage registerStage = new Stage();
                     Scene scene = new Scene(root);

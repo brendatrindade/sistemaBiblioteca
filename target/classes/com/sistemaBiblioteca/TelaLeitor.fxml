@@ -76,7 +76,6 @@
          </VBox>
          <StackPane layoutX="214.0" prefHeight="576.0" prefWidth="838.0" style="-fx-background-color: #02030A;">
             <children>
-               <Pane fx:id="paneTelaPrincipal" prefHeight="576.0" prefWidth="842.0" style="-fx-background-color: #fffafa;" />
             <Pane fx:id="paneRenovarEmprestimo" prefHeight="597.0" prefWidth="841.0" style="-fx-background-color: white;">
                <children>
                   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="112.0" layoutX="25.0" layoutY="137.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="5.0" strokeType="OUTSIDE" strokeWidth="1.5" width="789.0" />
@@ -123,7 +122,7 @@
                         <Font name="Rockwell" size="60.0" />
                      </font>
                   </Label>
-                  <Button fx:id="botaoCriarReserva" layoutX="357.0" layoutY="273.0" mnemonicParsing="false" onAction="#criarReserva" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: black;" text="Renovar" textFill="WHITE">
+                  <Button fx:id="botaoCriarReserva" layoutX="357.0" layoutY="273.0" mnemonicParsing="false" onAction="#criarReserva" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: black;" text="Reservar" textFill="WHITE">
                      <font>
                         <Font name="Rockwell" size="16.0" />
                      </font>
@@ -135,6 +134,7 @@
                   </ImageView>
                </children>
             </Pane>
+               <Pane fx:id="paneTelaPrincipal" prefHeight="576.0" prefWidth="842.0" style="-fx-background-color: #fffafa;" />
             </children>
          </StackPane>
       <Separator layoutX="216.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="576.0" prefWidth="5.0" style="-fx-background-color: #00777f; -fx-background-radius: 0;" />

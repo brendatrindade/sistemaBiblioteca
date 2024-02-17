@@ -110,7 +110,7 @@ public class TelaLoginOperador_Controller {
                                         Parent root = loader.load();
 
                                         TelaAdministrador_Controller telaAdministradorController = loader.getController();
-                                        telaAdministradorController.setNome(cpf);
+                                        telaAdministradorController.setAdm(cpf);
 
                                         Stage registerStage = new Stage();
                                         Scene scene = new Scene(root);

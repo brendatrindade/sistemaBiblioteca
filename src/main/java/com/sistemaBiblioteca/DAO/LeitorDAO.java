@@ -13,6 +13,7 @@
 package com.sistemaBiblioteca.DAO;
 
 import com.sistemaBiblioteca.Excecoes.Excecao;
+import com.sistemaBiblioteca.Model.Operacoes.Livro;
 import com.sistemaBiblioteca.Model.Usuarios.Leitor;
 import com.sistemaBiblioteca.Model.Operacoes.Emprestimo;
 

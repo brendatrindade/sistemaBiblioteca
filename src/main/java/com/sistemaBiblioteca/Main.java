@@ -30,7 +30,6 @@ public class Main extends Application{
     }
 }
 
-//Adicionar botão sair Tela Acesso Operador okkkkkk
+//Mudar selecao de livro para a tabela
 //verificar gerar dados inicias
-// verificar armazenamento fila de reservas e renovação de emprestimos okkkkk
 //limpar arquivos after dos testes

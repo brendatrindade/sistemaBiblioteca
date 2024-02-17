@@ -402,7 +402,6 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             Leitor primeiro = this.reservasPorTitulo.get(titulo).poll();
         }
     }
-
     public void removerLivroPorTitulo(String titulo) throws Exception {
         for (Livro livro : lerLivrosArquivo()) {
             if (livro.getTitulo().equalsIgnoreCase(titulo)) {
@@ -413,7 +412,6 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             }
         }
     }
-
     public void atualizarAcervoPosEmprestimo(String tituloLivro) throws Exception {
         List<Livro> livrosArquivo = lerLivrosArquivo();
         for (Livro livro : livrosArquivo) {
@@ -427,7 +425,6 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             }
         }
     }
-
     public void atualizarAcervoPosDevolucao(String tituloLivro) throws Exception {
         List<Livro> livrosArquivo = lerLivrosArquivo();
         for (Livro livro : livrosArquivo) {
@@ -435,6 +432,16 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
                 if(!livro.isDisponibilidade()) {
                     livro.setDisponibilidade(true);
                     this.acervo = livrosArquivo;
+                    break;
+                }
+            }
+        }
+    }
+    public void removerLivroPorTituloIndisponivel(String titulo) throws Exception {
+        for (Livro livro : lerLivrosArquivo()) {
+            if (livro.getTitulo().equalsIgnoreCase(titulo)) {
+                if(!livro.isDisponibilidade()){
+                    acervo.remove(livro);
                     salvarLivroArquivo();
                     break;
                 }
@@ -442,6 +449,57 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         }
     }
 
+    public boolean livrosIguais(Livro livro1, Livro livro2){
+         if( ( livro1.getTitulo().equals(livro2.getTitulo()) ) && ( livro1.getAutor().equals(livro2.getAutor()) ) &&
+             ( livro1.getIsbn().equals(livro2.getIsbn()) ) && ( livro1.getCategoria().equals(livro2.getCategoria()) )&&
+             ( livro1.getAnoPublicacao().equals(livro2.getAnoPublicacao()) ) && ( livro1.getEditora().equals(livro2.getEditora()) )&&
+             ( livro1.isDisponibilidade() == livro2.isDisponibilidade() ) ){
+                return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean removerLivro(Livro livroParaRemover) throws Exception {
+        List<Livro> livrosAcervo = lerLivrosArquivo();
+        boolean livroEncontrado = false;
+        int i = 0;
+        while ( (!livroEncontrado) && (i < livrosAcervo.size()) ){
+            Livro livro = livrosAcervo.get(i);
+            if (livrosIguais(livro, livroParaRemover)){
+                livrosAcervo.remove(livro);
+                this.acervo = livrosAcervo;
+                salvarLivroArquivo();
+                livroEncontrado = true;
+            }
+            i++;
+        }
+        return livroEncontrado;
+    }
+
+
 
 
 }
+/**
+ public void editarTituloLivro(Livro livro, String novoTitulo) throws Exception {
+ List<Livro> livrosArquivo = lerLivrosArquivo();
+ for (Livro livroA : livrosArquivo) {
+ if ( livroA.getTitulo().equals(livro.getTitulo()) && livroA.);
+
+
+ if( livro.isDisponibilidade() )
+ removerLivroPorTitulo(livro.getTitulo());
+ else removerLivroPorTituloIndisponivel(livro.getTitulo());
+ livro.setTitulo(novoTitulo);
+ salvar(livro);
+ salvarLivroArquivo();
+ }
+ public void editarAutorLivro(Livro livro, String novoAutor) throws Exception {
+ if( livro.isDisponibilidade() )
+ removerLivroPorTitulo(livro.getTitulo());
+ else removerLivroPorTituloIndisponivel(livro.getTitulo());
+ livro.setAutor(novoAutor);
+ salvar(livro);
+ salvarLivroArquivo();
+ }
+ */

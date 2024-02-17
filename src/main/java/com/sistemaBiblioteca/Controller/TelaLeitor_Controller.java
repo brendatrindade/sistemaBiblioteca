@@ -16,10 +16,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -94,31 +92,42 @@ public class TelaLeitor_Controller {
                 //Leitor possui acesso ativo
                 if (!emprestimosAtivosLeitor.isEmpty()) {
                     //Leitor possui emprestimos ativos
-                    for (Emprestimo emprestimo : emprestimosAtivosLeitor) {
-                        if (emprestimo.getLivro().getTitulo().equalsIgnoreCase(tituloInserido)) {
-                            //Emprestimo correspondente ao Titulo
-                            emprestimoParaRenovar = emprestimo;
-                            break;
-                        }
+
+                    Leitor primeiroDaFila = DAO.getLivroDAO().verificaPrimeiroDaFila(tituloInserido);
+                    if (primeiroDaFila == null ) {
+                        primeiroDaFila = leitor;
                     }
-                    if (emprestimoParaRenovar != null) {
-                        //Emprestimo correspondente ao titulo ativo encontrado, solicitar renovacao
-                        boolean renovado = emprestimoParaRenovar.solicitarRenovacao(emprestimoParaRenovar);
-                        if (renovado) {
-                            DAO.getLeitorDAO().adicionaHistoricoEmprestimosArq(this.leitor, emprestimoParaRenovar);
-                            //Salva o emprestimo no historico do leitor
-                            DAO.getLeitorDAO().salvarHistoricoEmprestimos();
-                            //Salva no arquivo
-                            telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nRenovado com sucesso!");
-                        } else {
-                            if (emprestimoParaRenovar.emAtraso())
-                                telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nEm atraso, não é possivel renovar.");
-                            else if (emprestimoParaRenovar.getNumeroDeRenovacoes() == Emprestimo.limiteRenovacoesPorEmprestimo)
-                                telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nNúmero máximo de renovações excedido. Não é possível renovar.");
+                    if ( (primeiroDaFila.getCpf()).equals(leitor.getCpf()) ) {
+
+                        for (Emprestimo emprestimo : emprestimosAtivosLeitor) {
+                            if (emprestimo.getLivro().getTitulo().equalsIgnoreCase(tituloInserido)) {
+                                //Emprestimo correspondente ao Titulo
+                                emprestimoParaRenovar = emprestimo;
+                                break;
+                            }
                         }
-                        tituloLivroRenovarEmprestimo.clear();
-                        paneTelaPrincipal.toFront();
-                    } else telaAviso_controller.showTelaAviso("Ops! Nenhum livro emprestado corresponde ao titulo informado.");
+                        if (emprestimoParaRenovar != null) {
+                            //Emprestimo correspondente ao titulo ativo encontrado, solicitar renovacao
+                            boolean renovado = emprestimoParaRenovar.solicitarRenovacao(emprestimoParaRenovar);
+                            if (renovado) {
+                                DAO.getLeitorDAO().adicionaHistoricoEmprestimosArq(this.leitor, emprestimoParaRenovar);
+                                //Salva o emprestimo no historico do leitor
+                                DAO.getLeitorDAO().salvarHistoricoEmprestimos();
+                                //Salva no arquivo
+                                telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nRenovado com sucesso!");
+                            } else {
+                                if (emprestimoParaRenovar.emAtraso())
+                                    telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nEm atraso, não é possivel renovar.");
+                                else if (emprestimoParaRenovar.getNumeroDeRenovacoes() == Emprestimo.limiteRenovacoesPorEmprestimo)
+                                    telaAviso_controller.showTelaAviso(emprestimoParaRenovar + "\nNúmero máximo de renovações excedido. Não é possível renovar.");
+                            }
+
+                            tituloLivroRenovarEmprestimo.clear();
+                            paneTelaPrincipal.toFront();
+                        } else telaAviso_controller.showTelaAviso("Ops! Nenhum livro emprestado corresponde ao titulo informado.");
+                    } else telaAviso_controller.showTelaAviso("Ops! Este titulo já está reservado. Não foi possivel concluir a renovação." +
+                            "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(tituloInserido) +" .\n" +
+                            leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo novamente quando disponivel.");
                 } else telaAviso_controller.showTelaAviso("Não há empréstimos ativos disponíveis para renovação no momento");
             } else telaAviso_controller.showTelaAviso("Acesso bloqueado, não é possivel renovar.");
         } else telaAviso_controller.showTelaAviso("Informe o Título do livro para solicitar renovação do emprestimo.");
@@ -151,7 +160,9 @@ public class TelaLeitor_Controller {
             if (livrosDisponiveis.isEmpty()) {
 
                 if (this.leitor.isStatusAcessoUsuario()) {
+
                     Queue<Leitor> leitoresNaFila = DAO.getLivroDAO().getReservasPorTitulo(tituloParaReservar);
+
                     if (leitoresNaFila == null) {
                         leitoresNaFila = new LinkedList<>();
                     }
@@ -217,6 +228,10 @@ public class TelaLeitor_Controller {
         }
     }
 
+    public void setLeitor(String cpf) throws Exception {
+        this.nomeLeitor.setText(DAO.getLeitorDAO().buscarPorId(cpf).getNome());
+        this.leitor = DAO.getLeitorDAO().buscarPorId(cpf);
+    }
 
     @FXML
     void initialize() {
@@ -235,10 +250,4 @@ public class TelaLeitor_Controller {
         assert tituloReservarLivro != null : "fx:id=\"tituloReservarLivro\" was not injected: check your FXML file 'TelaLeitor.fxml'.";
 
     }
-
-    public void setNomeLeitor(String cpf) throws Exception {
-        this.nomeLeitor.setText(DAO.getLeitorDAO().buscarPorId(cpf).getNome());
-        this.leitor = DAO.getLeitorDAO().buscarPorId(cpf);
-    }
-
 }

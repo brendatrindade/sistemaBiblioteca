@@ -113,7 +113,6 @@ public class TelaBibliotecario_Controller {
     @FXML
     void criarLivro() throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-
         try {
             Livro livro = new Livro(titulo.getText(), autor.getText(), isbn.getText(), categoria.getText(), anoPublicacao.getText(),
                     editora.getText(), new Localizacao(localizacaoPrateleira.getText(), localizacaoPosicao.getText()));
@@ -169,7 +168,10 @@ public class TelaBibliotecario_Controller {
                     if (leitor.isStatusAcessoUsuario()) {
                         //Leitor possui acesso ativo
                         Leitor primeiroDaFila = DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo());
-                        if ( (primeiroDaFila.getCpf()).equals(leitor.getCpf()) || (DAO.getLivroDAO().verificaPrimeiroDaFila(livroDisponivel.getTitulo()) == null) ) {
+                        if (primeiroDaFila == null ) {
+                            primeiroDaFila = leitor;
+                        }
+                        if ( (primeiroDaFila.getCpf()).equals(leitor.getCpf()) ) {
                             //Leitor é o primeiro na fila de reservas desse título ou a fila de reservas desse título esta vazia
                             if (DAO.getLeitorDAO().qtdEmprestimosAtivosArq(leitor) < Emprestimo.limiteEmprestimosPorLeitor) {
                                 //A quantidade de emprestimos ativos do leitor é menor que o limite, registrar empréstimo
@@ -194,9 +196,9 @@ public class TelaBibliotecario_Controller {
                                 paneTelaPrincipal.toFront();
 
                             } else telaAviso_controller.showTelaAviso(leitor.getNome() + ", o numero máximo de emprestimos ativos já foi atingido");
-                        } else telaAviso_controller.showTelaAviso("Ops! Ainda não chegou a sua vez. \nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". "
+                        } else telaAviso_controller.showTelaAviso("Ops! Fila de reserva em andamento. \nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(livroDisponivel.getTitulo()) + ". \n"
                                     + leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
-                    } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento.");
+                    } else telaAviso_controller.showTelaAviso("Ops! " + leitor.getNome() + " nao pode receber emprestimos no momento. \nAcesso Bloqueado.");
                 } else telaAviso_controller.showTelaAviso("Livro: " + tituloInserido + " indisponível para emprestimo no momento." +
                             "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(tituloInserido) +" . " +
                             leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
@@ -240,7 +242,6 @@ public class TelaBibliotecario_Controller {
     }
 
     public void sair(ActionEvent event) throws Exception {
-
         try {
             Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentScreen.close();
@@ -253,7 +254,6 @@ public class TelaBibliotecario_Controller {
             registerStage.setScene(scene);
             registerStage.show();
             registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
-
         } catch (Exception excep) {
             excep.printStackTrace();
         }
@@ -261,14 +261,12 @@ public class TelaBibliotecario_Controller {
 
     @FXML
     public void iniciarPesquisa(ActionEvent event) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
         Parent root = loader.load();
         TelaInicial_Controller telaInicialController = loader.getController();
         telaInicialController.setBarra_pesquisa_ini(barraPesquisa.getText());
         telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaBibliotecario.fxml");
         telaInicialController.iniciarPesquisa(event);
-
     }
 
     @FXML
