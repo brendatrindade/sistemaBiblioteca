@@ -1,5 +1,6 @@
 package com.sistemaBiblioteca.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -14,12 +15,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
 public class LivroPesquisado_Controller {
@@ -52,10 +51,18 @@ public class LivroPesquisado_Controller {
 
     private String sairPara = null;
 
-    public void setSairPara(String telaAnterior){
-        this.sairPara = telaAnterior;
+    private boolean removerLivro = false;
+
+    public void setRemoverLivro(boolean sim){
+        if (sim) {
+            removerLivro = sim;
+            initialize2();
+        }
     }
 
+    public void setEditarLivros(boolean sim) {
+        if (sim) initialize2();
+    }
     public void setChaveBusca(String chaveBusca){
         this.chaveBusca.setText(chaveBusca);
     }
@@ -78,7 +85,10 @@ public class LivroPesquisado_Controller {
         listaLivros.addAll(isbnes);
 
         tabelaLivros.setItems(listaLivros);
+    }
 
+    public void setSairPara(String telaAnterior){
+        this.sairPara = telaAnterior;
     }
 
     @FXML
@@ -114,7 +124,6 @@ public class LivroPesquisado_Controller {
         }
     }
 
-
     @FXML
     void initialize() {
         assert botaoSair != null : "fx:id=\"botaoSair\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
@@ -129,6 +138,43 @@ public class LivroPesquisado_Controller {
         assert tabelaLivros != null : "fx:id=\"tabelaLivros\" was not injected: check your FXML file 'LivroPesquisado.fxml'.";
 
     }
+    @FXML
+    void initialize2(){
+        tabelaLivros.setRowFactory(tv -> { TableRow<Livro> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if ( (!row.isEmpty()) && (event.getButton() == MouseButton.PRIMARY) && (event.getClickCount() == 2) ) {
+                    Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    currentScreen.close();
 
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaAdministrador.fxml"));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Stage registerStage = new Stage();
+                    Scene scene = new Scene(root);
+                    registerStage.setResizable(false);
+                    registerStage.setScene(scene);
+                    registerStage.show();
+                    registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+                    Livro clickedRow = row.getItem();
+                    TelaAdministrador_Controller administradorController = loader.getController();
+                    try {
+                        administradorController.setLivroSelecionado(clickedRow);
+                        if (removerLivro){
+                        administradorController.carregarDadosLivroRemover(clickedRow);
+                        } else {
+                        administradorController.carregarDadosLivro(clickedRow);
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } );
+            return row;
+        } );
+    }
 
 }

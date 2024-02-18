@@ -105,7 +105,7 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @return - mapa do histórico de empréstimos lido do arquivo.
      * @throws Exception se ocorrer um erro durante a leitura do arquivo.
      */
-    public Map<Leitor,List<Emprestimo> > LerHistoricoEmprestimos() throws Exception{
+    public Map<Leitor,List<Emprestimo> > lerHistoricoEmprestimosArquivo() throws Exception{
         Map<Leitor,List<Emprestimo> > historicoEmprestimosArquivo = Persistencia.lerHistoricoEmprestimos();
         return historicoEmprestimosArquivo;
     }
@@ -269,6 +269,59 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
     }
     public int qtdEmprestimosAtivosArq(Leitor leitor) {
         return getEmprestimosAtivosArq(leitor).size();
+    }
+
+
+    public int totalEmprestimosAtivosArquivo() throws Exception {
+        List<Leitor> leitoresArquivo = lerLeitoresArquivo();
+        int totalEmprestimosAtivos = 0;
+
+        for( Leitor leitor : leitoresArquivo ){
+            totalEmprestimosAtivos += qtdEmprestimosAtivosArq(leitor);
+        }
+        return totalEmprestimosAtivos;
+    }
+
+    public int totalEmprestimosAtrasadosArquivo() throws Exception {
+        int totalEmprestimosAtrasados = 0;
+
+        for( Leitor leitor : lerLeitoresArquivo() ){
+            for ( Emprestimo emprestimo : getEmprestimosAtivosArq(leitor) ){
+                if ( emprestimo.emAtraso() ){
+                    totalEmprestimosAtrasados++;
+                }
+            }
+        }
+        return totalEmprestimosAtrasados;
+    }
+
+    public List<String>  tituloMaisEmprestado() throws Exception {
+        Map<String, Integer> totalEmprestimosPorTitulo = new HashMap<>();
+
+        for (List<Emprestimo> totalEmprestimos : lerHistoricoEmprestimosArquivo().values()) {
+            for (Emprestimo emprestimo : totalEmprestimos) {
+                String titulo = emprestimo.getLivro().getTitulo();
+                totalEmprestimosPorTitulo.put(titulo, totalEmprestimosPorTitulo.getOrDefault(titulo, 0) + 1);
+            }
+        }
+        List<String> titulosMaisPopulares = new ArrayList<>();
+        int maxEmprestimos = 0;
+        for (Map.Entry<String, Integer> chaveTitulo : totalEmprestimosPorTitulo.entrySet()) {
+            String tituloLivro = chaveTitulo.getKey();
+            Integer qtdEmprestimos = chaveTitulo.getValue();
+            if (qtdEmprestimos > maxEmprestimos) {
+                maxEmprestimos = qtdEmprestimos;
+                titulosMaisPopulares.clear();
+                titulosMaisPopulares.add(tituloLivro);
+            } else if (qtdEmprestimos == maxEmprestimos) {
+                titulosMaisPopulares.add(tituloLivro);
+            }
+        }
+        return titulosMaisPopulares;
+    }
+    public boolean leitoresIguais(Leitor leitor1, Leitor leitor2){
+        if (leitor1.getCpf().equals(leitor2.getCpf())) return true;
+        else return false;
     }
 
 }

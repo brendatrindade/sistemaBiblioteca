@@ -30,6 +30,6 @@ public class Main extends Application{
     }
 }
 
-//Mudar selecao de livro para a tabela
 //verificar gerar dados inicias
 //limpar arquivos after dos testes
+//Adicionar verificação e tela de aviso aos novos metodos

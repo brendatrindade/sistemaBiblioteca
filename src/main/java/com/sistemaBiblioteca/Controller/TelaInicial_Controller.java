@@ -46,14 +46,21 @@ public class TelaInicial_Controller {
     private TextField cpf_acesso;
 
     private String sairPesquisa= null;
-
-    public void setSairDaPesquisaPara(String sairPara){
-        this.sairPesquisa = sairPara;
-    }
-
+    private boolean admEditandoLivro = false;
+    private boolean admRemovendoLivro = false;
 
     public void setGerarDados(boolean gerar) throws Exception {
         if (gerar) initialize2();
+    }
+    public void setAdmEditandoLivro(boolean sim){
+        if (sim) this.admEditandoLivro = sim;
+    }
+    public void setAdmRemovendoLivro(boolean sim) {
+        if (sim) this.admRemovendoLivro = sim;
+    }
+
+    public void setSairDaPesquisaPara(String sairPara){
+        this.sairPesquisa = sairPara;
     }
 
     public void setBarra_pesquisa_ini(String textoInserido){
@@ -104,7 +111,6 @@ public class TelaInicial_Controller {
         registerStage.show();
         registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
     }
-
 
     @FXML
     public void iniciarPesquisa(ActionEvent event) throws Exception {
@@ -170,6 +176,8 @@ public class TelaInicial_Controller {
                 LivroPesquisado_Controller livroPesquisadoController = loader.getController();
                 livroPesquisadoController.preencherTabela(titulos, autores, isbnes, categorias, anoPubli);
                 livroPesquisadoController.setChaveBusca(txtInserido);
+                livroPesquisadoController.setEditarLivros(admEditandoLivro);
+                livroPesquisadoController.setRemoverLivro(admRemovendoLivro);
 
                 if (sairPesquisa != null){
                     livroPesquisadoController.setSairPara(sairPesquisa);
@@ -192,7 +200,7 @@ public class TelaInicial_Controller {
     }
 
     @FXML
-    void initialize() throws Exception {
+    void initialize() {
         assert barra_pesquisa_ini != null : "fx:id=\"barra_pesquisa_ini\" was not injected: check your FXML file 'TelaInicial.fxml'.";
         assert botaoAcessoOperador != null : "fx:id=\"botaoAcessoOperador\" was not injected: check your FXML file 'TelaInicial.fxml'.";
         assert botao_entrar != null : "fx:id=\"botao_entrar\" was not injected: check your FXML file 'TelaInicial.fxml'.";

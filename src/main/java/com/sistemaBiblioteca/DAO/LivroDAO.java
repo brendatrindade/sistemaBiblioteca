@@ -104,7 +104,7 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      * @return - mapa de reservas por título lido do arquivo.
      * @throws Exception se ocorrer um erro durante a leitura do arquivo.
      */
-    public Map<String, Queue<Leitor>> LerReservasPorTituloArquivo() throws Exception{
+    public Map<String, Queue<Leitor>> lerReservasPorTituloArquivo() throws Exception{
         Map<String, Queue<Leitor>> reservasPorTituloArquivo = Persistencia.lerReservasPorTitulo();
         return reservasPorTituloArquivo;
     }
@@ -204,6 +204,15 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
      */
     public void atualizarAnoPublicacaoLivro(Livro livro, String novoAnoPublicacao) {
         livro.setAnoPublicacao(novoAnoPublicacao);
+    }
+    /**
+     * Atualiza um livro do acervo.
+     * @param livro - Livro a ser alterado
+     * @param novaPrateleira - String como o novo dado a ser alterado no livro
+     * @param novaPosicao - String como o novo dado a ser alterado no livro
+     */
+    public void atualizarLocalizacao(Livro livro, String novaPrateleira, String novaPosicao){
+        livro.setLocalizacao(novaPrateleira, novaPosicao);
     }
     /**
      * Busca um livro do acervo.
@@ -448,7 +457,6 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
             }
         }
     }
-
     public boolean livrosIguais(Livro livro1, Livro livro2){
          if( ( livro1.getTitulo().equals(livro2.getTitulo()) ) && ( livro1.getAutor().equals(livro2.getAutor()) ) &&
              ( livro1.getIsbn().equals(livro2.getIsbn()) ) && ( livro1.getCategoria().equals(livro2.getCategoria()) )&&
@@ -476,30 +484,12 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         return livroEncontrado;
     }
 
-
-
+    public int totalLivrosReservadosArquivo() throws Exception {
+        int totalReservas = 0;
+        for ( Queue<Leitor> filaPorTitulo : lerReservasPorTituloArquivo().values() ) {
+            totalReservas += filaPorTitulo.size();
+        }
+        return totalReservas;
+    }
 
 }
-/**
- public void editarTituloLivro(Livro livro, String novoTitulo) throws Exception {
- List<Livro> livrosArquivo = lerLivrosArquivo();
- for (Livro livroA : livrosArquivo) {
- if ( livroA.getTitulo().equals(livro.getTitulo()) && livroA.);
-
-
- if( livro.isDisponibilidade() )
- removerLivroPorTitulo(livro.getTitulo());
- else removerLivroPorTituloIndisponivel(livro.getTitulo());
- livro.setTitulo(novoTitulo);
- salvar(livro);
- salvarLivroArquivo();
- }
- public void editarAutorLivro(Livro livro, String novoAutor) throws Exception {
- if( livro.isDisponibilidade() )
- removerLivroPorTitulo(livro.getTitulo());
- else removerLivroPorTituloIndisponivel(livro.getTitulo());
- livro.setAutor(novoAutor);
- salvar(livro);
- salvarLivroArquivo();
- }
- */
