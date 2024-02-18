@@ -44,8 +44,8 @@ public class AdministradorDAO extends BibliotecarioDAO{
         if (!administrador.validaCPF(administrador.getCpf())) {
             throw new Exception("CPF inválido!");
         }
-        if (cpfAdministradorEstaCadastrado(administrador.getCpf())) {
-            throw new Exception("CPF já está cadastrado!");
+        if (!cpfOperadorEstaCadastrado(administrador.getCpf())) {
+            throw new Exception("CPF já possui cadastro como operador do sistema.");
         }
         salvarAdiministrador(administrador);
         salvarAdministradorArquivo();
@@ -150,6 +150,19 @@ public class AdministradorDAO extends BibliotecarioDAO{
     public String getSenhaAdiministrador(String cpf) {
         Administrador a = buscarAdministradorPorId(cpf);
         return a.getSenha();
+    }
+    /**
+     * Verifica se o CPF de um operador já está cadastrado.
+     * @param cpf - CPF a ser verificado.
+     * @return true se o CPF já estiver cadastrado, false caso contrário.
+     */
+    public boolean cpfOperadorEstaCadastrado(String cpf){
+        if (cpfBibliotecarioEstaCadastrado(cpf)){
+            return true;
+        } else if (cpfAdministradorEstaCadastrado(cpf)){
+            return true;
+        }
+        return false;
     }
 
 }

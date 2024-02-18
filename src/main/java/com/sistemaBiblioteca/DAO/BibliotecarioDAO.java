@@ -32,6 +32,7 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializab
 
     public BibliotecarioDAO() throws Exception {
         this.operadores = new ArrayList<>();
+
         this.bibliotecarios = new ArrayList<>();
         this.bibliotecarios = Persistencia.lerBibliotecario();
     }
@@ -43,9 +44,6 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializab
     public Bibliotecario criarBibliotecario(Bibliotecario bibliotecario) throws Exception {
         if (!bibliotecario.validaCPF(bibliotecario.getCpf())) {
             throw new Exception("CPF inválido!");
-        }
-        if (cpfBibliotecarioEstaCadastrado(bibliotecario.getCpf())) {
-            throw new Exception("CPF já está cadastrado!");
         }
         salvar(bibliotecario);
         salvarBibliotecarioArquivo();
@@ -148,7 +146,7 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializab
         return this.bibliotecarios;
     }
     /**
-     * Verifica se o CPF de um operador já está cadastrado.
+     * Verifica se o CPF de um bibliotecario já está cadastrado.
      * @param cpf - CPF a ser verificado.
      * @return true se o CPF já estiver cadastrado, false caso contrário.
      * @throws Excecao Se o CPF já estiver cadastrado, a exceção é lançada.
