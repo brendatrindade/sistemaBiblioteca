@@ -1,4 +1,8 @@
-package Testes.Operacoes;
+/**
+
+ Classe de test desativada para não interferir nos dados do sistema em execução
+
+ package Testes.Operacoes;
 
 import com.sistemaBiblioteca.DAO.DAO;
 import com.sistemaBiblioteca.DAO.LivroDAO;
@@ -64,3 +68,4 @@ public class ReservaTeste {
 }
 
 
+*/

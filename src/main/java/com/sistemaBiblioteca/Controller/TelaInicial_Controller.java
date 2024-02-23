@@ -70,32 +70,34 @@ public class TelaInicial_Controller {
     @FXML
     public void loginLeitor(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+
         String cpf = cpf_acesso.getText().replaceAll("[^0-9]", "");
 
-        if (validaCPF(cpf)) {
-            if (DAO.getLeitorDAO().cpfLeitorEstaCadastrado(cpf)) {
-                // CPF inserido é valido e possui cadastro, chamar a tela do Leitor
-                try {
-                    Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    currentScreen.close();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaLeitor.fxml"));
-                    Parent root = loader.load();
+        if ( (!cpf.trim().isEmpty())) {
+            if (validaCPF(cpf)) {
+                if (DAO.getLeitorDAO().cpfLeitorEstaCadastrado(cpf)) {
+                    // CPF inserido é valido e possui cadastro, chamar a tela do Leitor
+                    try {
+                        Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        currentScreen.close();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaLeitor.fxml"));
+                        Parent root = loader.load();
 
-                    TelaLeitor_Controller telaLeitorController = loader.getController();
-                    telaLeitorController.setLeitor(cpf);
+                        TelaLeitor_Controller telaLeitorController = loader.getController();
+                        telaLeitorController.setLeitor(cpf);
 
-                    Stage registerStage = new Stage();
-                    Scene scene = new Scene(root);
-                    registerStage.setResizable(false);
-                    registerStage.setScene(scene);
-                    registerStage.show();
-                    registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
-                } catch (Exception excep) {
-                    excep.printStackTrace();
-                }
-            } else telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
-        } else telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
-
+                        Stage registerStage = new Stage();
+                        Scene scene = new Scene(root);
+                        registerStage.setResizable(false);
+                        registerStage.setScene(scene);
+                        registerStage.show();
+                        registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+                    } catch (Exception excep) {
+                        excep.printStackTrace();
+                    }
+                } else telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
+            } else telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
+        } else telaAviso_controller.showTelaAviso("Ops! Preencha o CPF para acessar a conta\n");
     }
 
     @FXML
@@ -114,6 +116,7 @@ public class TelaInicial_Controller {
 
     @FXML
     public void iniciarPesquisa(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         List<Livro> titulos = new ArrayList<>();
         List<Livro> autores = new ArrayList<>();
@@ -193,7 +196,6 @@ public class TelaInicial_Controller {
                 excep.printStackTrace();
             }
         } else{
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
                 telaAviso_controller.showTelaAviso("Digite algo para pesquisar\n");
             }
 
@@ -216,27 +218,26 @@ public class TelaInicial_Controller {
             DAO.getLeitorDAO().deletarTodoHistoricoEmprestimo();
 
             DAO.getBibliotecarioDAO().deletarTodosBibliotecariosArquivo();
-            DAO.getAdministradorDAO().deletarTodosAdministradores();
+            DAO.getAdministradorDAO().deletarTodosAdministradoresArquivo();
 
             DAO.getLivroDAO().deletarTodasReservas();
             DAO.getLivroDAO().deletarTodosLivrosArquivo();
 
-
             Persistencia.criarCache();
 
-            Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-            Leitor leitor1 = new Leitor("Brenda L.", "78642486597", endereco, "74999823548");
-            Endereco endereco2 = new Endereco("Nova Rua", "1001", "Fortaleza", "Ceara");
-            Leitor leitor2 = new Leitor("Leitor 2.", "58138131012", endereco2, "75989873521");
+            Endereco endereco = new Endereco("Primeiro Leitor", "75", "Java", "FX");
+            Leitor leitor1 = new Leitor("Leitor Inicial", "542.15198054", endereco, "(74)99982-3548");
+            Endereco endereco2 = new Endereco("Nova Java", "10", "Scene", "JV");
+            Leitor leitor2 = new Leitor("Segundo Leitor", "054.809.270-27", endereco2, "(75)98987-3521");
 
-            Bibliotecario bibliotecario1 = new Bibliotecario("Julia B.", "123.456.789-09", "senha123");
-            Administrador administrador1 = new Administrador("Maria A.", "361.215.045-60", "senha456");
+            Bibliotecario bibliotecario1 = new Bibliotecario("Bibliotecaria 1", "293051180-03", "123");
+            Administrador administrador1 = new Administrador("Administrador 1", "829063290-88", "456");
 
-            Localizacao localizacao = new Localizacao("Z", "12");
-            Livro livro1 = new Livro("Primeiro Edai", "Klack", "1357579800294", "Educativo", "1999", "Univer", localizacao);
+            Localizacao localizacao = new Localizacao("Z", "01");
+            Livro livro1 = new Livro("Primeiro Livro", "Controller", "1357579800294", "Sistema", "2023", "Univer", localizacao);
 
-            Localizacao localizacao2 = new Localizacao("A", "45");
-            Livro livro2 = new Livro("Segundo Edai", "Klack", "2657579833294", "Educativo", "2003", "Univer", localizacao2);
+            Localizacao localizacao2 = new Localizacao("X", "02");
+            Livro livro2 = new Livro("Segundo Livro", "Controller", "2657579833294", "Desenvolvimento", "2024", "Univer", localizacao2);
 
             DAO.getLeitorDAO().criarLeitor(leitor1);
             DAO.getLeitorDAO().criarLeitor(leitor2);

@@ -29,7 +29,3 @@ public class Main extends Application{
         launch();
     }
 }
-
-//verificar gerar dados inicias
-//limpar arquivos after dos testes
-//Adicionar verificação e tela de aviso aos novos metodos

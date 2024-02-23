@@ -15,7 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class LeitorDAOTeste {
-    private LeitorDAO leitorDAO = DAO.getLeitorDAO();
+    private LeitorDAO leitorDAO = new LeitorDAO();
     private Leitor leitor;
     private Livro livro;
     private Emprestimo emprestimo;
@@ -26,9 +26,9 @@ public class LeitorDAOTeste {
     @Before
     public void iniciarDAO() throws Excecao {
         Localizacao localizacao = new Localizacao("N", "46");
-        livro = new Livro("Jogos V.", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("Jogos V.", "Leitor DAO teste", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
-        leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
+        leitor = new Leitor("L teste", "78642486597", endereco, "74999823548");
         emprestimo = new Emprestimo(livro, leitor);
     }
 
@@ -53,7 +53,7 @@ public class LeitorDAOTeste {
     }
 
     @Test
-    public void buscarLeitorPorId() {
+    public void buscarLeitorPorId() throws Exception {
         leitorDAO.salvar(leitor);
         assertEquals(leitor.getCpf(), leitorDAO.buscarPorId(leitor.getCpf()).getCpf());
     }
@@ -77,15 +77,10 @@ public class LeitorDAOTeste {
     }
 
     @Test
-    public void VerificarSeCpfEstaCadastrado() {
+    public void VerificarSeCpfEstaCadastrado() throws Exception {
         leitorDAO.salvar(leitor);
         assertTrue(leitorDAO.cpfLeitorEstaCadastrado(leitor.getCpf()));
     }
 
-    @After
-    public void limparArquivo() throws Exception {
-        leitorDAO.deletarTodoHistoricoEmprestimo();
-        leitorDAO.deletarTodosLeitoresArquivo();
-    }
 }
 

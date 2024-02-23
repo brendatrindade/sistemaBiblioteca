@@ -22,7 +22,7 @@ public class EmprestimoTeste {
     public void testCriarEmprestimo() throws Excecao {
         Endereco endereco = new Endereco("Candido Nunes", "75", "Angico-Mairi", "Bahia");
         Localizacao localizacao = new Localizacao("C", "24");
-        livro = new Livro("J. Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("J. Vorazes", "Emprestimo Teste", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
         leitor = new Leitor("Brenda", "78642486597", endereco, "74999823548");
         emprestimo = new Emprestimo(livro, leitor);
     }

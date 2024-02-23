@@ -35,5 +35,5 @@ public interface DAOgenerico <Classe> {
      * @param id - identificação do objeto a ser buscado.
      * @return Objeto encontrado ou null se o objeto não for encontrado.
      */
-    Classe buscarPorId(String id);
+    Classe buscarPorId(String id) throws Exception;
 }

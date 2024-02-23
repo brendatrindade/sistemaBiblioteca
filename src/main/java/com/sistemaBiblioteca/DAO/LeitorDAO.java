@@ -144,9 +144,9 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @return O leitor encontrado ou null se o CPF não possuir cadastro.
      */
     @Override
-    public Leitor buscarPorId(String id) {
+    public Leitor buscarPorId(String id) throws Exception {
         if(!this.leitores.isEmpty()){
-            for(Leitor leitor : this.leitores){
+            for(Leitor leitor : lerLeitoresArquivo() ){
                 if(leitor.getCpf().equals(id))
                     return leitor;
             }
@@ -212,9 +212,9 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
      * @return true se o CPF já estiver cadastrado, false caso contrário.
      * @throws Excecao Se o CPF já estiver cadastrado, a exceção é lançada.
      */
-    public boolean cpfLeitorEstaCadastrado(String cpf) {
+    public boolean cpfLeitorEstaCadastrado(String cpf) throws Exception {
         if (!this.leitores.isEmpty()) {
-            for (Leitor l : this.leitores) {
+            for (Leitor l : lerLeitoresArquivo()) {
                 if (l.getCpf().equals(cpf)){
                     return true;
                 }
@@ -323,5 +323,40 @@ public class LeitorDAO implements DAOgenerico<Leitor>, Serializable {
         if (leitor1.getCpf().equals(leitor2.getCpf())) return true;
         else return false;
     }
+
+    public boolean bloquearLeitor(Leitor leitorParaBloquear) throws Exception {
+        List<Leitor> leitoresArquivo = lerLeitoresArquivo();
+        boolean leitorEncontrado = false;
+        int i = 0;
+        while ( (!leitorEncontrado) && (i < leitoresArquivo.size()) ){
+            Leitor leitor = leitoresArquivo.get(i);
+            if (leitoresIguais(leitor, leitorParaBloquear)){
+                leitor.bloquearConta();
+                this.leitores = leitoresArquivo;
+                salvarLeitoresArquivo();
+                leitorEncontrado = true;
+            }
+            i++;
+        }
+        return leitorEncontrado;
+    }
+
+    public boolean desbloquearLeitor(Leitor leitorParaDesbloquear) throws Exception {
+        List<Leitor> leitoresArquivo = lerLeitoresArquivo();
+        boolean leitorEncontrado = false;
+        int i = 0;
+        while ( (!leitorEncontrado) && (i < leitoresArquivo.size()) ){
+            Leitor leitor = leitoresArquivo.get(i);
+            if (leitoresIguais(leitor, leitorParaDesbloquear)){
+                leitor.desbloquearConta();
+                this.leitores = leitoresArquivo;
+                salvarLeitoresArquivo();
+                leitorEncontrado = true;
+            }
+            i++;
+        }
+        return leitorEncontrado;
+    }
+
 
 }

@@ -30,7 +30,7 @@ public class LivroServico {
      * Construtor da classe LivroServico.
      */
     public LivroServico() throws Exception {
-        this.livroDAO = DAO.getLivroDAO();
+        this.livroDAO = new LivroDAO();
     }
     /**
      * Cria um novo livro.

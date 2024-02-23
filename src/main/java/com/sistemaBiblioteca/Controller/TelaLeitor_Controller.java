@@ -92,19 +92,21 @@ public class TelaLeitor_Controller {
                 //Leitor possui acesso ativo
                 if (!emprestimosAtivosLeitor.isEmpty()) {
                     //Leitor possui emprestimos ativos
-
                     Leitor primeiroDaFila = DAO.getLivroDAO().verificaPrimeiroDaFila(tituloInserido);
                     if (primeiroDaFila == null ) {
                         primeiroDaFila = leitor;
                     }
                     if ( (primeiroDaFila.getCpf()).equals(leitor.getCpf()) ) {
-
-                        for (Emprestimo emprestimo : emprestimosAtivosLeitor) {
+                        boolean emprestimoEncontrado = false;
+                        int i = 0;
+                        while ( (!emprestimoEncontrado) && (i < emprestimosAtivosLeitor.size()) ){
+                            Emprestimo emprestimo = emprestimosAtivosLeitor.get(i);
                             if (emprestimo.getLivro().getTitulo().equalsIgnoreCase(tituloInserido)) {
                                 //Emprestimo correspondente ao Titulo
                                 emprestimoParaRenovar = emprestimo;
-                                break;
+                                emprestimoEncontrado = true;
                             }
+                            i++;
                         }
                         if (emprestimoParaRenovar != null) {
                             //Emprestimo correspondente ao titulo ativo encontrado, solicitar renovacao
@@ -151,7 +153,6 @@ public class TelaLeitor_Controller {
         List<Livro> livrosDisponiveis = new ArrayList<>();
 
         if (!livrosPorTitulo.isEmpty()) {
-
             for (Livro livro : livrosPorTitulo) {
                 if (livro.isDisponibilidade()) {
                     livrosDisponiveis.add(livro);
@@ -159,7 +160,7 @@ public class TelaLeitor_Controller {
             }
             if (livrosDisponiveis.isEmpty()) {
 
-                if (this.leitor.isStatusAcessoUsuario()) {
+                if ( DAO.getLeitorDAO().buscarPorId(this.leitor.getCpf()).isStatusAcessoUsuario() ) {
 
                     Queue<Leitor> leitoresNaFila = DAO.getLivroDAO().getReservasPorTitulo(tituloParaReservar);
 

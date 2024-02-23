@@ -412,49 +412,68 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         }
     }
     public void removerLivroPorTitulo(String titulo) throws Exception {
-        for (Livro livro : lerLivrosArquivo()) {
+        List<Livro> livrosArquivo = lerLivrosArquivo();
+        boolean livroEncontrado = false;
+        int i = 0;
+        while ( (!livroEncontrado) && (i < livrosArquivo.size()) ){
+            Livro livro = livrosArquivo.get(i);
             if (livro.getTitulo().equalsIgnoreCase(titulo)) {
                 if(livro.isDisponibilidade()){
                     acervo.remove(livro);
-                    break;
+                    livroEncontrado = true;
                 }
             }
+            i++;
         }
     }
     public void atualizarAcervoPosEmprestimo(String tituloLivro) throws Exception {
         List<Livro> livrosArquivo = lerLivrosArquivo();
-        for (Livro livro : livrosArquivo) {
+        boolean livroEncontrado = false;
+        int i = 0;
+        while ( (!livroEncontrado) && (i < livrosArquivo.size()) ){
+            Livro livro = livrosArquivo.get(i);
             if (livro.getTitulo().equalsIgnoreCase(tituloLivro)) {
                 if(livro.isDisponibilidade()) {
                     livro.setDisponibilidade(false);
                     this.acervo = livrosArquivo;
                     salvarLivroArquivo();
-                    break;
+                    livroEncontrado = true;
                 }
             }
+            i++;
         }
     }
     public void atualizarAcervoPosDevolucao(String tituloLivro) throws Exception {
         List<Livro> livrosArquivo = lerLivrosArquivo();
-        for (Livro livro : livrosArquivo) {
+        boolean livroEncontrado = false;
+        int i = 0;
+        while ( (!livroEncontrado) && (i < livrosArquivo.size()) ){
+            Livro livro = livrosArquivo.get(i);
             if (livro.getTitulo().equalsIgnoreCase(tituloLivro)) {
                 if(!livro.isDisponibilidade()) {
                     livro.setDisponibilidade(true);
                     this.acervo = livrosArquivo;
-                    break;
+                    salvarLivroArquivo();
+                    livroEncontrado = true;
                 }
             }
+            i++;
         }
     }
     public void removerLivroPorTituloIndisponivel(String titulo) throws Exception {
-        for (Livro livro : lerLivrosArquivo()) {
+        List<Livro> livrosAcervo = lerLivrosArquivo();
+        boolean livroEncontrado = false;
+        int i = 0;
+        while ( (!livroEncontrado) && (i < livrosAcervo.size()) ){
+            Livro livro = livrosAcervo.get(i);
             if (livro.getTitulo().equalsIgnoreCase(titulo)) {
-                if(!livro.isDisponibilidade()){
+                if (!livro.isDisponibilidade()) {
                     acervo.remove(livro);
                     salvarLivroArquivo();
-                    break;
+                    livroEncontrado = true;
                 }
             }
+            i++;
         }
     }
     public boolean livrosIguais(Livro livro1, Livro livro2){
@@ -483,7 +502,6 @@ public class LivroDAO implements DAOgenerico<Livro>, Serializable {
         }
         return livroEncontrado;
     }
-
     public int totalLivrosReservadosArquivo() throws Exception {
         int totalReservas = 0;
         for ( Queue<Leitor> filaPorTitulo : lerReservasPorTituloArquivo().values() ) {

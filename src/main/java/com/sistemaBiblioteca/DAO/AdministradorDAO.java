@@ -44,7 +44,7 @@ public class AdministradorDAO extends BibliotecarioDAO{
         if (!administrador.validaCPF(administrador.getCpf())) {
             throw new Exception("CPF inválido!");
         }
-        if (!cpfOperadorEstaCadastrado(administrador.getCpf())) {
+        if (cpfOperadorEstaCadastrado(administrador.getCpf())) {
             throw new Exception("CPF já possui cadastro como operador do sistema.");
         }
         salvarAdiministrador(administrador);
@@ -78,7 +78,7 @@ public class AdministradorDAO extends BibliotecarioDAO{
      * Deleta todos os administradores do arquivo
      */
     public void deletarTodosAdministradoresArquivo() throws Exception {
-        deletarTodos();
+        this.administradores = new ArrayList<>();
         salvarAdministradorArquivo();
     }
     /**
@@ -139,9 +139,9 @@ public class AdministradorDAO extends BibliotecarioDAO{
     }
 
     public boolean cpfAdministradorEstaCadastrado(String cpf){
-        if (!this.administradores.isEmpty()){
+        if ( !this.administradores.isEmpty() ) {
             for (Administrador a : this.administradores) {
-                if (a.getCpf().equals(cpf))
+                if ( a.getCpf().equals(cpf) )
                     return true;
             }
         } return false;
@@ -163,6 +163,42 @@ public class AdministradorDAO extends BibliotecarioDAO{
             return true;
         }
         return false;
+    }
+    public boolean administradoresIguais(Administrador adm1, Administrador adm2){
+        if (adm1.getCpf().equals(adm2.getCpf())) return true;
+        else return false;
+    }
+    public boolean bloquearAdministrador(Administrador admParaBloquear) throws Exception {
+        List<Administrador> administradoresArquivo = lerAdministradorArquivo();
+        boolean admEncontrado = false;
+        int i = 0;
+        while ( (!admEncontrado) && (i < administradoresArquivo.size()) ){
+            Administrador administrador = administradoresArquivo.get(i);
+            if (administradoresIguais(administrador, admParaBloquear)){
+                administrador.bloquearConta();
+                this.administradores = administradoresArquivo;
+                salvarBibliotecarioArquivo();
+                admEncontrado = true;
+            }
+            i++;
+        }
+        return admEncontrado;
+    }
+    public boolean desbloquearAdministrador(Administrador admParaDesbloquear) throws Exception {
+        List<Administrador> administradoresArquivo = lerAdministradorArquivo();
+        boolean admEncontrado = false;
+        int i = 0;
+        while ( (!admEncontrado) && (i < administradoresArquivo.size()) ){
+            Administrador administrador = administradoresArquivo.get(i);
+            if (administradoresIguais(administrador, admParaDesbloquear)){
+                administrador.desbloquearConta();
+                this.administradores = administradoresArquivo;
+                salvarAdministradorArquivo();
+                admEncontrado = true;
+            }
+            i++;
+        }
+        return admEncontrado;
     }
 
 }

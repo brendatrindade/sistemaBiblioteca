@@ -168,5 +168,51 @@ public class BibliotecarioDAO implements DAOgenerico<Bibliotecario> , Serializab
         Bibliotecario b = buscarPorId(cpf);
         return b.getSenha();
     }
+    /**
+     * Lê a lista de bibliotecarios de um arquivo.
+     * @return - lista de bibliotecarios lidos do arquivo.
+     * @throws Exception se ocorrer um erro durante a leitura do arquivo.
+     */
+    public List<Bibliotecario> lerBibliotecarioArquivo() throws Exception {
+        List<Bibliotecario> bibliotecariosArquivo = Persistencia.lerBibliotecario();
+        return bibliotecariosArquivo;
+    }
+    public boolean bibliotecariosIguais(Bibliotecario bibliotecario1, Bibliotecario bibliotecario2){
+        if (bibliotecario1.getCpf().equals(bibliotecario2.getCpf())) return true;
+        else return false;
+    }
+    public boolean bloquearBibliotecario(Bibliotecario bibliotecarioParaBloquear) throws Exception {
+        List<Bibliotecario> bibliotecariosArquivo = lerBibliotecarioArquivo();
+        boolean bibliotecarioEncontrado = false;
+        int i = 0;
+        while ( (!bibliotecarioEncontrado) && (i < bibliotecariosArquivo.size()) ){
+            Bibliotecario bibliotecario = bibliotecariosArquivo.get(i);
+            if (bibliotecariosIguais(bibliotecario, bibliotecarioParaBloquear)){
+                bibliotecario.bloquearConta();
+                this.bibliotecarios = bibliotecariosArquivo;
+                salvarBibliotecarioArquivo();
+                bibliotecarioEncontrado = true;
+            }
+            i++;
+        }
+        return bibliotecarioEncontrado;
+    }
+
+    public boolean desbloquearBibliotecario(Bibliotecario bibliotecarioParaDesbloquear) throws Exception {
+        List<Bibliotecario> bibliotecariosArquivo = lerBibliotecarioArquivo();
+        boolean bibliotecarioEncontrado = false;
+        int i = 0;
+        while ( ( !bibliotecarioEncontrado ) && ( i < bibliotecariosArquivo.size() ) ){
+            Bibliotecario bibliotecario = bibliotecariosArquivo.get(i);
+            if (bibliotecariosIguais(bibliotecario, bibliotecarioParaDesbloquear)){
+                bibliotecario.desbloquearConta();
+                this.bibliotecarios = bibliotecariosArquivo;
+                salvarBibliotecarioArquivo();
+                bibliotecarioEncontrado = true;
+            }
+            i++;
+        }
+        return bibliotecarioEncontrado;
+    }
 
 }

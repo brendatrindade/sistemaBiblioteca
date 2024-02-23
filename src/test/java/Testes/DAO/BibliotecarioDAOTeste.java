@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 public class BibliotecarioDAOTeste {
 
-   private BibliotecarioDAO bibliotecarioDAO = DAO.getBibliotecarioDAO();
+   private BibliotecarioDAO bibliotecarioDAO = new BibliotecarioDAO();
    private Bibliotecario bibliotecario;
 
 
@@ -20,7 +20,7 @@ public class BibliotecarioDAOTeste {
 
     @Before
     public void iniciarDAO() throws Excecao {
-        bibliotecario = new Bibliotecario("Ana", "361.215.045-60", "senha12");
+        bibliotecario = new Bibliotecario("B teste", "361.215.045-60", "senha12");
     }
 
     @Test
@@ -55,9 +55,5 @@ public class BibliotecarioDAOTeste {
         assertTrue(bibliotecarioDAO.cpfBibliotecarioEstaCadastrado(bibliotecario.getCpf()));
     }
 
-    @After
-    public void limparArquivo() throws Exception {
-        bibliotecarioDAO.deletarTodos();
-    }
 }
 

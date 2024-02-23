@@ -14,7 +14,7 @@ public class LivroTeste {
     @Before
     public void testCriarLivro() {
         localizacao = new Localizacao("A", "51");
-        livro = new Livro("Juegos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("Juegos Vorazes", "Livro Teste", "9788579800245", "Ficcao Teste", "2012", "Rocco Jovens Leitores", localizacao);
     }
 
     @Test

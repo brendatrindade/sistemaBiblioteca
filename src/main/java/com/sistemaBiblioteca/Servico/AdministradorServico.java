@@ -114,7 +114,7 @@ public class AdministradorServico extends BibliotecarioServico {
      * @param telefone - telefone do leitor.
      * @throws Excecao Se o CPF do leitor já estiver cadastrado.
      */
-    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Exception {
         leitorServico.criarLeitor(nome, cpf, endereco, telefone);
     }
     /**

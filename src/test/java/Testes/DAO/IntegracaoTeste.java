@@ -22,7 +22,6 @@ public class IntegracaoTeste {
     private Administrador administrador;
     private Livro livro;
     private Emprestimo emprestimo;
-    private Reserva reserva;
 
     @Before
     public void testCriarInstancias() throws Excecao {
@@ -31,7 +30,7 @@ public class IntegracaoTeste {
         bibliotecario = new Bibliotecario("Pedro", "153.853.595-56", "senha456");
         administrador = new Administrador("Maria", "361.215.045-60", "senha123");
         Localizacao localizacao = new Localizacao("K", "67");
-        livro = new Livro("Jogos Vorazes", "Suzanne Collins", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
+        livro = new Livro("Jogos Vorazes", "Integração Teste", "9788579800245", "Ficcao Cientifica", "2012", "Rocco Jovens Leitores", localizacao);
     }
 
     @Test

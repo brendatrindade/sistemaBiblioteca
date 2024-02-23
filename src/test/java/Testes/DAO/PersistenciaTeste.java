@@ -1,3 +1,7 @@
+/**
+
+ Classe de testes desativadas para não interferir nos dados do sistema em execução
+
 package Testes.DAO;
 
 import com.sistemaBiblioteca.DAO.*;
@@ -20,14 +24,14 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class PersistenciaTeste {
-    private LeitorDAO leitorDAO = DAO.getLeitorDAO();
-    private LivroDAO livroDAO = DAO.getLivroDAO();
+    private LeitorDAO leitorDAO = new LeitorDAO();
+    private LivroDAO livroDAO = new LivroDAO();
     private Leitor leitor;
     private Livro livro;
     private Emprestimo emprestimo;
-    private BibliotecarioDAO bibliotecarioDAO = DAO.getBibliotecarioDAO();
+    private BibliotecarioDAO bibliotecarioDAO = new BibliotecarioDAO();
     private Bibliotecario bibliotecario;
-    private AdministradorDAO administradorDAO = DAO.getAdministradorDAO();;
+    private AdministradorDAO administradorDAO = new AdministradorDAO();
     private Administrador administrador;
     private ReservaServico reservaServico;
     private Reserva reserva;
@@ -174,4 +178,4 @@ public class PersistenciaTeste {
 
 }
 
-
+*/

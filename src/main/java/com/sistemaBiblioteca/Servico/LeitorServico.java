@@ -49,7 +49,7 @@ public class LeitorServico {
      * @return O novo leitor criado.
      * @throws Excecao Se o CPF do leitor já estiver cadastrado.
      */
-    public Leitor criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+    public Leitor criarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Exception {
         if (!cpfLeitorEstaCadastrado(cpf)) {
             Leitor leitor = new Leitor(nome, cpf, endereco, telefone);
             salvarLeitor(leitor);
@@ -66,7 +66,7 @@ public class LeitorServico {
     public void deletarTodos() {
         leitorDAO.deletarTodos();
     }
-    public Leitor buscarPorId(String id) {
+    public Leitor buscarPorId(String id) throws Exception {
         return leitorDAO.buscarPorId(id);
     }
     public List<Leitor> getListaLeitores() {
@@ -93,7 +93,7 @@ public class LeitorServico {
         return livroDAO.pesquisarLivros(texto);
     }
 
-    public boolean cpfLeitorEstaCadastrado(String cpf) throws Excecao {
+    public boolean cpfLeitorEstaCadastrado(String cpf) throws Exception {
         return leitorDAO.cpfLeitorEstaCadastrado(cpf);
     }
 

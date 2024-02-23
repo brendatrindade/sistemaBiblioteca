@@ -58,7 +58,7 @@ public class AdministradorControle extends BibliotecarioControle {
         return administradorServico.cpfOperadorEstaCadastrado(cpf);
     }
 
-    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Excecao {
+    public void cadastrarLeitor(String nome, String cpf, Endereco endereco, String telefone) throws Exception {
         administradorServico.cadastrarLeitor(nome, cpf, endereco, telefone);
     }
     public void removerLeitor(Leitor leitor) {

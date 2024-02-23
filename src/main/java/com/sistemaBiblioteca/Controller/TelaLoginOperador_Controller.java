@@ -59,28 +59,57 @@ public class TelaLoginOperador_Controller {
 
     @FXML
     void loginOperador(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-            String cpf = cpf_acesso_operador.getText().replaceAll("[^0-9]", "");
-            String senhaInserida = senha_operador.getText();
+        String cpf = cpf_acesso_operador.getText().replaceAll("[^0-9]", "");
+        String senhaInserida = senha_operador.getText();
 
-            if ( (!cpf.trim().isEmpty()) && (!senhaInserida.trim().isEmpty())) {
-                //Campos cpf e senha foram preenchidos
-                if (validaCPF(cpf)) {
-                    //CPF inserido é válido
-                    if(DAO.getBibliotecarioDAO().cpfBibliotecarioEstaCadastrado(cpf)){
+        if ( (!cpf.trim().isEmpty()) && (!senhaInserida.trim().isEmpty())) {
+            //Campos cpf e senha foram preenchidos
+            if (validaCPF(cpf)) {
+                //CPF inserido é válido
+                if(DAO.getBibliotecarioDAO().cpfBibliotecarioEstaCadastrado(cpf)){
+                    //CPF possui cadastro
+                    if ("Bibliotecario".equals(DAO.getBibliotecarioDAO().buscarPorId(cpf).getCargo())) {
+                        //Cargo é bibliotecario
+                        if (senhaInserida.equals(DAO.getBibliotecarioDAO().getSenhaBibliotecario(cpf))) {
+                            //A senha está correta, acessar.
+                            try {
+                                Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                currentScreen.close();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaBibliotecario.fxml"));
+                                Parent root = loader.load();
+
+                                TelaBibliotecario_Controller telaBibliotecarioController = loader.getController();
+                                telaBibliotecarioController.setNome(cpf);
+
+                                Stage registerStage = new Stage();
+                                Scene scene = new Scene(root);
+                                registerStage.setResizable(false);
+                                registerStage.setScene(scene);
+                                registerStage.show();
+                                registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
+                            } catch (Exception excep) {
+                                excep.printStackTrace();
+                            }
+                        } else {
+                            telaAviso_controller.showTelaAviso("Ops! Senha inválida.\n");
+                        }
+                    }
+                } else {
+                    if (DAO.getAdministradorDAO().cpfAdministradorEstaCadastrado(cpf)){
                         //CPF possui cadastro
-                        if ("Bibliotecario".equals(DAO.getBibliotecarioDAO().buscarPorId(cpf).getCargo())) {
-                            //Cargo é bibliotecario
-                            if (senhaInserida.equals(DAO.getBibliotecarioDAO().getSenhaBibliotecario(cpf))) {
+                        if ("Administrador".equals(DAO.getAdministradorDAO().buscarAdministradorPorId(cpf).getCargo())) {
+                            //Cargo é administrador
+                            if ( senhaInserida.equals(DAO.getAdministradorDAO().getSenhaAdiministrador(cpf)) ) {
                                 //A senha está correta, acessar.
                                 try {
                                     Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                     currentScreen.close();
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaBibliotecario.fxml"));
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaAdministrador.fxml"));
                                     Parent root = loader.load();
-
-                                    TelaBibliotecario_Controller telaBibliotecarioController = loader.getController();
-                                    telaBibliotecarioController.setNome(cpf);
+                                    TelaAdministrador_Controller telaAdministradorController = loader.getController();
+                                    telaAdministradorController.setAdm(cpf);
 
                                     Stage registerStage = new Stage();
                                     Scene scene = new Scene(root);
@@ -92,53 +121,19 @@ public class TelaLoginOperador_Controller {
                                     excep.printStackTrace();
                                 }
                             } else {
-                                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
                                 telaAviso_controller.showTelaAviso("Ops! Senha inválida.\n");
                             }
                         }
                     } else {
-                        if (DAO.getAdministradorDAO().cpfAdministradorEstaCadastrado(cpf)){
-                            //CPF possui cadastro
-                            if ("Administrador".equals(DAO.getAdministradorDAO().buscarAdministradorPorId(cpf).getCargo())) {
-                                //Cargo é administrador
-                                if ( senhaInserida.equals(DAO.getAdministradorDAO().getSenhaAdiministrador(cpf)) ) {
-                                    //A senha está correta, acessar.
-                                    try {
-                                        Stage currentScreen = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                        currentScreen.close();
-                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaAdministrador.fxml"));
-                                        Parent root = loader.load();
-
-                                        TelaAdministrador_Controller telaAdministradorController = loader.getController();
-                                        telaAdministradorController.setAdm(cpf);
-
-                                        Stage registerStage = new Stage();
-                                        Scene scene = new Scene(root);
-                                        registerStage.setResizable(false);
-                                        registerStage.setScene(scene);
-                                        registerStage.show();
-                                        registerStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/sistemaBiblioteca/Imagens/IconeBiblioteca.png")));
-                                    } catch (Exception excep) {
-                                        excep.printStackTrace();
-                                    }
-                                } else {
-                                    TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                                    telaAviso_controller.showTelaAviso("Ops! Senha inválida.\n");
-                                }
-                            }
-                        } else {
-                            TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                            telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
-                        }
+                        telaAviso_controller.showTelaAviso("Ops! CPF não encontrado\n");
                     }
-                } else {
-                    TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                    telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
                 }
-            } else{
-                TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-                telaAviso_controller.showTelaAviso("Informe o CPF e a SENHA para acessar\n");
+            } else {
+                telaAviso_controller.showTelaAviso("Ops! CPF inválido\n");
             }
+        } else{
+            telaAviso_controller.showTelaAviso("Informe o CPF e a SENHA para acessar\n");
+        }
     }
 
     @FXML

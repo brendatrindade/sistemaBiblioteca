@@ -134,9 +134,6 @@ public class TelaAdministrador_Controller {
     private Button botaoPesquisarHistLeitor;
 
     @FXML
-    private Button botaoPesquisarHistorico;
-
-    @FXML
     private Button botaoRemoverLivro;
 
     @FXML
@@ -328,7 +325,7 @@ public class TelaAdministrador_Controller {
     private TextField senhaBibliotecario;
 
     @FXML
-    private TableView<Emprestimo> tabelaHistórico;
+    private TableView<Emprestimo> tabelaHistorico;
 
     @FXML
     private TextField telefone;
@@ -357,21 +354,34 @@ public class TelaAdministrador_Controller {
     @FXML
     void criarLeitor(ActionEvent event) throws IOException {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-        try {
-            Leitor leitor = new Leitor(nome.getText(), cpf.getText(), new Endereco(rua.getText(), numero.getText(), cidade.getText(), estado.getText()), telefone.getText() );
-            DAO.getLeitorDAO().criarLeitor(leitor);
-            telaAviso_controller.showTelaAviso("Leitor " + nome.getText()+ " cadastrado com sucesso!");
-            nome.clear();
-            cpf.clear();
-            rua.clear();
-            numero.clear();
-            cidade.clear();
-            estado.clear();
-            telefone.clear();
-            panePrincipal.toFront();
-        } catch (Exception e){
-            telaAviso_controller.showTelaAviso(e.getMessage());
-        }
+
+        String nomeInserido = nome.getText();
+        String cpfInserido = cpf.getText().replaceAll("[^0-9]", "");
+        String ruaInserida = rua.getText();
+        String numeroInserido = numero.getText();
+        String cidadeInserida = cidade.getText();
+        String estadoInserido = estado.getText();
+        String telefoneInserido = telefone.getText().replaceAll("[^0-9]", "");
+
+        if ( (!nomeInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty()) && (!ruaInserida.trim().isEmpty()) && (!numeroInserido.trim().isEmpty()) && (!cidadeInserida.trim().isEmpty())
+        && (!estadoInserido.trim().isEmpty()) && (!telefoneInserido.trim().isEmpty()) ) {
+            try {
+                Leitor leitor = new Leitor(nomeInserido, cpfInserido, new Endereco(ruaInserida, numeroInserido, cidadeInserida, estadoInserido), telefoneInserido);
+                DAO.getLeitorDAO().criarLeitor(leitor);
+                telaAviso_controller.showTelaAviso("Leitor " + nomeInserido + " cadastrado com sucesso!");
+                nome.clear();
+                cpf.clear();
+                rua.clear();
+                numero.clear();
+                cidade.clear();
+                estado.clear();
+                telefone.clear();
+                panePrincipal.toFront();
+            } catch (Exception e) {
+                telaAviso_controller.showTelaAviso(e.getMessage());
+            }
+        } else telaAviso_controller.showTelaAviso("Preencha todos os campos!");
+
     }
     @FXML
     void cadastrarAdministrador(ActionEvent event) {
@@ -380,17 +390,25 @@ public class TelaAdministrador_Controller {
     @FXML
     void criarAdministrador(ActionEvent event) throws IOException {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-        try {
-            Administrador administrador = new Administrador( nomeAdministrador.getText(), cpfAdministrador.getText(), senhaAdministrador.getText() );
-            DAO.getAdministradorDAO().criarAdministrador(administrador);
-            telaAviso_controller.showTelaAviso("Administrador " + nomeAdministrador.getText()+ " cadastrado com sucesso!");
-            nomeAdministrador.clear();
-            cpfAdministrador.clear();
-            senhaAdministrador.clear();
-            panePrincipal.toFront();
-        } catch (Exception e){
-            telaAviso_controller.showTelaAviso(e.getMessage());
-        }
+
+        String nomeInserido = nomeAdministrador.getText();
+        String cpfInserido = cpfAdministrador.getText().replaceAll("[^0-9]", "");
+        String senhaInserida = senhaAdministrador.getText();
+
+        if ( (!nomeInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty()) && (!senhaInserida.trim().isEmpty()) ) {
+            try {
+                Administrador administrador = new Administrador(nomeInserido, cpfInserido, senhaInserida);
+                DAO.getAdministradorDAO().criarAdministrador(administrador);
+                telaAviso_controller.showTelaAviso("Administrador " + nomeInserido + " cadastrado com sucesso!");
+                nomeAdministrador.clear();
+                cpfAdministrador.clear();
+                senhaAdministrador.clear();
+                panePrincipal.toFront();
+            } catch (Exception e) {
+                telaAviso_controller.showTelaAviso(e.getMessage());
+            }
+        } else telaAviso_controller.showTelaAviso("Preencha todos os campos!");
+
     }
     @FXML
     void cadastrarBibliotecario(ActionEvent event) {
@@ -399,19 +417,26 @@ public class TelaAdministrador_Controller {
     @FXML
     void criarBibliotecario(ActionEvent event) throws IOException {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-        try {
-            if ( !(DAO.getAdministradorDAO().cpfOperadorEstaCadastrado(cpfBibliotecario.getText())) ) {
-            Bibliotecario bibliotecario = new Bibliotecario( nomeBibliotecario.getText(), cpfBibliotecario.getText(), senhaBibliotecario.getText() );
-            DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario);
-            telaAviso_controller.showTelaAviso("Bibliotecario " + nomeBibliotecario.getText()+ " cadastrado com sucesso!");
-            nomeBibliotecario.clear();
-            cpfBibliotecario.clear();
-            senhaBibliotecario.clear();
-            panePrincipal.toFront();
-            } else telaAviso_controller.showTelaAviso("CPF já possui cadastro como operador do sistema.");
-        } catch (Exception e){
-            telaAviso_controller.showTelaAviso(e.getMessage());
-        }
+
+        String nomeInserido = nomeBibliotecario.getText();
+        String cpfInserido = cpfBibliotecario.getText().replaceAll("[^0-9]", "");
+        String senhaInserida = senhaBibliotecario.getText();
+
+        if ( (!nomeInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty()) && (!senhaInserida.trim().isEmpty()) ) {
+            try {
+                if ( !(DAO.getAdministradorDAO().cpfOperadorEstaCadastrado(cpfInserido) ) ) {
+                    Bibliotecario bibliotecario = new Bibliotecario(nomeInserido,cpfInserido, senhaInserida);
+                    DAO.getBibliotecarioDAO().criarBibliotecario(bibliotecario);
+                    telaAviso_controller.showTelaAviso("Bibliotecario " + nomeBibliotecario.getText()+ " cadastrado com sucesso!");
+                    nomeBibliotecario.clear();
+                    cpfBibliotecario.clear();
+                    senhaBibliotecario.clear();
+                    panePrincipal.toFront();
+                } else telaAviso_controller.showTelaAviso("CPF já possui cadastro como operador do sistema.");
+            } catch (Exception e){
+                telaAviso_controller.showTelaAviso(e.getMessage());
+            }
+        } else telaAviso_controller.showTelaAviso("Preencha todos os campos!");
     }
 
     @FXML
@@ -422,42 +447,60 @@ public class TelaAdministrador_Controller {
     void criarBloquearAdministrador(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfAdministrador = cpfBloquearAdministrador.getText();
-        Administrador administradorBlock = DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador);
-        administradorBlock.bloquearConta();
-        DAO.getAdministradorDAO().salvarAdministradorArquivo();
+        String cpfAdministrador = cpfBloquearAdministrador.getText().replaceAll("[^0-9]", "");
 
-        if (!DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador).isStatusAcessoUsuario())
-            telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+        if ( (!cpfAdministrador.trim().isEmpty())) {
+            Administrador administradorBlock = DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador);
+            DAO.getAdministradorDAO().bloquearAdministrador(administradorBlock);
+            if (!DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador).isStatusAcessoUsuario())
+                telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+
+            cpfBloquearAdministrador.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Administrador para bloquear!");
+
     }
 
     @FXML
     void criarBloquearBibliotecario(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfBibliotecario = cpfBloquearBibliotecario.getText();
-        Bibliotecario bibliotecarioBlock = DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario);
-        administrador.bloquearBibliotecario(bibliotecarioBlock);
-        DAO.getBibliotecarioDAO().salvarBibliotecarioArquivo();
+        String cpfBibliotecario = cpfBloquearBibliotecario.getText().replaceAll("[^0-9]", "");
 
-        if (!DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario).isStatusAcessoUsuario())
-            telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+        if ( (!cpfBibliotecario.trim().isEmpty())) {
+
+            Bibliotecario bibliotecarioBlock = DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario);
+            DAO.getBibliotecarioDAO().bloquearBibliotecario(bibliotecarioBlock);
+
+            if (!DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario).isStatusAcessoUsuario())
+                telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+            cpfBloquearBibliotecario.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Bibliotecario para bloquear!");
 
     }
     @FXML
     void criarBloquearLeitor(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfLeitor = cpfBloquearLeitor.getText();
-        Leitor leitorBlock = DAO.getLeitorDAO().buscarPorId(cpfLeitor);
-        administrador.bloquearLeitor(leitorBlock);
-        DAO.getLeitorDAO().salvarLeitoresArquivo();
+        String cpfLeitor = cpfBloquearLeitor.getText().replaceAll("[^0-9]", "");
 
-        if(!DAO.getLeitorDAO().buscarPorId(cpfLeitor).isStatusAcessoUsuario())
-            telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+        if ( (!cpfLeitor.trim().isEmpty())) {
+            Leitor leitorBlock = DAO.getLeitorDAO().buscarPorId(cpfLeitor);
+            DAO.getLeitorDAO().bloquearLeitor(leitorBlock);
+
+            if(!DAO.getLeitorDAO().buscarPorId(cpfLeitor).isStatusAcessoUsuario())
+               telaAviso_controller.showTelaAviso("Acesso bloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o bloqueio.");
+            cpfBloquearLeitor.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Leitor para bloquear!");
+
     }
 
     @FXML
@@ -469,45 +512,58 @@ public class TelaAdministrador_Controller {
     void criarDesbloquearAdministrador(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfAdministrador = cpfDesbloquearAdministrador.getText();
-        Administrador administradorDesblock = DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador);
-        administradorDesblock.desbloquearConta();
-        DAO.getAdministradorDAO().salvarAdministradorArquivo();
+        String cpfAdministrador = cpfDesbloquearAdministrador.getText().replaceAll("[^0-9]", "");
+        if ( (!cpfAdministrador.trim().isEmpty())) {
 
-        if ( (DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador)).isStatusAcessoUsuario() )
-            telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            Administrador administradorDesblock = DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador);
+            DAO.getAdministradorDAO().desbloquearAdministrador(administradorDesblock);
 
+            if ( !DAO.getAdministradorDAO().buscarAdministradorPorId(cpfAdministrador).isStatusAcessoUsuario() )
+                telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            cpfDesbloquearAdministrador.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Administrador para desbloquear!");
     }
 
     @FXML
     void criarDesbloquearBibliotecario(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfBibliotecario = cpfDesbloquearBibliotecario.getText();
-        Bibliotecario bibliotecarioDesblock = DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario);
-        administrador.desbloquerBibliotecario(bibliotecarioDesblock);
-        DAO.getBibliotecarioDAO().salvarBibliotecarioArquivo();
+        String cpfBibliotecario = cpfDesbloquearBibliotecario.getText().replaceAll("[^0-9]", "");
+        if ( (!cpfBibliotecario.trim().isEmpty())) {
 
-        if (  (DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario)).isStatusAcessoUsuario() )
-            telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            Bibliotecario bibliotecarioDesblock = DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario);
+            DAO.getBibliotecarioDAO().desbloquearBibliotecario(bibliotecarioDesblock);
 
+            if (  (DAO.getBibliotecarioDAO().buscarPorId(cpfBibliotecario)).isStatusAcessoUsuario() )
+                telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            cpfDesbloquearBibliotecario.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Bibliotecario para desbloquear!");
     }
     @FXML
     void criarDesbloquearLeitor(ActionEvent event) throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
-        String cpfLeitor = cpfDesbloquearLeitor.getText();
-        Leitor leitorDesblock = DAO.getLeitorDAO().buscarPorId(cpfLeitor);
-        administrador.desbloquearLeitor(leitorDesblock);
-        DAO.getLeitorDAO().salvarLeitoresArquivo();
+        String cpfLeitor = cpfDesbloquearLeitor.getText().replaceAll("[^0-9]", "");
+        if ( (!cpfLeitor.trim().isEmpty())) {
+            Leitor leitorDesblock = DAO.getLeitorDAO().buscarPorId(cpfLeitor);
+            DAO.getLeitorDAO().desbloquearLeitor(leitorDesblock);
 
-        if( (DAO.getLeitorDAO().buscarPorId(cpfLeitor)).isStatusAcessoUsuario() )
-            telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
-        else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            if( (DAO.getLeitorDAO().buscarPorId(cpfLeitor)).isStatusAcessoUsuario() )
+                telaAviso_controller.showTelaAviso("Acesso desbloqueado com sucesso!");
+            else telaAviso_controller.showTelaAviso("Ops! Não foi possível realizar o desbloqueio.");
+            cpfDesbloquearLeitor.clear();
+            panePrincipal.toFront();
+
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Leitor para desbloquear!");
 
     }
+
     @FXML
     void gerenciarAcervo(ActionEvent event) {
         paneGerenciarAcervo.toFront();
@@ -519,24 +575,37 @@ public class TelaAdministrador_Controller {
     @FXML
     void criarLivro(ActionEvent event) throws IOException {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-        try {
-            Livro livro = new Livro(titulo.getText(), autor.getText(), isbn.getText(), categoria.getText(), anoPublicacao.getText(),
-                    editora.getText(), new Localizacao(localizacaoPrateleira.getText(), localizacaoPosicao.getText()));
 
-            DAO.getLivroDAO().criarLivro(livro);
-            telaAviso_controller.showTelaAviso("Livro " + titulo.getText()+ " registrado com sucesso!");
-            titulo.clear();
-            autor.clear();
-            isbn.clear();
-            categoria.clear();
-            anoPublicacao.clear();
-            editora.clear();
-            localizacaoPrateleira.clear();
-            localizacaoPosicao.clear();
-            panePrincipal.toFront();
-        } catch (Exception e){
-            telaAviso_controller.showTelaAviso(e.getMessage());
-        }
+        String tituloInserido = titulo.getText();
+        String autorInserido = autor.getText();
+        String isbnInserido = isbn.getText().replaceAll("[^0-9]", "");
+        String categoriaInserida = categoria.getText();
+        String anoInserido = anoPublicacao.getText();
+        String editoraInserida = editora.getText();
+        String prateleiraInserida = localizacaoPrateleira.getText();
+        String posicaoInserida = localizacaoPosicao.getText();
+
+        if ( (!tituloInserido.trim().isEmpty()) && (!autorInserido.trim().isEmpty()) && (!isbnInserido.trim().isEmpty()) && (!categoriaInserida.trim().isEmpty()) && (!anoInserido.trim().isEmpty())
+                && (!editoraInserida.trim().isEmpty()) && (!prateleiraInserida.trim().isEmpty()) && (!posicaoInserida.trim().isEmpty()) ) {
+            try {
+                Livro livro = new Livro(tituloInserido, autorInserido, isbnInserido, categoriaInserida, anoInserido,
+                        editoraInserida, new Localizacao(prateleiraInserida, posicaoInserida));
+
+                DAO.getLivroDAO().criarLivro(livro);
+                telaAviso_controller.showTelaAviso("Livro " + tituloInserido + " registrado com sucesso!");
+                titulo.clear();
+                autor.clear();
+                isbn.clear();
+                categoria.clear();
+                anoPublicacao.clear();
+                editora.clear();
+                localizacaoPrateleira.clear();
+                localizacaoPosicao.clear();
+                panePrincipal.toFront();
+            } catch (Exception e) {
+                telaAviso_controller.showTelaAviso(e.getMessage());
+            }
+        } else telaAviso_controller.showTelaAviso("Preencha todos os campos!");
     }
 
     @FXML
@@ -546,14 +615,20 @@ public class TelaAdministrador_Controller {
 
     @FXML
     void iniciarBusca(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
         Parent root = loader.load();
         TelaInicial_Controller telaInicialController = loader.getController();
-        telaInicialController.setBarra_pesquisa_ini(buscarLivro.getText());
-        telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaAdministrador.fxml");
-        telaInicialController.setAdmEditandoLivro(true);
-        telaInicialController.iniciarPesquisa(event);
+
+        String chaveBusca = buscarLivro.getText();
+        if ( (!chaveBusca.trim().isEmpty())) {
+            telaInicialController.setBarra_pesquisa_ini(chaveBusca);
+            telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaAdministrador.fxml");
+            telaInicialController.setAdmEditandoLivro(true);
+            telaInicialController.iniciarPesquisa(event);
+            buscarLivro.clear();
+        } else telaAviso_controller.showTelaAviso("Preencha o campo de busca antes de continuar.");
 
     }
     void carregarDadosLivro(Livro livro) {
@@ -568,7 +643,6 @@ public class TelaAdministrador_Controller {
         localizacaoPosicaoField.setText(livro.getLocalizacao().getPosicao());
 
         paneEditarLivro.toFront();
-
     }
 
     public void setLivroSelecionado( Livro livroSelecionado){
@@ -613,14 +687,21 @@ public class TelaAdministrador_Controller {
     }
     @FXML
     void iniciarBuscaRemover(ActionEvent event) throws Exception {
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistemaBiblioteca/TelaInicial.fxml"));
         Parent root = loader.load();
         TelaInicial_Controller telaInicialController = loader.getController();
-        telaInicialController.setBarra_pesquisa_ini(buscarLivroRemover.getText());
-        telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaAdministrador.fxml");
-        telaInicialController.setAdmRemovendoLivro(true);
-        telaInicialController.iniciarPesquisa(event);
+
+        String chaveBusca = buscarLivroRemover.getText();
+
+        if ( (!chaveBusca.trim().isEmpty())) {
+            telaInicialController.setBarra_pesquisa_ini(chaveBusca);
+            telaInicialController.setSairDaPesquisaPara("/com/sistemaBiblioteca/TelaAdministrador.fxml");
+            telaInicialController.setAdmRemovendoLivro(true);
+            telaInicialController.iniciarPesquisa(event);
+            buscarLivroRemover.clear();
+        } else telaAviso_controller.showTelaAviso("Preencha o campo de busca antes de continuar.");
 
     }
     void carregarDadosLivroRemover(Livro livro) {
@@ -668,10 +749,11 @@ public class TelaAdministrador_Controller {
 
     @FXML
     void criarPesquisarHistoricoEmprestimo(ActionEvent event) throws Exception {
-        String cpf = cpfHistoricoEmprestimo.getText();
+        TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
+
+        String cpf = cpfHistoricoEmprestimo.getText().replaceAll("[^0-9]", "");
 
         if ( !cpf.trim().isEmpty() ) {
-
             Leitor leitorHistorico = DAO.getLeitorDAO().buscarPorId(cpf);
             List<Leitor> leitores = DAO.getLeitorDAO().lerLeitoresArquivo();
             List<Emprestimo> historicoDoLeitor = new ArrayList<>();
@@ -686,8 +768,8 @@ public class TelaAdministrador_Controller {
                 nomeLeitorHistorico.setText(leitorHistorico.getNome());
                 paneTabelaHistorico.toFront();
             }
-        }
-
+            cpfHistoricoEmprestimo.clear();
+        } else telaAviso_controller.showTelaAviso("Preencha o CPF do Leitor que deseja consultar o histórico antes de continuar.");
     }
 
     public void preencherTabela(List<Emprestimo> historicoDoLeitor) {
@@ -704,9 +786,8 @@ public class TelaAdministrador_Controller {
         colunaNumeroDeRenovacoes.setCellValueFactory(new PropertyValueFactory<>("numeroDeRenovacoes"));
 
         ObservableList<Emprestimo> historico = FXCollections.observableArrayList(historicoDoLeitor);
-        tabelaHistórico.setItems(historico);
+        tabelaHistorico.setItems(historico);
     }
-
 
     @FXML
     void gerarRelatorio(ActionEvent event) throws Exception {

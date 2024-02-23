@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="952.0" style="-fx-background-color: #00777f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.LivroPesquisado_Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1056.0" style="-fx-background-color: #00777f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistemaBiblioteca.Controller.LivroPesquisado_Controller">
    <children>
       <Label alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="99.0" layoutY="22.0" prefHeight="22.0" prefWidth="162.0" text="Resultados com">
          <font>
@@ -24,18 +24,18 @@
             </ImageView>
          </graphic>
       </Label>
-      <TableView fx:id="tabelaLivros" layoutX="14.0" layoutY="73.0" prefHeight="430.0" prefWidth="923.0" style="-fx-border-color: #474748; -fx-border-radius: 2; -fx-background-color: white; -fx-border-width: 0px 0px 2px 0px;" styleClass="table-cell" stylesheets="@CSS/costumizacao.css">
+      <TableView fx:id="tabelaLivros" layoutX="14.0" layoutY="73.0" prefHeight="488.0" prefWidth="1024.0" style="-fx-border-color: #474748; -fx-border-radius: 2; -fx-background-color: white; -fx-border-width: 0px 0px 2px 0px;" styleClass="table-cell" stylesheets="@CSS/costumizacao.css">
         <columns>
           <TableColumn fx:id="colunaTitulo" prefWidth="250.0" resizable="false" text="Título" />
-          <TableColumn fx:id="colunaAutor" minWidth="0.0" prefWidth="145.0" resizable="false" text="Autoria" />
-            <TableColumn fx:id="colunaISBN" minWidth="0.0" prefWidth="110.0" resizable="false" text="ISBN" />
-            <TableColumn fx:id="colunaCategoria" prefWidth="120.0" resizable="false" text="Categoria" />
-            <TableColumn fx:id="colunaAno" prefWidth="100.0" resizable="false" text="Ano " />
-            <TableColumn fx:id="colunaDisponibilidade" prefWidth="95.0" resizable="false" text="Disponibilidade" />
-            <TableColumn fx:id="colunaLocalizacao" prefWidth="100.0" resizable="false" text="Localização" />
+          <TableColumn fx:id="colunaAutor" minWidth="0.0" prefWidth="175.199951171875" resizable="false" text="Autoria" />
+            <TableColumn fx:id="colunaISBN" minWidth="0.0" prefWidth="146.4000244140625" resizable="false" text="ISBN" />
+            <TableColumn fx:id="colunaCategoria" prefWidth="160.0" resizable="false" text="Categoria" />
+            <TableColumn fx:id="colunaAno" prefWidth="86.4000244140625" resizable="false" text="Ano " />
+            <TableColumn fx:id="colunaDisponibilidade" prefWidth="99.2000732421875" resizable="false" text="Disponibilidade" />
+            <TableColumn fx:id="colunaLocalizacao" prefWidth="104.800048828125" resizable="false" text="Localização" />
         </columns>
       </TableView>
-      <Label fx:id="chaveBusca" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="262.0" layoutY="27.0" opacity="0.75" prefHeight="22.0" prefWidth="670.0" style="-fx-background-color: black; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="chave busca" textFill="WHITE">
+      <Label fx:id="chaveBusca" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="262.0" layoutY="27.0" opacity="0.75" prefHeight="22.0" prefWidth="774.0" style="-fx-background-color: black; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="chave busca" textFill="WHITE">
          <font>
             <Font name="Rockwell" size="16.0" />
          </font>

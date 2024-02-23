@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class AdministradorDAOTeste {
 
-    private AdministradorDAO administradorDAO = DAO.getAdministradorDAO();
+    private AdministradorDAO administradorDAO = new AdministradorDAO();
     private Administrador administrador;
 
     public AdministradorDAOTeste() throws Exception {
@@ -20,7 +20,7 @@ public class AdministradorDAOTeste {
 
     @Before
     public void iniciarDAO() throws Excecao {
-        administrador = new Administrador("Maria", "361.215.045-60", "senha123");
+        administrador = new Administrador("A teste", "361.215.045-60", "senha123");
     }
 
     @Test
@@ -49,10 +49,6 @@ public class AdministradorDAOTeste {
         assertEquals(administrador.getCpf(), administradorDAO.buscarAdministradorPorId(administrador.getCpf()).getCpf());
     }
 
-    @After
-    public void limparArquivo() throws Exception {
-        administradorDAO.deletarTodosAdministradores();
-    }
 
 }
 

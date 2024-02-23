@@ -20,12 +20,12 @@
 
 
     <children>
-        <TextField fx:id="barraPesquisa" layoutX="9.0" layoutY="238.0" prefHeight="27.0" prefWidth="150.0" promptText="Pesquisar" style="-fx-background-color: #fffafa; -fx-border-color: black; -fx-border-width: 0px 0px 2px 0px;">
+        <TextField fx:id="barraPesquisa" layoutX="9.0" layoutY="238.0" prefHeight="28.0" prefWidth="155.0" promptText="Título / Autor / ISBN / Categoria / Ano / Editora" style="-fx-background-color: #fffafa; -fx-border-color: black; -fx-border-width: 0px 0px 2px 0px;">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
         </TextField>
-        <Button fx:id="botaoPesquisar" layoutX="162.0" layoutY="238.0" mnemonicParsing="false" onAction="#iniciarPesquisa" prefHeight="28.0" prefWidth="34.0" style="-fx-background-color: transparent; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: black;" textFill="WHITE">
+        <Button fx:id="botaoPesquisar" layoutX="169.0" layoutY="238.0" mnemonicParsing="false" onAction="#iniciarPesquisa" prefHeight="28.0" prefWidth="34.0" style="-fx-background-color: transparent; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: black;" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="OPEN_HAND" />
             </cursor>

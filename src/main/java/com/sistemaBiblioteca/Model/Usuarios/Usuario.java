@@ -83,7 +83,6 @@ public class Usuario implements Serializable {
     public void desbloquearConta() {
         this.statusAcessoUsuario = true;
     }
-
     /**
      * Valida um CPF fornecido.
      * @param cpf String - CPF a ser validado.

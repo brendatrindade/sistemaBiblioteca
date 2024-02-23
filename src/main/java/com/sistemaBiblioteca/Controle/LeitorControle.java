@@ -35,7 +35,7 @@ public class LeitorControle {
         try {
             Leitor leitor = leitorServico.criarLeitor(nome, cpf, endereco, telefone);
             System.out.println(leitor.getNome() + " - Cadastro efetuado com sucesso!");
-        } catch (Excecao e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -57,7 +57,7 @@ public class LeitorControle {
     public void deletarTodosLeitores(){
         leitorServico.deletarTodos();
     }
-    public Leitor buscarLeitorPorId(String id){
+    public Leitor buscarLeitorPorId(String id) throws Exception {
         return leitorServico.buscarPorId(id);
     }
     public List<Leitor> getLeitores(){
@@ -80,7 +80,7 @@ public class LeitorControle {
     public Map<String, List<Livro>> pesquisarLivros(String texto) throws Exception {
         return leitorServico.pesquisarLivros(texto);
     }
-    public boolean cpfLeitorEstaCadastrado(String cpf) throws Excecao {
+    public boolean cpfLeitorEstaCadastrado(String cpf) throws Exception {
         return leitorServico.cpfLeitorEstaCadastrado(cpf);
     }
 

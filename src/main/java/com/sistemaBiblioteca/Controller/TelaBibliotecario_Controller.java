@@ -95,9 +95,6 @@ public class TelaBibliotecario_Controller {
     private Pane paneTelaPrincipal;
 
     @FXML
-    private ScrollPane telaDeRolagem;
-
-    @FXML
     private TextField titulo;
     @FXML
     private TextField tituloLivroDevolucao;
@@ -113,26 +110,39 @@ public class TelaBibliotecario_Controller {
     @FXML
     void criarLivro() throws Exception {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
-        try {
-            Livro livro = new Livro(titulo.getText(), autor.getText(), isbn.getText(), categoria.getText(), anoPublicacao.getText(),
-                    editora.getText(), new Localizacao(localizacaoPrateleira.getText(), localizacaoPosicao.getText()));
 
-            DAO.getLivroDAO().criarLivro(livro);
-            telaAviso_controller.showTelaAviso("Livro " + titulo.getText()+ " registrado com sucesso!");
+        String tituloInserido = titulo.getText();
+        String autorInserido = autor.getText();
+        String isbnInserido = isbn.getText().replaceAll("[^0-9]", "");
+        String categoriaInserida = categoria.getText();
+        String anoInserido = anoPublicacao.getText();
+        String editoraInserida = editora.getText();
+        String prateleiraInserida = localizacaoPrateleira.getText();
+        String posicaoInserida = localizacaoPosicao.getText();
 
-            titulo.clear();
-            autor.clear();
-            isbn.clear();
-            categoria.clear();
-            anoPublicacao.clear();
-            editora.clear();
-            localizacaoPrateleira.clear();
-            localizacaoPosicao.clear();
-            paneTelaPrincipal.toFront();
+        if ( (!tituloInserido.trim().isEmpty()) && (!autorInserido.trim().isEmpty()) && (!isbnInserido.trim().isEmpty()) && (!categoriaInserida.trim().isEmpty()) && (!anoInserido.trim().isEmpty())
+                && (!editoraInserida.trim().isEmpty()) && (!prateleiraInserida.trim().isEmpty()) && (!posicaoInserida.trim().isEmpty()) ) {
 
-        } catch (Exception e){
-            telaAviso_controller.showTelaAviso(e.getMessage());
-        }
+            try {
+                Livro livro = new Livro(tituloInserido, autorInserido, isbnInserido, categoriaInserida, anoInserido, editoraInserida, new Localizacao(prateleiraInserida, posicaoInserida));
+
+                DAO.getLivroDAO().criarLivro(livro);
+                telaAviso_controller.showTelaAviso("Livro " + tituloInserido + " registrado com sucesso!");
+
+                titulo.clear();
+                autor.clear();
+                isbn.clear();
+                categoria.clear();
+                anoPublicacao.clear();
+                editora.clear();
+                localizacaoPrateleira.clear();
+                localizacaoPosicao.clear();
+                paneTelaPrincipal.toFront();
+            } catch (Exception e){
+                telaAviso_controller.showTelaAviso(e.getMessage());
+            }
+        } else telaAviso_controller.showTelaAviso("Preencha todos os campos!");
+
     }
     @FXML
     void registrarEmprestimo() {
@@ -152,12 +162,16 @@ public class TelaBibliotecario_Controller {
 
             List<Livro> livrosDoTitulo = DAO.getLivroDAO().buscarLivroPorTitulo(tituloInserido);
             Livro livroDisponivel = null;
+            boolean livroEncontrado = false;
+            int i = 0;
             if (!livrosDoTitulo.isEmpty()) {
-                for (Livro livro : livrosDoTitulo) {
+                while ( (!livroEncontrado) && (i < livrosDoTitulo.size()) ) {
+                    Livro livro = livrosDoTitulo.get(i);
                     if (livro.isDisponibilidade()) {
                         livroDisponivel = livro;
-                        break;
+                        livroEncontrado = true;
                     }
+                    i++;
                 }
             } else telaAviso_controller.showTelaAviso("Ops! Nenhum livro correspondente ao TÍTULO informado foi localizado.");
 
@@ -223,16 +237,20 @@ public class TelaBibliotecario_Controller {
             Leitor leitor = DAO.getLeitorDAO().buscarPorId(cpfInserido);
             List<Emprestimo> emprestimosLeitorAtivo = DAO.getLeitorDAO().getEmprestimosAtivosArq(leitor);
             if (!emprestimosLeitorAtivo.isEmpty()) {
-                for (Emprestimo emprestimoDoTitulo : emprestimosLeitorAtivo) {
+                boolean livroEncontrado = false;
+                int i = 0;
+                while ( (!livroEncontrado) && (i < emprestimosLeitorAtivo.size()) ){
+                    Emprestimo emprestimoDoTitulo = emprestimosLeitorAtivo.get(i);
                     if ( tituloInserido.equalsIgnoreCase(emprestimoDoTitulo.getLivro().getTitulo() ) ) {
                         emprestimoDoTitulo.registrarDevolucao();
                         DAO.getLivroDAO().atualizarAcervoPosDevolucao(tituloInserido);
                         DAO.getLeitorDAO().salvarHistoricoEmprestimos();
-
                         telaAviso_controller.showTelaAviso(emprestimoDoTitulo + "\nDevolução registrada com sucesso!");
-                        break;
-                    } else telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");
+                        livroEncontrado = true;
+                    }
+                    i++;
                 }
+                if (!livroEncontrado) telaAviso_controller.showTelaAviso(leitor.getNome() + " não possui emprestimo ativo para o titulo informado ("+ tituloInserido+").");
 
                 tituloLivroDevolucao.clear();
                 cpfLeitorDevolucao.clear();
@@ -292,7 +310,6 @@ public class TelaBibliotecario_Controller {
         assert paneRegistrarEmprestimo != null : "fx:id=\"paneRegistrarEmprestimo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert paneRegistrarLivro != null : "fx:id=\"paneRegistrarLivro\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert paneTelaPrincipal != null : "fx:id=\"paneTelaPrincipal\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
-        assert telaDeRolagem != null : "fx:id=\"telaDeRolagem\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert titulo != null : "fx:id=\"titulo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
         assert tituloLivroCriarEmprestimo != null : "fx:id=\"tituloLivroCriarEmprestimo\" was not injected: check your FXML file 'TelaBibliotecario.fxml'.";
     }

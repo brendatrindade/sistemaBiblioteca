@@ -34,6 +34,7 @@ public class Leitor extends Usuario {
         super.setCpf(cpf);
         super.setNome(nome);
         super.desbloquearConta();
+        super.bloquearConta();
         this.telefone = telefone;
         this.endereco = endereco;
         this.cadastroRealizado = true;
