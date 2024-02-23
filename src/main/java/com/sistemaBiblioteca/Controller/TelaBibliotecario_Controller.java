@@ -154,7 +154,7 @@ public class TelaBibliotecario_Controller {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         String tituloInserido = tituloLivroCriarEmprestimo.getText();
-        String cpfInserido = cpfLeitorCriarEmprestimo.getText();
+        String cpfInserido = cpfLeitorCriarEmprestimo.getText().replaceAll("[^0-9]", "");
 
         if ( (!tituloInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty())) {
 
@@ -216,7 +216,7 @@ public class TelaBibliotecario_Controller {
                 } else telaAviso_controller.showTelaAviso("Livro: " + tituloInserido + " indisponível para emprestimo no momento." +
                             "\nPessoas na fila: " + DAO.getLivroDAO().qtdLeitoresNaFila(tituloInserido) +" . " +
                             leitor.getNome() + ", reserve o livro e aguarde para solicitar empréstimo quando disponivel.");
-            } else telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi lozalidado.");
+            } else telaAviso_controller.showTelaAviso("Ops! Nenhum cadastro vinculado ao CPF informado foi localizado.");
         } else telaAviso_controller.showTelaAviso("Informe o CPF e o Título do livro para registrar o emprestimo.");
 
     }
@@ -231,7 +231,7 @@ public class TelaBibliotecario_Controller {
         TelaAviso_Controller telaAviso_controller = new TelaAviso_Controller();
 
         String tituloInserido = tituloLivroDevolucao.getText();
-        String cpfInserido = cpfLeitorDevolucao.getText();
+        String cpfInserido = cpfLeitorDevolucao.getText().replaceAll("[^0-9]", "");
 
         if ((!tituloInserido.trim().isEmpty()) && (!cpfInserido.trim().isEmpty())) {
             Leitor leitor = DAO.getLeitorDAO().buscarPorId(cpfInserido);

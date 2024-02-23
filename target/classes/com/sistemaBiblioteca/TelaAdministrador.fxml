@@ -978,7 +978,7 @@
             <Pane fx:id="paneGerarRelatorio" layoutX="10.0" layoutY="10.0" prefHeight="597.0" prefWidth="841.0" style="-fx-background-color: white;">
                <children>
                   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="497.0" layoutX="26.0" layoutY="55.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="5.0" strokeType="OUTSIDE" strokeWidth="1.5" width="792.0" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="54.0" layoutY="91.0" prefHeight="30.0" prefWidth="210.0" text="Livros Emprestados" textAlignment="CENTER" textFill="#187132">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="54.0" layoutY="91.0" prefHeight="30.0" prefWidth="210.0" text="Empréstimos Ativos" textAlignment="CENTER" textFill="#187132">
                      <font>
                         <Font name="Rockwell" size="22.0" />
                      </font>

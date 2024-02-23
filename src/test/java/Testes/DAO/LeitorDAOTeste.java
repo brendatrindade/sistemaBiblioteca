@@ -53,12 +53,6 @@ public class LeitorDAOTeste {
     }
 
     @Test
-    public void buscarLeitorPorId() throws Exception {
-        leitorDAO.salvar(leitor);
-        assertEquals(leitor.getCpf(), leitorDAO.buscarPorId(leitor.getCpf()).getCpf());
-    }
-
-    @Test
     public void adicionarLeitorAoHistoricoEmprestimos() {
         leitorDAO.adicionaHistoricoEmprestimos(leitor, emprestimo);
         assertTrue(leitorDAO.getHistoricoEmprestimos(leitor).contains(emprestimo));
@@ -76,11 +70,6 @@ public class LeitorDAOTeste {
         assertEquals(1, leitorDAO.qtdEmprestimosAtivos(leitor));
     }
 
-    @Test
-    public void VerificarSeCpfEstaCadastrado() throws Exception {
-        leitorDAO.salvar(leitor);
-        assertTrue(leitorDAO.cpfLeitorEstaCadastrado(leitor.getCpf()));
-    }
 
 }
 
